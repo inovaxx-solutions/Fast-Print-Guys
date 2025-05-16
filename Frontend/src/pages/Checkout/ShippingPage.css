@@ -1,0 +1,490 @@
+/* src/pages/Checkout/ShippingPage.css */
+
+.shipping-page-container {
+    padding: 0;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-header-area {
+    width: 100%;
+    background: linear-gradient(to right, #1b6aba, #35b7ef);
+    color: white;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    margin-right: 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    align-items: center;
+}
+
+.checkout-header-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.checkout-shop-link,
+.checkout-back-link {
+    color: white;
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.checkout-shop-link:hover,
+.checkout-back-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.checkout-header-area .checkout-step-indicator {
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+/* Outer container for full width background */
+.checkout-content-area {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #ffffff; 
+    padding: 0;
+    margin-bottom: 40px;
+}
+
+/* Inner container to center and limit content width and align items to top */
+.checkout-content-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* Stack columns by default */
+    gap: 30px;
+    padding: 0 20px; /* Horizontal padding for content */
+    box-sizing: border-box;
+    align-items: flex-start; /* Prevent flex items (columns) from stretching height */
+}
+
+/* Left Column: Shipping Address Form with Blurred Background */
+.shipping-address-form-area {
+    flex: 2;
+    background: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+    -webkit-backdrop-filter: blur(5px); /* Blurred background effect */
+    backdrop-filter: blur(5px);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.shipping-address-form-area h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.shipping-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.shipping-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.shipping-form .form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.shipping-form .form-row .form-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.shipping-form label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: bold;
+}
+
+.shipping-form input[type="text"],
+.shipping-form input[type="email"],
+.shipping-form input[type="tel"],
+.shipping-form input[type="number"],
+.shipping-form select {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.shipping-form .btn.btn-primary {
+    padding: 15px 25px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    color: white;
+}
+
+.shipping-form .btn.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(90deg, #0056b3, #007bff);
+}
+
+.shipping-form .btn.btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+
+/* Right Column: Cart Summary */
+.cart-summary-area {
+    flex: 1;
+    background-color: #ffffff; /* White background for the main container */
+    border: 1px dashed #80c7ff; /* Dashed outer border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Cart Summary Header */
+.cart-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #80c7ff; /* Dashed border below header */
+}
+
+.cart-summary-area h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+}
+
+.edit-cart-link {
+    font-size: 0.9rem;
+    color: #007bff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.edit-cart-link:hover {
+    text-decoration: underline;
+}
+
+.edit-cart-link .edit-icon {
+    font-size: 0.9rem;
+}
+
+/* Cart Items Container (Pale blue section) */
+.cart-items-container {
+    background-color: #e0f0ff; /* Pale blue background */
+    border-radius: 0 0 8px 8px; /* Rounded bottom corners */
+    margin: -15px; 
+    padding: 15px; 
+}
+
+/* Adjust padding for cart-summary-area to create space for inner sections */
+.cart-summary-area {
+    flex: 1;
+    background-color: #ffffff; /* White background for the main container */
+    border: 1px dashed #80c7ff; /* Dashed outer border */
+    border-radius: 8px;
+    /* padding: 20px; */ /* Remove this padding */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    /* gap: 15px; */ /* Remove gap here, add padding to children */
+    overflow: hidden; /* To respect border-radius of children */
+}
+
+/* Add padding to direct children of cart-summary-area */
+.cart-summary-header,
+.cart-items-container,
+.discount-section,
+.totals-section {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.cart-summary-header {
+    padding-top: 20px;
+    padding-bottom: 15px;
+    margin-bottom: 0; /* Remove margin-bottom if using padding-bottom */
+}
+
+.cart-items-container {
+     background-color: #E5FBFF;
+     border-radius: 0 0 8px 8px;
+     /* Use negative horizontal margin to stretch background */
+     margin: 0 -20px; /* Match the parent's horizontal padding */
+     padding-top: 15px;
+     padding-bottom: 15px;
+     /* Keep left/right padding for content inside */
+     padding-left: 20px;
+     padding-right: 20px;
+     /* Remove border-bottom from .cart-item, add to .cart-items-container if needed, but design shows per item */
+}
+
+.discount-section {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-top: 0; /* Remove margin-top if using padding-top */
+}
+
+.totals-section {
+    padding-top: 15px;
+    padding-bottom: 20px; /* Add bottom padding */
+}
+
+
+/* Cart Item */
+.cart-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px 0; /* Padding top/bottom */
+    border-bottom: 1px dashed #80c7ff; /* Dashed border below each item */
+}
+
+.cart-item:last-child {
+     border-bottom: none;
+}
+
+
+/* Item Image and Quantity Badge */
+.item-image-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.cart-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.item-image-placeholder {
+     width: 100%;
+     height: 100%;
+     border-radius: 8px;
+     background: linear-gradient(to bottom right, #fff9a0, #a0ff90, #80c7ff);
+}
+
+.quantity-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 3px 6px;
+    min-width: 10px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.item-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.item-configuration {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.item-price {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.2rem;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* Discount Section */
+.discount-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* padding: 15px 0; */ /* Padding moved to combined rule above */
+    border-bottom: 1px dashed #80c7ff; /* Dashed border */
+}
+
+.discount-section .discount-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.discount-section .discount-input::placeholder {
+    color: #999;
+}
+
+.discount-section .apply-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    background: linear-gradient(90deg, #a05be0, #e05be0);
+    transition: opacity 0.3s ease;
+}
+
+.discount-section .apply-button:hover {
+    opacity: 0.9;
+}
+
+/* Totals Section */
+.totals-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* padding: 15px 0; */ /* Padding moved to combined rule above */
+}
+
+.totals-section .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: #555;
+}
+
+.totals-section .total-row.total-line {
+    border-top: 1px dashed #80c7ff; /* Dashed border above Total */
+    padding-top: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.totals-section .total-row.total-line span {
+     font-weight: bold;
+}
+
+.total-price-value {
+     color: #007bff; /* Blue color for the total price value */
+}
+
+
+@media (min-width: 768px) {
+    /* Adjust inner container for side-by-side columns and align items to top */
+    .checkout-content-inner {
+        flex-direction: row;
+        padding: 0;
+        align-items: flex-start; /* Crucial for making columns only take content height */
+    }
+
+    /* Keep padding on the form/summary areas */
+    .shipping-address-form-area {
+        padding: 40px;
+    }
+    /* No extra padding needed here, handled by children */
+    /* .cart-summary-area { padding: 30px; } */
+
+    /* Adjust header top padding and centering for larger screens */
+    .checkout-header-top {
+         padding: 15px 30px;
+           max-width: 1200px;
+           margin: 0 auto;
+     }
+     .checkout-header-area .checkout-step-indicator {
+         padding: 30px;
+          max-width: 1200px;
+          margin: 0 auto;
+     }
+}
+
+.top-area{
+    padding-top: 60px;
+}
+
+.error-message {
+    color: #d9534f;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.success-message {
+    color: #5cb85c;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-cart h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.empty-cart p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #777;
+}
+
+.empty-cart a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.empty-cart a:hover {
+    text-decoration: underline;
+}

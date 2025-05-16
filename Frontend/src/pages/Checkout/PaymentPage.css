@@ -1,0 +1,539 @@
+/* src/pages/Checkout/PaymentPage.css */
+
+/* --- Reused Styles from ShippingPage.css --- */
+
+.payment-page-container {
+    padding: 0;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-area{
+    padding-top: 60px; /* Space below a fixed header */
+}
+
+.checkout-header-area {
+    width: 100%;
+    background: linear-gradient(to right, #1b6aba, #35b7ef); /* Header gradient */
+    color: white;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    margin-right: 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    align-items: center;
+}
+
+.checkout-header-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.checkout-shop-link,
+.checkout-back-link {
+    color: white;
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.checkout-shop-link:hover,
+.checkout-back-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.checkout-header-area .checkout-step-indicator {
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+/* Outer container for full width background */
+.checkout-content-area {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #ffffff; /* Subtle light gray background (from ShippingPage) */
+    padding: 0;
+    margin-bottom: 40px; /* Space below the content area (from ShippingPage) */
+}
+
+/* Inner container to center and limit content width and align items to top */
+.checkout-content-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* Stack columns by default */
+    gap: 30px;
+    padding: 0 20px; /* Horizontal padding for content */
+    box-sizing: border-box;
+    align-items: flex-start; /* Prevent flex items (columns) from stretching height */
+}
+
+/* Reused Error/Empty States */
+.error-message {
+    color: #d9534f;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.success-message {
+    color: #5cb85c;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.empty-order { /* Reused/renamed from empty-cart */
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-order h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.empty-order p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #777;
+}
+
+.empty-order a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.empty-order a:hover {
+    text-decoration: underline;
+}
+
+
+/* --- New Styles for Payment Page Specifics --- */
+
+/* Left Column: Payment Information Form Area */
+.payment-form-area {
+    flex: 2; /* Similar flex ratio to the shipping form */
+    /* Background based on design image - appears to be a light, slightly warm solid or subtle gradient */
+    background-color: #ffffff; /* Solid white as a base */
+    /* Or a subtle gradient if preferred: */
+    /* background: linear-gradient(180deg, #ffffff, #f8f8f8); */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex; /* Use flex to arrange contents vertically */
+    flex-direction: column;
+    gap: 20px; /* Space between sections within the form area */
+}
+
+.payment-form-area h2 {
+    font-size: 1.8rem;
+    margin-bottom: 5px; /* Reduced margin below title */
+    color: #333;
+}
+
+.payment-info-subtitle {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 15px; /* Space below subtitle */
+}
+
+
+/* Payment Methods Selection */
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between radio options */
+    padding-bottom: 20px; /* Space before the form */
+    border-bottom: 1px solid #eee; /* Separator line */
+}
+
+.payment-method-option {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between radio button, label, and icons */
+    cursor: pointer;
+    font-size: 1rem;
+    color: #555;
+}
+
+.payment-method-option input[type="radio"] {
+    /* Style the radio button if needed, default browser style is often fine */
+    margin-right: 5px;
+}
+
+.card-icons {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between card icons */
+    margin-left: auto; /* Push icons to the right */
+}
+
+.card-icons img {
+    height: 18px; /* Adjust icon size */
+    width: auto;
+}
+
+.paypal-logo {
+     margin-left: auto; /* Push PayPal logo to the right */
+}
+
+.paypal-logo img {
+    height: 24px; /* Adjust PayPal logo size */
+    width: auto;
+}
+
+
+/* Payment Form */
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between form groups */
+}
+
+/* Reuse form-group and form-row styles from ShippingPage.css */
+/* .form-group */
+/* .form-row */
+/* .form-row .form-group */
+/* .payment-form label */
+/* .payment-form input[type="text"], etc. */
+
+.credit-card-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between CC form groups */
+}
+
+/* Specific styling for the Expiration and CVV row if needed */
+.credit-card-fields .form-row .form-group {
+     flex: 1; /* Ensure Expiry and CVV take equal space in their row */
+     min-width: unset; /* Override min-width if necessary */
+}
+
+
+/* Action Buttons Container */
+.payment-buttons {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 15px; /* Space between buttons */
+    margin-top: 20px; /* Space above buttons */
+}
+
+/* Reuse primary button styling from ShippingPage.css */
+/* .btn.btn-primary */
+
+/* Style for the Cancel button (secondary) */
+.btn.btn-secondary {
+    padding: 15px 25px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 1px solid #ccc; /* Example border */
+    background-color: #f8f8f8; /* Light background */
+    color: #333; /* Dark text */
+}
+
+.btn.btn-secondary:hover:not(:disabled) {
+    background-color: #e0e0e0; /* Darker background on hover */
+    border-color: #bbb;
+}
+
+
+/* --- Reused Styles for Cart Summary Area (from ShippingPage.css) --- */
+
+/* Right Column: Cart Summary */
+.cart-summary-area {
+    flex: 1;
+    background-color: #ffffff; /* White background for the main container */
+    border: 1px dashed #80c7ff; /* Dashed outer border */
+    border-radius: 8px;
+    /* padding: 20px; */ /* Removed padding here, added to children */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    /* gap: 15px; */ /* Removed gap here, added padding to children */
+    overflow: hidden; /* To respect border-radius of children */
+}
+
+/* Add padding to direct children of cart-summary-area */
+.cart-summary-header,
+.cart-items-container,
+.discount-section,
+.totals-section {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Cart Summary Header */
+.cart-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px; /* Added top padding */
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #80c7ff; /* Dashed border below header */
+    margin-bottom: 0;
+}
+
+.cart-summary-area h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+}
+
+/* Edit link styling (present in JSX but likely hidden or removed based on design) */
+.edit-cart-link {
+    font-size: 0.9rem;
+    color: #007bff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.edit-cart-link:hover {
+    text-decoration: underline;
+}
+
+.edit-cart-link .edit-icon {
+    font-size: 0.9rem;
+}
+
+/* Cart Items Container (Pale blue section) */
+.cart-items-container {
+     background-color: #e0f0ff; /* Pale blue background */
+     border-radius: 0 0 8px 8px; /* Rounded bottom corners */
+     /* Use negative horizontal margin to stretch background */
+     margin: 0 -20px; /* Match the parent's horizontal padding */
+     padding-top: 15px;
+     padding-bottom: 15px;
+     /* Keep left/right padding for content inside */
+     padding-left: 20px;
+     padding-right: 20px;
+}
+
+/* Cart Item */
+.cart-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px dashed #80c7ff; /* Dashed border below each item */
+}
+
+.cart-item:last-child {
+     border-bottom: none;
+}
+
+/* Item Image and Quantity Badge */
+.item-image-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.cart-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.item-image-placeholder {
+     width: 100%;
+     height: 100%;
+     border-radius: 8px;
+     background: linear-gradient(to bottom right, #fff9a0, #a0ff90, #80c7ff); /* Placeholder gradient */
+}
+
+.quantity-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #007bff; /* Badge color */
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 3px 6px;
+    min-width: 10px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.item-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.item-configuration {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.item-price {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.2rem;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* Discount Section */
+.discount-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #80c7ff; /* Dashed border */
+}
+
+/* Discount input (if present) */
+.discount-section .discount-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.discount-section .discount-input::placeholder {
+    color: #999;
+}
+
+/* Apply button (if present) */
+.discount-section .apply-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    background: linear-gradient(90deg, #a05be0, #e05be0); /* Purple Gradient */
+    transition: opacity 0.3s ease;
+}
+
+.discount-section .apply-button:hover {
+    opacity: 0.9;
+}
+
+
+/* Totals Section */
+.totals-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 15px;
+    padding-bottom: 20px; /* Added bottom padding */
+}
+
+.totals-section .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: #555;
+}
+
+.totals-section .total-row.total-line {
+    border-top: 1px dashed #80c7ff; /* Dashed border above Total */
+    padding-top: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.totals-section .total-row.total-line span {
+     font-weight: bold;
+}
+
+.total-price-value {
+     color: #007bff; /* Blue color for the total price value */
+}
+
+
+/* --- Media Query for Responsiveness --- */
+
+@media (min-width: 768px) {
+    /* Adjust inner container for side-by-side columns and align items to top */
+    .checkout-content-inner {
+        flex-direction: row;
+        padding: 0;
+        align-items: flex-start; /* Crucial for making columns only take content height */
+    }
+
+    /* Adjust padding for form/summary areas on larger screens */
+    .payment-form-area {
+        padding: 40px;
+    }
+    /* No extra padding needed here, handled by children */
+    /* .cart-summary-area { padding: 30px; } */
+
+    /* Adjust padding for direct children of cart-summary-area on larger screens */
+    .cart-summary-header,
+    .cart-items-container,
+    .discount-section,
+    .totals-section {
+        padding-left: 30px; /* Match cart-summary-area padding */
+        padding-right: 30px; /* Match cart-summary-area padding */
+    }
+
+    .cart-summary-area {
+        padding: 0; /* Remove padding from the main container */
+    }
+
+    .cart-items-container {
+        /* Adjust negative margin to match new parent padding */
+        margin: 0 -30px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+
+    /* Adjust header media query styles */
+    .checkout-header-top {
+         padding: 15px 30px;
+           max-width: 1200px;
+           margin: 0 auto;
+     }
+     .checkout-header-area .checkout-step-indicator {
+         padding: 30px;
+          max-width: 1200px;
+          margin: 0 auto;
+     }
+}
+

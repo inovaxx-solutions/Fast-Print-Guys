@@ -1,0 +1,182 @@
+/* src/components/CheckoutStepIndicator.css */
+
+.checkout-step-indicator-container {
+    background-color: #2a3a70; /* Dark blue background */
+    padding: 25px 0;    
+    width: 100%; /* Ensure container can be wide */
+    box-sizing: border-box;
+  }
+  
+  .checkout-step-indicator {
+    display: flex;
+    justify-content: space-between; /* Distribute steps evenly */
+    align-items: flex-start;
+    position: relative;
+    margin: 0 auto; /* Center the group of steps */
+    max-width: 750px; /* Increased for a "longer" look, adjust as needed */
+    padding: 0 15px; /* Overall padding for the step group if needed */
+    box-sizing: border-box;
+  }
+  
+  .step {
+    display: flex; /* Children (circle-wrapper, label) will be flex items */
+    flex-direction: column; /* Stack circle and label vertically */
+    align-items: center; /* Center them horizontally in this column */
+    flex-grow: 1; /* Each step will take up equal space */
+    flex-basis: 0; /* Start with a base width of 0 and let it grow */
+    position: relative; /* For positioning the connector */
+    text-align: center;
+    min-width: 0; /* Important for flex items that might otherwise not shrink/grow properly */
+    /* Add a little space between steps themselves if connector isn't enough */
+    /* padding: 0 5px; /* Spacing for content within the step, adjust if needed */
+  }
+  
+  .step-circle-wrapper {
+    position: relative;
+    margin-bottom: 10px; /* Space between circle and label */
+    z-index: 2; /* Ensure circle is above the connector */
+    display: flex; /* Helps contain the step-number properly */
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .step-number {
+    width: 38px; /* Slightly larger for better visual */
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    transition: all 0.4s ease;
+    font-size: 1.05rem; /* Slightly larger number */
+    border: 2.5px solid rgba(255, 255, 255, 0.4); /* Default upcoming - slightly thicker border */
+    color: rgba(255, 255, 255, 0.6); /* Default upcoming */
+    background-color: transparent;
+    box-sizing: border-box;
+  }
+  
+  .step-label {
+    font-size: 0.8rem; /* Slightly larger label */
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6); /* Default upcoming label color */
+    font-weight: 500; /* Regular weight for upcoming */
+    transition: color 0.4s ease, font-weight 0.4s ease;
+    width: 100%; /* Ensure label uses the width of the column */
+    white-space: nowrap; /* Prevent wrapping for short labels like "Contacts" */
+    padding-top: 5px; /* Add a little space from the circle */
+    box-sizing: border-box;
+  }
+  
+  /* Connector Styling */
+  .step-connector {
+    position: absolute;
+    top: 19px; /* Half of 38px circle height */
+    height: 2.5px; /* Match border thickness */
+    border-bottom: 2.5px dotted rgba(255, 255, 255, 0.4); /* Default connector color & style */
+    z-index: 1; /* Behind the step-number circle */
+  
+    /* --- Critical Connector Positioning --- */
+    /* Start the connector from the right edge of the current step's circle */
+    left: calc(50% + 19px + 5px); /* (50% of step width) + (circle radius) + (small gap) */
+    /* Make the connector span the remaining width of the step, up to the next circle's area */
+    width: calc(100% - (50% + 19px + 5px) - 5px); /* (Total step width) - (start offset) - (end gap) */
+    /* Alternatively, if each step is 1/N width: width should be StepWidth - CircleDiameter - Gaps */
+    /* A simpler width if flex is working perfectly: */
+    /* width: calc(100% - 38px - 10px);  This would be if left was 0 within a sub-container */
+  }
+  
+  
+  /* Ensure the last step doesn't have a connector */
+  .step:last-child .step-connector {
+    display: none;
+  }
+  
+  /* --- Completed Step --- */
+  .step.completed .step-number {
+    background: linear-gradient(145deg, #fbb03b, #f7931e);
+    border-color: #f7931e;
+    color: white;
+  }
+  
+  .checkmark-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .checkmark-icon path {
+    stroke-width: 4.5; /* Thicker checkmark */
+  }
+  
+  .step.completed .step-label {
+    color: white;
+    font-weight: 600; /* Bolder for completed */
+  }
+  
+  .step.completed .step-connector {
+    border-bottom-color: rgba(255, 255, 255, 0.8); /* Brighter white for completed connector */
+  }
+  
+  /* --- Active Step --- */
+  .step.active .step-number {
+    border-color: #f7931e; /* Yellow-orange border from design */
+    color: #f7931e; /* Yellow-orange text */
+    background-color: #2a3a70; /* Match parent background to "hollow out" */
+  }
+  
+  .step.active .step-label {
+    color: white; /* White text for active label */
+    font-weight: 700; /* Boldest for active */
+  }
+  
+  /* --- Responsiveness --- */
+  @media (max-width: 768px) {
+    .checkout-step-indicator {
+      max-width: 95%;
+      padding: 0 10px;
+    }
+    .step-label {
+      font-size: 0.75rem;
+    }
+    .step-connector {
+      left: calc(50% + 19px + 3px);
+      width: calc(100% - (50% + 19px + 3px) - 3px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .checkout-step-indicator-container {
+      padding: 20px 0;
+    }
+    .step-number {
+      width: 34px;
+      height: 34px;
+      font-size: 0.95rem;
+      border-width: 2px;
+    }
+    .step-label {
+      font-size: 0.7rem;
+      white-space: normal; /* Allow wrapping on very small screens */
+      padding-top: 3px;
+    }
+    .step-circle-wrapper {
+      margin-bottom: 8px;
+    }
+    .step-connector {
+        position: absolute;
+        top: 19px; /* Vertically centered with 38px circle */
+        height: 2.5px;
+        border-bottom: 2.5px dotted rgba(255, 255, 255, 0.4);
+        z-index: 1;
+      
+        left: calc(50% + 19px); /* Start at the right edge of the circle (19px = radius) */
+        width: calc(100% - 38px); /* Subtract total circle width (38px) to end at next circle’s left edge */
+      }
+    .checkmark-icon {
+      width: 16px;
+      height: 16px;
+    }
+    .checkmark-icon path {
+      stroke-width: 4;
+    }
+  }

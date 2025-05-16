@@ -1,0 +1,285 @@
+/* Add a font import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Color system */
+  --color-primary: #0071e3;
+  --color-primary-light: #47a0ff;
+  --color-primary-dark: #0058b0;
+  
+  --color-secondary: #86b7fe;
+  --color-secondary-light: #b8d5ff;
+  --color-secondary-dark: #5491e2;
+  
+  --color-accent: #ff453a;
+  --color-accent-light: #ff7268;
+  --color-accent-dark: #d62d23;
+  
+  --color-success: #34c759;
+  --color-success-light: #65d683;
+  --color-success-dark: #28a346;
+  
+  --color-warning: #ff9f0a;
+  --color-warning-light: #ffb340;
+  --color-warning-dark: #e08600;
+  
+  --color-error: #ff3b30;
+  --color-error-light: #ff6b63;
+  --color-error-dark: #d63026;
+  
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  
+  /* Spacing system (based on 8px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 40px;
+  --space-7: 48px;
+  --space-8: 56px;
+  --space-9: 64px;
+  --space-10: 80px;
+  --space-11: 96px;
+  --space-12: 128px;
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Font sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  
+  /* Line heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-loose: 1.8;
+  
+  /* Font weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-bold: 700;
+  
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-normal: 250ms;
+  --transition-slow: 350ms;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+  color: var(--color-neutral-900);
+  background-color: var(--color-neutral-50);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast) ease;
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* Responsive container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 var(--space-5);
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 var(--space-7);
+  }
+}
+
+/* Typography utility classes */
+.heading-1 {
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-4);
+}
+
+.heading-2 {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-3);
+}
+
+.heading-3 {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-2);
+}
+
+.text-lg {
+  font-size: var(--text-lg);
+}
+
+.text-sm {
+  font-size: var(--text-sm);
+}
+
+.font-medium {
+  font-weight: var(--font-medium);
+}
+
+.font-bold {
+  font-weight: var(--font-bold);
+}
+
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-weight: var(--font-medium);
+  transition: all var(--transition-fast) ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+  background-color: var(--color-neutral-200);
+  color: var(--color-neutral-900);
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-neutral-300);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary-light);
+  color: white;
+}
+
+/* For responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Animation utilities */
+.fade-in {
+  animation: fadeIn var(--transition-normal) ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUp var(--transition-normal) ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

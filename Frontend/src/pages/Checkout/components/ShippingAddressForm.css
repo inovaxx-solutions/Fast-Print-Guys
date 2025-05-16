@@ -1,0 +1,91 @@
+/* src/pages/Checkout/components/ShippingAddressForm.css */
+/* Or include these rules in ShippingPage.css */
+
+/* Style for the form element itself */
+.shipping-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between form groups */
+}
+
+/* Container for a single form input and label */
+.shipping-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Layout for rows with multiple inputs (e.g., First Name/Last Name) */
+.shipping-form .form-row {
+    display: flex;
+    gap: 20px; /* Space between inputs in a row */
+    /* Allows inputs within the row to grow */
+    flex-wrap: wrap; /* Allow wrapping on very small screens */
+}
+
+.shipping-form .form-row .form-group {
+     flex: 1; /* Allow each form group in a row to take equal space */
+     min-width: 150px; /* Ensure inputs don't get too squished */
+}
+
+
+/* Style for labels */
+.shipping-form label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #555; /* Adjust label color */
+    font-weight: bold; /* Make labels bold */
+}
+
+/* Style for input fields and select dropdowns */
+.shipping-form input[type="text"],
+.shipping-form input[type="email"],
+.shipping-form input[type="tel"],
+.shipping-form input[type="number"],
+.shipping-form select {
+    padding: 12px 15px; /* Adjust padding */
+    border: 1px solid #ccc; /* Adjust border color */
+    border-radius: 5px; /* Rounded corners for inputs */
+    font-size: 1rem; /* Adjust font size */
+    width: 100%; /* Make inputs take full width of their container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Specific styles for select dropdowns if needed */
+/* .shipping-form select {
+    /* Add custom arrow if necessary, though our SelectInput helper component might handle this */
+/* } */
+
+/* Style for the submit button */
+.shipping-form .btn.btn-primary { /* Use your existing button styling */
+    padding: 15px 25px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none; /* Remove default button border */
+    /* Apply gradient from design */
+     background: linear-gradient(90deg, #007bff, #0056b3); /* Example blue gradient */
+     color: white; /* White text */
+}
+
+.shipping-form .btn.btn-primary:hover:not(:disabled) {
+     background: linear-gradient(90deg, #0056b3, #007bff); /* Darker gradient on hover */
+}
+
+.shipping-form .btn.btn-primary:disabled {
+     opacity: 0.7; /* Dim when disabled */
+     cursor: not-allowed;
+}
+
+
+/* Style for the optional checkbox */
+/* .shipping-form .checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.shipping-form .checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
+} */

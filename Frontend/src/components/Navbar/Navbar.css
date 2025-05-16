@@ -1,0 +1,304 @@
+:root {
+  --gradient-purple-start: #ba11d1;
+  --gradient-purple-end: #8c088e;
+  --text-dark: #333; 
+  --text-light: #777
+  --primary-blue: #007bff;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 0 20px; 
+}
+
+.navbar::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, var(--gradient-purple-start, #ba11d1), var(--gradient-purple-end, #8c088e)); /* Use variables with fallbacks */
+  z-index: -1; 
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%; 
+}
+
+.navbar-logo {
+  z-index: 1001; 
+}
+
+.navbar-logo img {
+  height: 30px; 
+  width: auto;
+}
+
+/* Navigation Menu - Desktop styles */
+.navbar-nav {
+  display: flex; /* Desktop: Horizontal layout */
+  flex-grow: 1; /* Allow menu to take available space */
+  justify-content: center; /* Center menu items if flex-grow is used */
+}
+
+.navbar-menu {
+  display: flex; /* Desktop: Horizontal list */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem; /* Space between desktop items */
+  margin-left: 2rem; /* Space from logo */
+}
+
+.navbar-item {
+  position: relative;
+}
+
+.navbar-link {
+  color: var(--text-dark, #333);
+  font-weight: 400;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+.navbar-link:hover {
+  color: var(--primary-blue, #007bff); 
+}
+
+.dropdown-arrow {
+  font-size: 0.7rem;
+}
+
+/* Products Dropdown - Desktop styles */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position below the parent item */
+  left: 0;
+  background-color: white;
+  border: 1px solid #eee;
+  border-top: none;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  min-width: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10; 
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: var(--text-dark, #333);
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f9f9f9;
+  color: var(--primary-blue, #007bff);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 1001;
+}
+
+.btn-outline {
+  padding: 0.4rem 1rem;
+  border-radius: 5px;
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--primary-blue, #007bff); 
+  border: 1px solid var(--primary-blue, #007bff);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary-light, #e7f3ff); 
+  color: white;
+}
+
+.navbar-icon-btn {
+  background: none;
+  border: none;
+  padding: 0.3rem;
+  cursor: pointer;
+  color: var(--text-dark, #333);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Hide hamburger toggle on desktop */
+.navbar-toggle {
+  display: none;
+}
+
+
+/* --- Mobile Styles (Applied on screens <= 768px wide) --- */
+@media (max-width: 768px) {
+
+  .navbar {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 60px; /* Match header height */
+     z-index: 1000; /* Header stacking order */
+     display: flex;
+     align-items: center;
+     /* Adjust padding for mobile header if needed */
+     padding: 0 15px; /* Example: Adjusted horizontal padding */
+     background-color: white;
+     border-bottom: 1px solid #eee;
+     box-sizing: border-box; /* Ensure padding is included */
+  }
+
+  /* Hide the gradient line on mobile */
+  .navbar::before {
+    display: none;
+  }
+
+  /* Mobile Navigation Menu Container */
+  /* This element slides in/out */
+  .navbar-nav {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
+    background-color: white;
+    padding: 1rem 0;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    overflow-y: auto;
+    z-index: 1005;
+    display: none;
+  }
+  /* State when mobile menu is open */
+  .navbar-nav.open {
+    transform: translateY(0);
+    display: block; /* Slide into view */
+    /* z-index remains 1005 */
+  }
+
+  /* Mobile Navigation Menu List */
+  .navbar-menu {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; 
+    margin-left: 0;
+    padding: 0 1rem; 
+    width: 100%; 
+    box-sizing: border-box;
+  }
+
+  /* Mobile Dropdown Parent Item */
+  .navbar-item.has-dropdown .navbar-link {
+    display: flex; /* Keep flex to align link and arrow */
+    justify-content: space-between; 
+    align-items: center;
+  }
+
+  /* Mobile Dropdown Menu (Products submenu) */
+  .dropdown-menu {
+    position: static; 
+    border: none;
+    box-shadow: none; 
+    padding-left: 1rem; 
+     background-color: transparent;
+     width: 100%;
+  }
+
+  .dropdown-menu li a {
+      padding: 0.5rem 1rem; 
+      justify-content: center;
+      width: 100%; 
+  }
+
+  .navbar-actions {
+    gap: 0.5rem; 
+  }
+
+  .btn-outline {
+    display: none;
+  }
+
+  /* Show hamburger toggle on mobile */
+  .navbar-toggle {
+    display: block;
+    background: none;
+    border: none;
+    padding: 0.5rem; /* Padding around the icon */
+    cursor: pointer;
+    z-index: 1002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none; 
+  }
+
+  /* Styles for the hamburger icon lines */
+  .navbar-toggle-icon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: #333;
+    position: relative;
+    transition: background-color 0.2s ease;
+  }
+
+  .navbar-toggle-icon::before,
+  .navbar-toggle-icon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background-color: #333;
+    transition: transform 0.2s ease;
+  }
+
+  .navbar-toggle-icon::before {
+    top: -6px;
+  }
+
+  .navbar-toggle-icon::after {
+    bottom: -6px;
+  }
+}

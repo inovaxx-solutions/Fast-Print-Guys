@@ -1,0 +1,133 @@
+/* src/pages/Checkout/components/CheckoutCartSummary.css */
+/* Or include these rules in ShippingPage.css */
+
+/* Style for individual cart items */
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between elements in the item row */
+    padding: 10px 0;
+    border-bottom: 1px solid #eee; /* Separator between items */
+}
+
+/* Style for cart item image (if you add one) */
+/* .cart-item-image {
+    width: 60px;
+    height: auto;
+    border-radius: 4px;
+} */
+
+/* Container for item name and configuration */
+.cart-item .item-details {
+    flex-grow: 1; /* Allow details to take up available space */
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-item .item-quantity {
+    font-weight: bold;
+    margin-right: 5px; /* Space between quantity and name */
+    color: #555; /* Adjust color */
+}
+
+.cart-item .item-name {
+    font-weight: bold;
+    color: #333; /* Adjust color */
+}
+
+.cart-item .item-configuration {
+    font-size: 0.9rem;
+    color: #777; /* Adjust color */
+}
+
+/* Style for the item price */
+.cart-item .item-price {
+    font-weight: bold;
+    color: #333; /* Adjust color */
+}
+
+
+/* Style for the discount/coupon section */
+.discount-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between elements */
+    padding: 15px 0;
+    border-bottom: 1px solid #eee; /* Separator */
+}
+
+.discount-section .user-icon { /* Style for the icon */
+    font-size: 1.2rem;
+    color: #777; /* Adjust color */
+}
+
+.discount-section .apply-button { /* Style for the Apply button */
+     padding: 8px 15px;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     background-color: #f8f8f8; /* Light background */
+     cursor: pointer;
+     font-size: 0.9rem;
+     color: #333;
+     transition: background-color 0.3s ease;
+}
+
+.discount-section .apply-button:hover {
+    background-color: #e0e0e0;
+}
+
+
+/* Style for the totals section (Subtotal, Taxes, Total) */
+.totals-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between total rows */
+    padding: 15px 0;
+}
+
+.totals-section .total-row {
+    display: flex;
+    justify-content: space-between; /* Align label and value */
+    font-size: 1rem;
+    color: #555; /* Adjust color */
+}
+
+/* Style for the total row specifically */
+.totals-section .total-row.total-line {
+     border-top: 1px solid #eee; /* Line above total */
+     padding-top: 15px; /* Space above the line */
+     font-size: 1.2rem; /* Larger font for total */
+     font-weight: bold;
+     color: #333; /* Adjust color for total */
+}
+
+/* Style for the Edit cart link */
+.edit-cart-link {
+    font-size: 0.9rem;
+    color: #007bff; /* Link color */
+    text-decoration: none;
+    margin-left: auto; /* Push to the right */
+}
+
+.edit-cart-link:hover {
+    text-decoration: underline;
+}
+
+/* Positioning for the Edit link relative to the heading */
+.cart-summary-area > h2 { /* Select the h2 directly under cart-summary-area */
+    display: inline-block; /* Make heading inline-block */
+    margin-right: 10px; /* Add space after heading */
+}
+
+/* Adjust layout to place Edit link next to heading */
+.cart-summary-area {
+    position: relative; /* Needed for absolute positioning of Edit link if desired */
+}
+
+.edit-cart-link {
+    /* If you want it absolutely positioned near the heading */
+    /* position: absolute;
+    top: 20px;
+    right: 20px; */
+    /* Or simply align it within the flex/grid flow of the header area */
+}

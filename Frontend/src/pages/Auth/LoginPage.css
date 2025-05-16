@@ -1,0 +1,110 @@
+/* src/pages/Auth/LoginPage.css */
+.login-page-wrapper {
+  display: flex; /* Use flexbox to create two columns */
+  height: 100vh; /* Make the wrapper take the full viewport height */
+  margin: 0; /* Remove default body margin */
+  padding: 0; /* Remove default body padding */
+  overflow: hidden; /* Hide any overflow */
+  background-color: #f0f8ff; /* A very light default background */
+}
+
+.login-left-panel {
+  flex: 1; /* Make left panel take up 1 part of available space (50/50 split with right) */
+  min-width: 0; /* Prevent flex item from exceeding container size */
+  /* Updated: Match background color to the illustration's background */
+  background-color: #041643; /* Estimated dark purplish-blue */
+  color: white; 
+  display: flex; /* Use flexbox for content inside */
+  flex-direction: column; /* Stack logo and illustration vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+  padding: 20px; /* Add some padding */
+  position: relative; /* Needed for absolute positioning of logo */
+  overflow: hidden; /* Hide illustration overflow */
+  box-sizing: border-box; /* Include padding in the element's total width */
+}
+
+.login-logo {
+  position: absolute; /* Position logo absolutely within the left panel */
+  top: 20px; /* Adjust as needed */
+  left: 20px; /* Adjust as needed */
+  z-index: 10; /* Ensure logo is above illustration */
+}
+
+.login-logo img {
+    height: 40px; /* Adjust logo size as needed */
+    /* Add filter: brightness(0) invert(1); if the logo is dark and needs to be white - depends on your logo file */
+}
+
+
+.login-illustration {
+    /* Styles for the illustration container */
+    /* Updated: Make the container take up more width */
+    width: 90%; /* Increase width to fill more of the panel */
+    max-width: 500px; /* Allow it to be a bit larger */
+    height: auto;
+    /* Adjust positioning if the illustration isn't perfectly centered within the panel */
+    /* remove temporary border if added */
+    /* border: none; */
+}
+
+.login-illustration img {
+    display: block;
+    width: 100%; /* Make image fill its container */
+    height: auto;
+    object-fit: contain; /* Ensure the image scales without distortion */
+}
+
+
+.login-right-panel {
+  flex: 1; /* Make the right side equal size to the left (50/50 split) */
+   min-width: 0; /* Prevent flex item from exceeding container size */
+  display: flex;
+  justify-content: center; /* Center form horizontally within this panel */
+  align-items: center; /* Center form vertically within this panel */
+  padding: 20px;
+  /* Apply the light blue gradient background */
+  background: linear-gradient(to bottom right,
+    hsl(200, 100%, 98%), /* Lighter blue (should be visible) */
+    hsl(200, 100%, 95%)  /* Slightly darker blue */
+  );
+  overflow-y: auto; /* Add scroll if content overflows vertically */
+  box-sizing: border-box; /* Include padding in the element's total width */
+}
+
+/* Add styles to ensure html and body allow flexbox to work with full height */
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Optional: Add responsiveness */
+@media (max-width: 768px) {
+  .login-page-wrapper {
+    flex-direction: column; /* Stack panels vertically on smaller screens */
+    height: auto; /* Allow height to be determined by content */
+    min-height: 100vh; /* Ensure it takes at least full viewport height */
+  }
+
+  .login-left-panel {
+    height: 150px; /* Example: Give it a fixed height or remove height */
+    justify-content: flex-start; /* Align logo to top */
+    align-items: flex-start; /* Align logo to left */
+    flex: none; /* Don't let it grow */
+  }
+   .login-illustration {
+       display: none; /* Hide illustration on small screens */
+   }
+    .login-logo {
+        position: static; /* Remove absolute positioning */
+        margin-bottom: 10px; /* Add space below logo */
+    }
+
+
+  .login-right-panel {
+    flex: none; /* Don't let it grow */
+    width: 100%; /* Take full width */
+  }
+}
