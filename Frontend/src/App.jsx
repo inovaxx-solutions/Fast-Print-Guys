@@ -24,7 +24,7 @@ function App() {
           <Route element={<DefaultLayout />}>
             {/* Nested routes using DefaultLayout */}
             {/* <Route path="/" element={<HomePage />} /> */} {/* Example commented route */}
-            <Route path="/profile" element={<PricingPage />} /> {/* Pricing page route */}
+            <Route path="/pricing" element={<PricingPage />} /> {/* Pricing page route */}
             <Route path="/checkout/shipping" element={<ShippingPage />} /> {/* Shipping page route */}
             <Route path="/checkout/payment" element={<PaymentPage />} /> 
             {/* Add other routes that need Navbar/Footer here */}

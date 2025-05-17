@@ -8,19 +8,15 @@ import magazine from '../../../../assets/magazine.png';
 import photobook from '../../../../assets/photobook.png';
 import printbook from '../../../../assets/printbook.png';
 import yearbook from '../../../../assets/yearbook.png';
-import journal from '../../../../assets/journal.png';
-import artbook from '../../../../assets/artbook.png';
 
 const menuItems = [
-    { id: 'art-book', icon: artbook, label: 'Art Book' },
     { id: 'comic-book', icon: comicbook, label: 'Comic Book' },
     { id: 'magazine', icon: magazine, label: 'Magazine' },
     { id: 'print-book', icon: printbook, label: 'Print Book' },
     { id: 'yearbook', icon: yearbook, label: 'Yearbook' },
     { id: 'calendar', icon: calendar, label: 'Calendar' },
     { id: 'photo-book', icon: photobook, label: 'Photo Book' },
-    { id: 'ebook', icon: ebook, label: 'Ebook' },
-    { id: 'journal', icon: journal, label: 'Journal' },
+    { id: 'thesis-binding', icon: ebook, label: 'Thesis-binding' },
 ];
 
 const DEFAULT_SELECTED_ITEM = 'print-book';
@@ -62,6 +58,7 @@ const HorizontalMenu = ({ onItemSelected = () => {} }) => {
             window.removeEventListener('resize', checkContainerScrollable);
         };
     }, [checkContainerScrollable]);
+
     useEffect(() => {
         if (menuRef.current && selectedItem) {
             const selectedElement = menuRef.current.querySelector(`#menu-item-${selectedItem}`);
@@ -73,7 +70,7 @@ const HorizontalMenu = ({ onItemSelected = () => {} }) => {
                 });
                 // Optional: Re-check container scrollable state after programmatic scroll
                 // Usually not needed unless items change size on selection.
-                 setTimeout(checkContainerScrollable, 350);
+                setTimeout(checkContainerScrollable, 350);
             }
         }
     }, [selectedItem, checkContainerScrollable]);
@@ -123,6 +120,7 @@ const HorizontalMenu = ({ onItemSelected = () => {} }) => {
                     </button>
                 ))}
             </div>
+
             <button
                 className={`scroll-button right ${!isContainerScrollable ? 'hidden' : ''}`}
                 onClick={() => handleArrowNavigation('right')}

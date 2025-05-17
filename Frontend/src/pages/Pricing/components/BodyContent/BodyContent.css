@@ -577,3 +577,166 @@
       font-size: 1.25rem;
   }
 }
+.number-input {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 2.5rem 0.625rem 1rem; 
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem; 
+  background-color: var(--bg-section);
+  color: var(--text-medium);
+  font-size: 0.875rem;
+  appearance: none; 
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.number-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+/* Remove the specific .number-input styles since we're using select-input class */
+.select-input[type="number"] {
+  /* Remove the arrow padding for number inputs */
+  padding: 0.625rem 1rem;
+  /* Hide number input spinners */
+  -moz-appearance: textfield;
+}
+
+.select-input[type="number"]::-webkit-outer-spin-button,
+.select-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Adjust label spacing to match dropdown */
+.select-label {
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.config-section-gradient .select-label {
+  color: var(--text-on-gradient);
+  opacity: 0.8;
+}
+.input-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
+color:white;
+font-size: larger;
+}
+
+.config-section-gradient .select-label {
+  color: var(--text-on-gradient);
+  opacity: 0.8;
+}
+
+.select-input {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  background-color: var(--bg-section);
+  color: var(--text-medium);
+}
+
+/* Number input specific styles */
+.select-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.select-input[type="number"]::-webkit-outer-spin-button,
+.select-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Dropdown specific styles */
+.select-input[is="datalist"] {
+  padding-right: 2.5rem;
+}
+
+
+
+
+/* Tooltip styles */
+.option-item.disabled {
+  position: relative;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.option-item.disabled .option-tooltip {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.option-item.disabled:hover .option-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.option-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+/* Binding section styles */
+.binding-section {
+  margin-bottom: 1.5rem;
+}
+
+.binding-section:last-child {
+  margin-bottom: 0;
+}
+
+.binding-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-medium);
+  margin-bottom: 0.5rem;
+}
+
+/* Disabled state styles */
+.option-item.disabled .option-image {
+  filter: grayscale(100%);
+}
+
+.option-item.disabled .option-text {
+  color: var(--text-light);
+}
