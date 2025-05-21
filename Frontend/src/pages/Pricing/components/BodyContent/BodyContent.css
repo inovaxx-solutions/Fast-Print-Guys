@@ -13,7 +13,7 @@
   --text-on-gradient: #ffffff;
 
   --bg-main: #f8f9fa;
-  --bg-section: #ffffff;
+  --bg-section: #ffffff; /* Keep this for other sections that use it */
   --bg-subtle: #f1f5f9;
   --border-color: #dee2e6;
   --border-color-dashed: #ced4da;
@@ -53,12 +53,12 @@
 /* --- Print Book Layout --- */
 .print-book-container {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr); 
-  gap: 1.5rem; 
+  grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+  gap: 1.5rem;
 }
 
 .section-title {
-  font-size: 1.75rem; 
+  font-size: 1.75rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
   color: var(--text-dark);
@@ -66,19 +66,58 @@
 
 /* --- Left Configuration Panel Styling --- */
 .print-book-config {
-    background-color: var(--bg-section); 
-    border-radius: var(--radius); 
-    border: 1px solid var(--border-color); 
-    box-shadow: var(--shadow-sm); 
-    padding: 2.5rem 1.5rem;
+  border-radius: 20px; /* From your provided HTML for the main white layer */
+  padding: 2.5rem 1.5rem;
+  overflow: hidden; /* Important for background to respect border-radius */
+  position: relative; /* Crucial for positioning the pseudo-element inside */
+
+  /* This is the rgba(255, 255, 255, 0.02) background from your HTML */
+  background-color: rgba(255, 255, 255, 0.02);
+
+  /* The outline effect from your HTML */
+  outline: 1px solid #E2E2E2;
+
+  /* This blurs the content *behind* the element, giving the glassmorphism effect for content */
+  backdrop-filter: blur(100px);
 }
 
+.print-book-config::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Layer the specific gradients as background images */
+  background:
+    /* Orange gradient */
+    radial-gradient(ellipse 41.76% 41.76% at 50% 50%, #EE831E 0%, rgba(238, 131, 30, 0) 100%) 57.58px -246.57px / 1007.61px 1294.50px no-repeat,
+    /* Blue gradient */
+    radial-gradient(ellipse 41.76% 41.76% at 50% 50%, #00AEDC 0%, rgba(0, 174, 220, 0) 100%) -283.53px 431.50px / 1007.61px 1294.50px no-repeat,
+    /* Pink gradient */
+    radial-gradient(ellipse 41.76% 41.76% at 50% 50%, #D15D9E 0%, rgba(209, 93, 158, 0.25) 100%) 126.50px 984.04px / 1007.61px 1294.50px no-repeat,
+    /* The base solid white background, similar to your original HTML's base white div */
+    white;
+
+  /* Apply the blur filter directly to the gradients */
+  filter: blur(150px);
+  /* The box-shadow that was causing the dark edge has been removed as it was redundant/problematic */
+  z-index: -1;
+  /* Inherit border-radius from the parent container */
+  border-radius: inherit;
+  /* This helps to correctly clip the blurred content at the rounded corners in some browsers */
+  mask-image: radial-gradient(white, black);
+  -webkit-mask-image: radial-gradient(white, black); /* For WebKit browsers */
+}
+
+
 .config-section {
-  margin-bottom: 0; 
-  background-color: transparent; 
-  border-radius: 0; 
-  box-shadow: none; 
-  border: none; 
+  margin-bottom: 0;
+  background-color: transparent; /* Changed from var(--bg-section) to transparent */
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
 
   padding: 1.5rem 0; /* Add vertical padding within sections */
   border-bottom: 1px solid var(--border-color); /* Add separating line */
@@ -86,13 +125,13 @@
 
 /* Style for the first section (no top border needed) */
 .config-section:first-child {
-    padding-top: 0; 
+  padding-top: 0;
 }
 
 /* Style for the last section (no bottom border) */
 .config-section.last-section {
-    border-bottom: none; 
-    padding-bottom: 1.5rem; 
+  border-bottom: none;
+  padding-bottom: 1.5rem;
 }
 
 /* Gradient section style - Keep its specific background and shadow */
@@ -100,9 +139,9 @@
   background-image: linear-gradient(to left, var(--gradient-blue-start), var(--gradient-blue-end));
   color: var(--text-on-gradient);
   border: none;
-  border-radius: var(--radius); 
-    box-shadow: var(--shadow-md); 
-    padding: 1.5rem; 
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem;
 }
 
 .config-title {
@@ -113,11 +152,11 @@
 }
 
 .config-title-light {
-    color: var(--text-on-gradient); 
+  color: var(--text-on-gradient);
 }
 
 .binding-title {
-  font-size: 0.875rem; 
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-light);
   margin-bottom: 0.75rem;
@@ -129,7 +168,7 @@
   margin-top: 1.5rem; /* Space between sub-sections like Paperback/Hardcover */
 }
 .binding-section:first-child {
-     margin-top: 0; /* No top margin for the first binding sub-section */
+  margin-top: 0; /* No top margin for the first binding sub-section */
 }
 
 
@@ -137,6 +176,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  align-items: flex-end; /* Added from your number input group */
 }
 
 .select-wrapper {
@@ -144,44 +184,46 @@
 }
 
 .select-label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 0.875rem;
-    color: var(--text-light); 
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
+  color:white; /* This was an override in your provided code, keeping it */
+  font-size: larger; /* This was an override in your provided code, keeping it */
 }
 
 .config-section-gradient .select-label {
-      color: var(--text-on-gradient); 
-      opacity: 0.8;
+  color: var(--text-on-gradient);
+  opacity: 0.8;
 }
 
 .select-input {
   display: block;
   width: 100%;
-  padding: 0.625rem 2.5rem 0.625rem 1rem; 
+  padding: 0.625rem 2.5rem 0.625rem 1rem;
   border: 1px solid var(--border-color);
-  border-radius: 0.375rem; 
-  background-color: var(--bg-section);
+  border-radius: 0.375rem;
+  background-color: var(--bg-section); /* This will be white if not overridden */
   color: var(--text-medium);
   font-size: 0.875rem;
-  appearance: none; 
+  appearance: none;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .config-section-gradient .select-input {
-    background-color: rgba(255, 255, 255, 0.15); 
-    border-color: rgba(255, 255, 255, 0.3);
-    color: var(--text-on-gradient);
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-on-gradient);
 }
 
 .config-section-gradient .select-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .config-section-gradient .select-input option {
-    background-color: var(--primary-blue);
-    color: var(--text-on-gradient);
+  background-color: var(--primary-blue);
+  color: var(--text-on-gradient);
 }
 
 
@@ -192,24 +234,24 @@
 }
 
 .config-section-gradient .select-input:focus {
-    border-color: var(--text-on-gradient);
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+  border-color: var(--text-on-gradient);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 
 .select-arrow {
   position: absolute;
-  right: 0.75rem; 
+  right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none; 
+  pointer-events: none;
   color: var(--text-light);
   width: 1rem;
   height: 1rem;
 }
 
 .config-section-gradient .select-arrow {
-    color: var(--text-on-gradient);
+  color: var(--text-on-gradient);
 }
 
 
@@ -263,8 +305,8 @@
 .option-image {
   width: 100%; /* Make image responsive */
   height: 80px; /* Fixed height */
-  border: 2px solid var(--border-color); 
-  border-radius: 0.375rem; 
+  border: 2px solid var(--border-color);
+  border-radius: 0.375rem;
   background-color: var(--bg-subtle);
   margin-bottom: 0.5rem;
   overflow: hidden;
@@ -272,7 +314,7 @@
   align-items: center;
   justify-content: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -280,12 +322,12 @@
 /* Checked state styling */
 .option-label input[type="radio"]:checked + .option-image {
   border-color: var(--border-selected);
-  box-shadow: 0 0 0 2px var(--border-selected); 
+  box-shadow: 0 0 0 2px var(--border-selected);
 }
 
 .option-label input[type="radio"]:focus-visible + .option-image {
-    box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.3); /* Focus ring */
-    border-color: var(--border-selected);
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.3); /* Focus ring */
+  border-color: var(--border-selected);
 }
 
 .option-text {
@@ -305,8 +347,8 @@
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-md);
-  height: fit-content; 
-  top: 2rem; 
+  height: fit-content;
+  top: 2rem;
 }
 
 .summary-preview {
@@ -324,7 +366,7 @@
   max-width: 180px;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
 }
 
 .pages-indicator {
@@ -335,48 +377,48 @@
 }
 
 .pages-badge {
-  background-color: rgba(0, 0, 0, 0.15); 
+  background-color: rgba(0, 0, 0, 0.15);
   color: white;
-  font-size: 0.7rem; 
+  font-size: 0.7rem;
   font-weight: 600;
   padding: 0.2rem 0.6rem;
   border-radius: 9999px;
-  backdrop-filter: blur(2px); 
+  backdrop-filter: blur(2px);
 }
 
 .distribution-badge {
-  color: #185a0e; 
+  color: #185a0e;
   font-weight: 500;
   font-size: 0.875rem;
   text-align: center;
 }
 
 .summary-details {
-  padding: 0.5rem 1.5rem; 
+  padding: 0.5rem 1.5rem;
   border-top: 1px dashed var(--border-color-dashed);
 }
 
 .summary-detail-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    padding: 1rem 0; 
-    border-bottom: 1px dashed var(--border-color-dashed);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px dashed var(--border-color-dashed);
 }
 .summary-detail-row:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .detail-label {
   color: var(--text-light);
   font-size: 0.8rem;
-  margin-bottom: 0.15rem; 
-  display: block; 
+  margin-bottom: 0.15rem;
+  display: block;
 }
 
 .detail-value {
   color: var(--text-medium);
-  font-weight: 600; 
+  font-weight: 600;
   font-size: 0.875rem;
 }
 
@@ -384,8 +426,8 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; 
-  border-top: 1px dashed var(--border-color-dashed); 
+  gap: 0.75rem;
+  border-top: 1px dashed var(--border-color-dashed);
 
 }
 
@@ -393,7 +435,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1rem; 
+  padding: 0.75rem 1rem;
   border-radius: 0.375rem;
   font-weight: 500;
   font-size: 0.875rem;
@@ -409,13 +451,13 @@
 }
 
 .btn-primary:hover {
-  background-color: #005f8a; 
+  background-color: #005f8a;
 }
 
 .btn-gradient {
   background-image: linear-gradient(to right, var(--gradient-yellow-end), var(--gradient-yellow-start));
-  color: var(--text-dark); 
-  justify-content: space-between; 
+  color: var(--text-dark);
+  justify-content: space-between;
 }
 
 .btn-gradient:hover {
@@ -450,18 +492,18 @@
 }
 
 .left-column {
-  display: flex; 
+  display: flex;
   flex-direction: column;
-  gap: 1.5rem; 
+  gap: 1.5rem;
 }
 
 /* --- Collapsible Section Styles --- */
 .collapsible-section {
-  background-color: var(--bg-section); 
-  border: 1px solid var(--border-color); 
-  border-radius: var(--radius); 
+  background-color: var(--bg-section);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .collapsible-header {
@@ -486,24 +528,24 @@
 }
 
 .collapsible-icon {
-  width: 1.2rem; 
+  width: 1.2rem;
   height: 1.2rem;
-  transition: transform 0.8s ease; 
-  color: var(--text-light); 
+  transition: transform 0.8s ease;
+  color: var(--text-light);
 }
 
 .collapsible-icon.is-open {
-  transform: rotate(180deg); 
+  transform: rotate(180deg);
 }
 
 .collapsible-content {
-  padding: 1.5rem; 
-   border-top: 1px dashed var(--border-color-dashed);
-   padding-top: 1.5rem;
+  padding: 1.5rem;
+  border-top: 1px dashed var(--border-color-dashed);
+  padding-top: 1.5rem;
 }
 
 .config-section.last-section-config {
-  border-bottom: none; 
+  border-bottom: none;
   padding-bottom: 1.5rem;
 }
 
@@ -515,35 +557,35 @@
   }
 
   .print-book-summary {
-      max-width: 600px; 
-      margin: 1rem auto 0 auto; 
-      position: relative; 
-      top: auto;
+    max-width: 600px;
+    margin: 1rem auto 0 auto;
+    position: relative;
+    top: auto;
   }
 }
 
 @media (max-width: 768px) {
   .input-group {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
 
   .options-grid,
   .options-grid-4,
-  .options-grid-2 { 
+  .options-grid-2 {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   }
    .options-grid-2 {
-    max-width: none; 
+    max-width: none;
    }
 
   .summary-detail-row {
-    grid-template-columns: 1fr; 
-    gap: 0.75rem; 
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
     padding: 0.75rem 0;
   }
     .summary-detail {
-    display: flex; 
+    display: flex;
     justify-content: space-between;
     align-items: center;
     }
@@ -577,26 +619,8 @@
       font-size: 1.25rem;
   }
 }
-.number-input {
-  display: block;
-  width: 100%;
-  padding: 0.625rem 2.5rem 0.625rem 1rem; 
-  border: 1px solid var(--border-color);
-  border-radius: 0.375rem; 
-  background-color: var(--bg-section);
-  color: var(--text-medium);
-  font-size: 0.875rem;
-  appearance: none; 
-  cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
 
-.number-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
-}
-/* Remove the specific .number-input styles since we're using select-input class */
+/* Number input specific styles - removed the old .number-input class */
 .select-input[type="number"] {
   /* Remove the arrow padding for number inputs */
   padding: 0.625rem 1rem;
@@ -610,69 +634,13 @@
   margin: 0;
 }
 
-/* Adjust label spacing to match dropdown */
-.select-label {
-  margin-bottom: 0.25rem;
-  font-size: 0.875rem;
-  color: var(--text-light);
-}
-
-.config-section-gradient .select-label {
-  color: var(--text-on-gradient);
-  opacity: 0.8;
-}
-.input-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  align-items: flex-end;
-}
-
-.select-wrapper {
-  position: relative;
-}
-
-.select-label {
-  display: block;
-  margin-bottom: 0.25rem;
-  font-size: 0.875rem;
-  color: var(--text-light);
-color:white;
-font-size: larger;
-}
-
-.config-section-gradient .select-label {
-  color: var(--text-on-gradient);
-  opacity: 0.8;
-}
-
-.select-input {
-  width: 100%;
-  padding: 0.625rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  background-color: var(--bg-section);
-  color: var(--text-medium);
-}
-
-/* Number input specific styles */
-.select-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-.select-input[type="number"]::-webkit-outer-spin-button,
-.select-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 /* Dropdown specific styles */
+/* This style might be problematic if you are using an actual <select> element and not a datalist */
+/* If `is="datalist"` is intended for an input with a datalist, it's fine.
+   If it's for a <select> element, you'd just target `select.select-input` */
 .select-input[is="datalist"] {
   padding-right: 2.5rem;
 }
-
-
 
 
 /* Tooltip styles */
