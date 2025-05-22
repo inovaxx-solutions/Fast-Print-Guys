@@ -19,6 +19,7 @@ import { useState, useEffect } from 'react';
  import eightyWhiteImg from '../../../../assets/80white.png';
  import bookPreviewImg from '../../../../assets/leftcol_img.png';
 
+
  const bookSizeMap = {
   "pocketbook": "Pocket Book (4.25 x 6.875 in / 108 x 175 mm)",
   "novella": "Novella (5 x 8 in / 127 x 203 mm)",
@@ -46,7 +47,10 @@ import { useState, useEffect } from 'react';
   'saddle': 'Saddle Stitch',
   'case': 'Case Wrap',
   'linen': 'Linen Wrap',
-  'wire-o': 'Wire-O'
+  'wire-o': 'Wire-O',
+  'leather': 'Leather Case Wrap',
+  'faux-leather': 'Faux Leather Case Wrap',
+  'polythin': 'Polythin Rexine Case Wrap'
  };
 
  const interiorColorMap = {
@@ -607,7 +611,28 @@ import { useState, useEffect } from 'react';
     },
   },
     'thesis-binding': {
-// Conditions
+      'a4': { // You can add more sizes if needed
+        minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, // Example minimum page count
+        maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, // Example maximum page count
+        conditional: (pages) => {
+          const bindings = [];
+          if (pages >= 24) { // Adjust the minimum page count as needed
+            bindings.push('leather', 'faux-leather', 'polythin');
+          }
+          return bindings;
+        },
+      },
+      'us_letter': { // You can add more sizes if needed
+        minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, // Example minimum page count
+        maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, // Example maximum page count
+        conditional: (pages) => {
+          const bindings = [];
+          if (pages >= 24) { // Adjust the minimum page count as needed
+            bindings.push('leather', 'faux-leather', 'polythin');
+          }
+          return bindings;
+        },
+      },
     },
   };
 
@@ -619,10 +644,14 @@ import { useState, useEffect } from 'react';
 
     if (activeOption === 'calendar') {
       available = pageNum === 26 ? ['wire-o'] : [];
-    } else if (pageNum >= 3 && rulesForBookSize && rulesForBookSize.conditional) { // Check if pageNum is >= 3
+    } else if (activeOption === 'thesis-binding') {
+      if (pageNum >= 24 && rulesForBookSize?.conditional) {
+        available = rulesForBookSize.conditional(pageNum);
+      }
+    }
+     else if (pageNum >= 3 && rulesForBookSize && rulesForBookSize.conditional) { // Check if pageNum is >= 3
       available = rulesForBookSize.conditional(pageNum);
     }
-
     setAvailableBindings(available);
 
     if (!available.includes(bindingType)) {
@@ -658,6 +687,12 @@ import { useState, useEffect } from 'react';
   };
 
   const isBindingDisabled = (bindingValue) => {
+    if (activeOption === 'calendar' && bindingValue === 'wire-o') {
+      return pageCount !== '26';
+    }
+    if (activeOption === 'thesis-binding') {
+      return !availableBindings.includes(bindingValue);
+    }
     return !availableBindings.includes(bindingValue);
   };
 
@@ -869,128 +904,136 @@ import { useState, useEffect } from 'react';
 
               {renderBindingSections()}
 {/* Thesis New Options start here */}
-              <div className="config-section">
-                <h3 className="config-title">Spine</h3>
-                <div className="options-grid options-grid-2">
-                  <RadioOption id="spine-round" name="thesisSpine" value="round" checked={thesisSpine === 'round'} onChange={setThesisSpine} labelText="Round" />
-                  <RadioOption id="spine-flat" name="thesisSpine" value="flat" checked={thesisSpine === 'flat'} onChange={setThesisSpine} labelText="Flat" />
-                </div>
-              </div>
+{activeOption === 'thesis-binding' && (
+                <>
+                  <div className="config-section">
+                    <h3 className="config-title">Spine</h3>
+                    <div className="options-grid options-grid-2">
+                      <RadioOption id="spine-round" name="thesisSpine" value="round" checked={thesisSpine === 'round'} onChange={setThesisSpine} labelText="Round" />
+                      <RadioOption id="spine-flat" name="thesisSpine" value="flat" checked={thesisSpine === 'flat'} onChange={setThesisSpine} labelText="Flat" />
+                    </div>
+                  </div>
 
-              <div className="config-section">
-                <h3 className="config-title">Exterior Color</h3>
-                <div className="options-grid options-grid-4">
-                  <RadioOption id="color-black" name="thesisExteriorColor" value="black" checked={thesisExteriorColor === 'black'} onChange={setThesisExteriorColor} labelText="Black" />
-                  <RadioOption id="color-brown" name="thesisExteriorColor" value="brown" checked={thesisExteriorColor === 'brown'} onChange={setThesisExteriorColor} labelText="Brown" />
-                  <RadioOption id="color-maroon" name="thesisExteriorColor" value="maroon" checked={thesisExteriorColor === 'maroon'} onChange={setThesisExteriorColor} labelText="Maroon" />
-                  <RadioOption id="color-dark-blue" name="thesisExteriorColor" value="dark-blue" checked={thesisExteriorColor === 'dark-blue'} onChange={setThesisExteriorColor} labelText="Dark Blue" />
-                </div>
-              </div>
+                  <div className="config-section">
+                    <h3 className="config-title">Exterior Color</h3>
+                    <div className="options-grid options-grid-4">
+                      <RadioOption id="color-black" name="thesisExteriorColor" value="black" checked={thesisExteriorColor === 'black'} onChange={setThesisExteriorColor} labelText="Black" />
+                      <RadioOption id="color-brown" name="thesisExteriorColor" value="brown" checked={thesisExteriorColor === 'brown'} onChange={setThesisExteriorColor} labelText="Brown" />
+                      <RadioOption id="color-maroon" name="thesisExteriorColor" value="maroon" checked={thesisExteriorColor === 'maroon'} onChange={setThesisExteriorColor} labelText="Maroon" />
+                      <RadioOption id="color-dark-blue" name="thesisExteriorColor" value="dark-blue" checked={thesisExteriorColor === 'dark-blue'} onChange={setThesisExteriorColor} labelText="Dark Blue" />
+                    </div>
+                  </div>
 
-              <div className="config-section">
-                <h3 className="config-title">Foil Stamping</h3>
-                <div className="options-grid options-grid-2">
-                  <RadioOption id="foil-golden" name="thesisFoilStamping" value="golden" checked={thesisFoilStamping === 'golden'} onChange={setThesisFoilStamping} labelText="Golden" />
-                  <RadioOption id="foil-silver" name="thesisFoilStamping" value="silver" checked={thesisFoilStamping === 'silver'} onChange={setThesisFoilStamping} labelText="Silver" />
-                </div>
-              </div>
+                  <div className="config-section">
+                    <h3 className="config-title">Foil Stamping</h3>
+                    <div className="options-grid options-grid-2">
+                      <RadioOption id="foil-golden" name="thesisFoilStamping" value="golden" checked={thesisFoilStamping === 'golden'} onChange={setThesisFoilStamping} labelText="Golden" />
+                      <RadioOption id="foil-silver" name="thesisFoilStamping" value="silver" checked={thesisFoilStamping === 'silver'} onChange={setThesisFoilStamping} labelText="Silver" />
+                    </div>
+                  </div>
 
-              <div className="config-section">
-                <h3 className="config-title">Screen Stamping</h3>
-                <div className="options-grid options-grid-2">
-                  <RadioOption id="screen-golden" name="thesisScreenStamping" value="golden" checked={thesisScreenStamping === 'golden'} onChange={setThesisScreenStamping} labelText="Golden" />
-                  <RadioOption id="screen-silver" name="thesisScreenStamping" value="silver" checked={thesisScreenStamping === 'silver'} onChange={setThesisScreenStamping} labelText="Silver" />
-                </div>
-              </div>
+                  <div className="config-section">
+                    <h3 className="config-title">Screen Stamping</h3>
+                    <div className="options-grid options-grid-2">
+                      <RadioOption id="screen-golden" name="thesisScreenStamping" value="golden" checked={thesisScreenStamping === 'golden'} onChange={setThesisScreenStamping} labelText="Golden" />
+                      <RadioOption id="screen-silver" name="thesisScreenStamping" value="silver" checked={thesisScreenStamping === 'silver'} onChange={setThesisScreenStamping} labelText="Silver" />
+                    </div>
+                  </div>
 
-              <div className="config-section">
-                <h3 className="config-title">4 Book Corner Protector</h3>
-                <div className="options-grid">
-                  <RadioOption id="corner-gold-sharp" name="thesisCornerProtector" value="gold-sharp" checked={thesisCornerProtector === 'gold-sharp'} onChange={setThesisCornerProtector} labelText="Gold Sharp Corner" />
-                  <RadioOption id="corner-gold-round" name="thesisCornerProtector" value="gold-round" checked={thesisCornerProtector === 'gold-round'} onChange={setThesisCornerProtector} labelText="Gold Round Corner" />
-                  <RadioOption id="corner-vintage" name="thesisCornerProtector" value="vintage" checked={thesisCornerProtector === 'vintage'} onChange={setThesisCornerProtector} labelText="Vintage Designs Corner" />
-                </div>
-              </div>
+                  <div className="config-section">
+                    <h3 className="config-title">4 Book Corner Protector</h3>
+                    <div className="options-grid">
+                      <RadioOption id="corner-gold-sharp" name="thesisCornerProtector" value="gold-sharp" checked={thesisCornerProtector === 'gold-sharp'} onChange={setThesisCornerProtector} labelText="Gold Sharp Corner" />
+                      <RadioOption id="corner-gold-round" name="thesisCornerProtector" value="gold-round" checked={thesisCornerProtector === 'gold-round'} onChange={setThesisCornerProtector} labelText="Gold Round Corner" />
+                      <RadioOption id="corner-vintage" name="thesisCornerProtector" value="vintage" checked={thesisCornerProtector === 'vintage'} onChange={setThesisCornerProtector} labelText="Vintage Designs Corner" />
+                    </div>
+                  </div>
 
-              <div className="config-section">
-                <h3 className="config-title">Interior Color</h3>
-                <div className="options-grid options-grid-2">
-                  <RadioOption id="interior-premium-bw" name="thesisInteriorColor" value="premium-bw" checked={thesisInteriorColor === 'premium-bw'} onChange={setThesisInteriorColor} labelText="Premium Black & white" />
-                  <RadioOption id="interior-premium-color" name="thesisInteriorColor" value="premium-color" checked={thesisInteriorColor === 'premium-color'} onChange={setThesisInteriorColor} labelText="Premium Color" />
-                </div>
-              </div>
+                  <div className="config-section">
+                    <h3 className="config-title">Interior Color</h3>
+                    <div className="options-grid options-grid-2">
+                      <RadioOption id="interior-premium-bw" name="thesisInteriorColor" value="premium-bw" checked={thesisInteriorColor === 'premium-bw'} onChange={setThesisInteriorColor} labelText="Premium Black & white" />
+                      <RadioOption id="interior-premium-color" name="thesisInteriorColor" value="premium-color" checked={thesisInteriorColor === 'premium-color'} onChange={setThesisInteriorColor} labelText="Premium Color" />
+                    </div>
+                  </div>
 
-              <div className="config-section last-section-config">
-                <h3 className="config-title">Paper Type</h3>
-                <div className="options-grid options-grid-4">
-                  <RadioOption id="paper-70-white" name="thesisPaperType" value="70-white" checked={thesisPaperType === '70-white'} onChange={setThesisPaperType} labelText="70# White-Uncoated" />
-                  <RadioOption id="paper-60-cream" name="thesisPaperType" value="60-cream" checked={thesisPaperType === '60-cream'} onChange={setThesisPaperType} labelText="60# Cream-Uncoated" />
-                  <RadioOption id="paper-60-white-uncoated" name="thesisPaperType" value="60-white-uncoated" checked={thesisPaperType === '60-white-uncoated'} onChange={setThesisPaperType} labelText="60# White-uncoated" />
-                  <RadioOption id="paper-80-white" name="thesisPaperType" value="80-white" checked={thesisPaperType === '80-white'} onChange={setThesisPaperType} labelText="80# White-Coated" />
-                </div>
-              </div>
-{/* Thesis NEw Options ending here */}
-              <div className="config-section">
-                <h3 className="config-title">Interior Color</h3>
-                <div className="options-grid options-grid-4">
-                  {[
-                    { id: 'color-standard-bw', value: 'standard-bw', imageSrc: standardBwImg, labelText: 'Standard Black & White' },
-                    { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium Black & White' },
-                    { id: 'color-standard-color', value: 'standard-color', imageSrc: standardColorImg, labelText: 'Standard Color' },
-                    { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
-                  ].map(opt => (
-                    <RadioOption
-                      key={opt.id}
-                      {...opt}
-                      name="interiorColor"
-                      checked={interiorColor === opt.value}
-                      onChange={setInteriorColor}
-                    />
-                  ))}
-                </div>
-              </div>
+                  <div className="config-section last-section-config">
+                    <h3 className="config-title">Paper Type</h3>
+                    <div className="options-grid options-grid-4">
+                      <RadioOption id="paper-70-white" name="thesisPaperType" value="70-white" checked={thesisPaperType === '70-white'} onChange={setThesisPaperType} labelText="70# White-Uncoated" />
+                      <RadioOption id="paper-60-cream" name="thesisPaperType" value="60-cream" checked={thesisPaperType === '60-cream'} onChange={setThesisPaperType} labelText="60# Cream-Uncoated" />
+                      <RadioOption id="paper-60-white-uncoated" name="thesisPaperType" value="60-white-uncoated" checked={thesisPaperType === '60-white-uncoated'} onChange={setThesisPaperType} labelText="60# White-uncoated" />
+                      <RadioOption id="paper-80-white" name="thesisPaperType" value="80-white" checked={thesisPaperType === '80-white'} onChange={setThesisPaperType} labelText="80# White-Coated" />
+                    </div>
+                  </div>
+                </>
+              )}
 
-              <div className="config-section">
-                <h3 className="config-title">Paper Type</h3>
-                <div className="options-grid">
-                  {[
-                    { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
-                    { id: 'paper-60-white', value: '60-white', imageSrc: sixtyWhiteImg, labelText: '60# White — Uncoated' },
-                    { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
-                    ...(activeOption === 'calendar' ? [
-                      { id: 'paper-100-white', value: '100-white', imageSrc: eightyWhiteImg, labelText: '100# White — Coated' }
-                    ] : [])
-                  ].map(opt => (
-                    <RadioOption
-                      key={opt.id}
-                      {...opt}
-                      name="paperType"
-                      checked={paperType === opt.value}
-                      onChange={setPaperType}
-                    />
-                  ))}
-                </div>
-              </div>
+              {activeOption !== 'thesis-binding' && (
+                <>
+                  <div className="config-section">
+                    <h3 className="config-title">Interior Color</h3>
+                    <div className="options-grid options-grid-4">
+                      {[
+                        { id: 'color-standard-bw', value: 'standard-bw', imageSrc: standardBwImg, labelText: 'Standard Black & White' },
+                        { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium Black & White' },
+                        { id: 'color-standard-color', value: 'standard-color', imageSrc: standardColorImg, labelText: 'Standard Color' },
+                        { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
+                      ].map(opt => (
+                        <RadioOption
+                          key={opt.id}
+                          {...opt}
+                          name="interiorColor"
+                          checked={interiorColor === opt.value}
+                          onChange={setInteriorColor}
+                        />
+                      ))}
+                  </div>
+                </div>
 
-              <div className="config-section last-section-config">
-                <h3 className="config-title">Cover Finish</h3>
-                <div className="options-grid options-grid-2">
-                  {[
-                    { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
-                    { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
-                  ].map(opt => (
-                    <RadioOption
-                      key={opt.id}
-                      {...opt}
-                      name="coverFinish"
-                      checked={coverFinish === opt.value}
-                      onChange={setCoverFinish}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+                <div className="config-section">
+                  <h3 className="config-title">Paper Type</h3>
+                    <div className="options-grid">
+                      {[
+                        { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
+                        { id: 'paper-60-white', value: '60-white', imageSrc: sixtyWhiteImg, labelText: '60# White — Uncoated' },
+                        { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
+                        ...(activeOption === 'calendar' ? [
+                          { id: 'paper-100-white', value: '100-white', imageSrc: eightyWhiteImg, labelText: '100# White — Coated' }
+                        ] : [])
+                      ].map(opt => (
+                        <RadioOption
+                          key={opt.id}
+                          {...opt}
+                          name="paperType"
+                          checked={paperType === opt.value}
+                          onChange={setPaperType}
+                        />
+                      ))}
+                  </div>
+                </div>
 
+                <div className="config-section last-section-config">
+                  <h3 className="config-title">Cover Finish</h3>
+                    <div className="options-grid options-grid-2">
+                      {[
+                        { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
+                        { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
+                      ].map(opt => (
+                        <RadioOption
+                          key={opt.id}
+                          {...opt}
+                          name="coverFinish"
+                          checked={coverFinish === opt.value}
+                          onChange={setCoverFinish}
+                        />
+                      ))}
+                  </div>
+                </div>
+              </>
+              )}
+
+            </div>
             <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}>
               <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}>
                 <h3 className="collapsible-title">Quantity & Shipping Estimates</h3>
@@ -1034,47 +1077,104 @@ import { useState, useEffect } from 'react';
             </div>
           </div>
 
-          <div className="print-book-summary">
-            <div className="summary-preview">
-              <img src={bookPreviewImg} alt={`${formatOptionLabel(activeOption)} Preview`} className="book-preview-image" />
-              <div className="pages-indicator">
-                <div className="pages-badge">{pageCount || 'N/A'} Pages</div>
-              </div>
-              <div className="distribution-badge">Distribution Eligible</div>
-            </div>
+              <div className="print-book-summary">
+                <div className="summary-preview">
+                  <img src={bookPreviewImg} alt={`${formatOptionLabel(activeOption)} Preview`} className="book-preview-image" />
+                  <div className="pages-indicator">
+                    <div className="pages-badge">{pageCount || 'N/A'} Pages</div>
+                  </div>
+                  <div className="distribution-badge">Distribution Eligible</div>
+                </div>
 
-            <div className="summary-details">
-              <div className="summary-detail-row">
-                <div className="summary-detail">
-                  <div className="detail-label">Book Size</div>
-                  <div className="detail-value">{bookSizeMap[selectedBookSize] || 'Not Selected'}</div>
+                <div className="summary-details">
+                  {activeOption === 'thesis-binding' ? (
+                    <>
+                      <div className="summary-detail-row">
+                        <div className="summary-detail">
+                          <div className="detail-label">Book Size</div>
+                          <div className="detail-value">{bookSizeMap[selectedBookSize] || 'Not Selected'}</div>
+                        </div>
+                        <div className="summary-detail">
+                          <div className="detail-label">Page Count</div>
+                          <div className="detail-value">{pageCount ? `${pageCount} Pages` : 'Not Selected'}</div>
+                        </div>
+                      </div>
+                      <div className="summary-detail-row">
+                        <div className="summary-detail">
+                          <div className="detail-label">Binding Type</div>
+                          <div className="detail-value">{bindingMap[bindingType] || 'Not Selected'}</div>
+                        </div>
+                        <div className="summary-detail">
+                          <div className="detail-label">Spine</div>
+                          <div className="detail-value">{thesisSpine || 'Not Selected'}</div>
+                        </div>
+                      </div>
+                      <div className="summary-detail-row">
+                        <div className="summary-detail">
+                          <div className="detail-label">Exterior Color</div>
+                          <div className="detail-value">{thesisExteriorColor || 'Not Selected'}</div>
+                        </div>
+                        <div className="summary-detail">
+                          <div className="detail-label">Foil Stamping</div>
+                          <div className="detail-value">{thesisFoilStamping || 'Not Selected'}</div>
+                        </div>
+                      </div>
+                      <div className="summary-detail-row">
+                        <div className="summary-detail">
+                          <div className="detail-label">Screen Stamping</div>
+                          <div className="detail-value">{thesisScreenStamping || 'Not Selected'}</div>
+                        </div>
+                        <div className="summary-detail">
+                          <div className="detail-label">Corner Protector</div>
+                          <div className="detail-value">{thesisCornerProtector || 'Not Selected'}</div>
+                        </div>
+                      </div>
+                      <div className="summary-detail-row">
+                        <div className="summary-detail">
+                          <div className="detail-label">Interior Color</div>
+                          <div className="detail-value">{thesisInteriorColor === 'premium-bw' ? 'Premium Black & white' : thesisInteriorColor === 'premium-color' ? 'Premium Color' : 'Not Selected'}</div>
+                        </div>
+                        <div className="summary-detail">
+                          <div className="detail-label">Paper Type</div>
+                          <div className="detail-value">{thesisPaperType || 'Not Selected'}</div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="summary-detail-row">
+                        <div className="summary-detail">
+                          <div className="detail-label">Book Size</div>
+                          <div className="detail-value">{bookSizeMap[selectedBookSize] || 'Not Selected'}</div>
+                        </div>
+                        <div className="summary-detail">
+                          <div className="detail-label">Page Count</div>
+                          <div className="detail-value">{pageCount ? `${pageCount} Pages` : 'Not Selected'}</div>
+                        </div>
+                      </div>
+                      <div className="summary-detail-row">
+                        <div className="summary-detail">
+                          <div className="detail-label">Binding Type</div>
+                          <div className="detail-value">{bindingMap[bindingType] || 'Not Selected'}</div>
+                        </div>
+                        <div className="summary-detail">
+                          <div className="detail-label">Interior Color</div>
+                          <div className="detail-value">{interiorColorMap[interiorColor] || 'Not Selected'}</div>
+                        </div>
+                      </div>
+                      <div className="summary-detail-row">
+                        <div className="summary-detail">
+                          <div className="detail-label">Paper Type</div>
+                          <div className="detail-value">{paperTypeMap[paperType] || 'Not Selected'}</div>
+                        </div>
+                        <div className="summary-detail">
+                          <div className="detail-label">Cover Finish</div>
+                          <div className="detail-value">{coverFinishMap[coverFinish] || 'Not Selected'}</div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div className="summary-detail">
-                  <div className="detail-label">Page Count</div>
-                  <div className="detail-value">{pageCount ? `${pageCount} Pages` : 'Not Selected'}</div>
-                </div>
-              </div>
-              <div className="summary-detail-row">
-                <div className="summary-detail">
-                  <div className="detail-label">Binding Type</div>
-                  <div className="detail-value">{bindingMap[bindingType] || 'Not Selected'}</div>
-                </div>
-                <div className="summary-detail">
-                  <div className="detail-label">Interior Color</div>
-                  <div className="detail-value">{interiorColorMap[interiorColor] || 'Not Selected'}</div>
-                </div>
-              </div>
-              <div className="summary-detail-row">
-                <div className="summary-detail">
-                  <div className="detail-label">Paper Type</div>
-                  <div className="detail-value">{paperTypeMap[paperType] || 'Not Selected'}</div>
-                </div>
-                <div className="summary-detail">
-                  <div className="detail-label">Cover Finish</div>
-                  <div className="detail-value">{coverFinishMap[coverFinish] || 'Not Selected'}</div>
-                </div>
-              </div>
-            </div>
 
             <div className="summary-actions">
               <button className="btn btn-gradient"> Book Templates <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
