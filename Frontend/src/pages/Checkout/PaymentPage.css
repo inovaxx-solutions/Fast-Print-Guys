@@ -203,6 +203,15 @@
     width: auto;
 }
 
+.stripe-logo {
+     margin-left: auto; /* Push Stripe logo to the right */
+}
+
+.stripe-logo img {
+    height: 24px; /* Adjust Stripe logo size */
+    width: auto;
+}
+
 
 /* Payment Form */
 .payment-form {
