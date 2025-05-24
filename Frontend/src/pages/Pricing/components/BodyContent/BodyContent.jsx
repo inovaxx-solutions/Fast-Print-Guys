@@ -1,26 +1,49 @@
 import { useState, useEffect } from 'react';
- import { useNavigate } from 'react-router-dom';
- import './BodyContent.css';
+import { useNavigate } from 'react-router-dom';
+import './BodyContent.css';
 
- import perfectBoundImg from '../../../../assets/perfectbound.png';
- import coilBoundImg from '../../../../assets/coilbound.png';
- import saddleStitchImg from '../../../../assets/saddlestich.png';
- import caseWrapImg from '../../../../assets/casewrap.png';
- import linenWrapImg from '../../../../assets/linenwrap.png';
- import wireOImg from '../../../../assets/wire-o.png';
- import standardBwImg from '../../../../assets/standardbw.png';
- import premiumBwImg from '../../../../assets/premiumbw.png';
- import standardColorImg from '../../../../assets/standardcolor.png';
- import premiumColorImg from '../../../../assets/premiumcolor.png';
- import glossyImg from '../../../../assets/glossy.png';
- import matteImg from '../../../../assets/matte.png';
- import sixtyCreamImg from '../../../../assets/60cream.png';
- import sixtyWhiteImg from '../../../../assets/60white.png';
- import eightyWhiteImg from '../../../../assets/80white.png';
- import bookPreviewImg from '../../../../assets/leftcol_img.png';
+import perfectBoundImg from '../../../../assets/perfectbound.png';
+import coilBoundImg from '../../../../assets/coilbound.png';
+import saddleStitchImg from '../../../../assets/saddlestich.png';
+import caseWrapImg from '../../../../assets/casewrap.png';
+import linenWrapImg from '../../../../assets/linenwrap.png';
+import wireOImg from '../../../../assets/wire-o.png';
+import standardBwImg from '../../../../assets/standardbw.png';
+import premiumBwImg from '../../../../assets/premiumbw.png';
+import standardColorImg from '../../../../assets/standardcolor.png';
+import premiumColorImg from '../../../../assets/premiumcolor.png';
+import glossyImg from '../../../../assets/glossy.png';
+import matteImg from '../../../../assets/matte.png';
+import sixtyCreamImg from '../../../../assets/60cream.png';
+import sixtyWhiteImg from '../../../../assets/60white.png';
+import eightyWhiteImg from '../../../../assets/80white.png';
+import bookPreviewImg from '../../../../assets/leftcol_img.png';
+import sixtyWhiteImg from '../../../../assets/placeholder1.png';
+import eightyWhiteImg from '../../../../assets/placeholder2.png';
+import bookPreviewImg from '../../../../assets/placeholder3.png';
 
+// import spineRoundImage from '../../../../assets/spine-round.png';
+// import spineFlatImage from '../../../../assets/spine-flat.png';
 
- const bookSizeMap = {
+// import exteriorBlackImage from '../../../../assets/exterior-black.png';
+// import exteriorBrownImage from '../../../../assets/exterior-brown.png';
+// import exteriorMaroonImage from '../../../../assets/exterior-maroon.png';
+// import exteriorDarkBlueImage from '../../../../assets/exterior-dark-blue.png';
+
+// import foilGoldenImage from '../../../../assets/foil-golden.png';
+// import foilSilverImage from '../../../../assets/foil-silver.png';
+
+// import screenGoldenImage from '../../../../assets/screen-golden.png';
+// import screenSilverImage from '../../../../assets/screen-silver.png';
+
+// import cornerGoldSharpImage from '../../../../assets/corner-gold-sharp.png';
+// import cornerGoldRoundImage from '../../../../assets/corner-gold-round.png';
+// import cornerVintageImage from '../../../../assets/corner-vintage.png';
+
+// --- IMPORT THE PRICING FUNCTION ---
+import { calculateBookPrice } from '../../../../services/pricing'; // Adjust path if necessary
+
+const bookSizeMap = {
   "pocketbook": "Pocket Book (4.25 x 6.875 in / 108 x 175 mm)",
   "novella": "Novella (5 x 8 in / 127 x 203 mm)",
   "digest": "Digest (5.5 x 8.5 in / 140 x 216 mm)",
@@ -39,9 +62,9 @@ import { useState, useEffect } from 'react';
   "comic": "Comic Book (6.625 x 10.25 in / 168 x 260 mm)",
   "larger-deluxe": "Larger Deluxe (7 x 10.875 in / 177.8 mm x 276.23 mm)",
   "manga": "Manga (Japanese Style Comics) (5 x 7.5 in / 127 mm x 190.5 mm)"
- };
+};
 
- const bindingMap = {
+const bindingMap = {
   'perfect': 'Perfect Bound',
   'coil': 'Coil Bound',
   'saddle': 'Saddle Stitch',
@@ -49,30 +72,58 @@ import { useState, useEffect } from 'react';
   'linen': 'Linen Wrap',
   'wire-o': 'Wire-O',
   'leather': 'Leather Case Wrap',
-  'faux-leather': 'Faux Leather Case Wrap',
-  'polythin': 'Polythin Rexine Case Wrap'
- };
+  'faux-leather': 'Faux Leather Case Wrap',
+  'polythin': 'Polythin Rexine Case Wrap'
+};
 
- const interiorColorMap = {
+const thesisSpineMap = {
+  'round': spineRoundImage,
+  'flat': spineFlatImage,
+};
+
+const thesisExteriorColorMap = {
+  'black': exteriorBlackImage,
+  'brown': exteriorBrownImage,
+  'maroon': exteriorMaroonImage,
+  'dark-blue': exteriorDarkBlueImage,
+};
+
+const thesisFoilStampingMap = {
+  'golden': foilGoldenImage,
+  'silver': foilSilverImage,
+};
+
+const thesisScreenStampingMap = {
+  'golden': screenGoldenImage,
+  'silver': screenSilverImage,
+};
+
+const thesisCornerProtectorMap = {
+  'gold-sharp': cornerGoldSharpImage,
+  'gold-round': cornerGoldRoundImage,
+  'vintage': cornerVintageImage,
+};
+
+const interiorColorMap = {
   'standard-bw': 'Standard Black & White',
   'premium-bw': 'Premium Black & White',
   'standard-color': 'Standard Color',
   'premium-color': 'Premium Color',
- };
+};
 
- const paperTypeMap = {
+const paperTypeMap = {
   '60-cream': '60# Cream — Uncoated',
   '60-white': '60# White — Uncoated',
   '80-white': '80# White — Coated',
-  '100-white': '100# White — Coated'
- };
+  '100-white': '100# White — Coated' // Added for calendar, ensure it's in pricing.js if used elsewhere
+};
 
- const coverFinishMap = {
+const coverFinishMap = {
   'glossy': 'Glossy',
   'matte': 'Matte',
- };
+};
 
- const RadioOption = ({ id, name, value, checked, onChange, imageSrc, labelText, disabled, tooltip }) => (
+const RadioOption = ({ id, name, value, checked, onChange, imageSrc, labelText, disabled, tooltip }) => (
   <div className={`option-item ${disabled ? 'disabled' : ''}`}>
     <label htmlFor={id} className="option-label">
       <input
@@ -93,9 +144,9 @@ import { useState, useEffect } from 'react';
       )}
     </label>
   </div>
- );
+);
 
- const SelectInput = ({ id, value, onChange, options, placeholder, label }) => (
+const SelectInput = ({ id, value, onChange, options, placeholder, label }) => (
   <div className="select-wrapper">
     {label && <label htmlFor={id} className="select-label">{label}</label>}
     <select
@@ -113,28 +164,30 @@ import { useState, useEffect } from 'react';
       <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
     </svg>
   </div>
- );
+);
 
- const formatOptionLabel = (optionId) => {
+const formatOptionLabel = (optionId) => {
   if (!optionId) return 'Loading...';
   if (optionId === 'thesis-binding') return 'Thesis Binding';
   return optionId
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
- };
+};
 
- const BodyContent = ({ activeOption = 'print-book' }) => {
+const BodyContent = ({ activeOption = 'print-book' }) => {
   const navigate = useNavigate();
   const [selectedBookSize, setSelectedBookSize] = useState('pocketbook');
-  const [pageCount, setPageCount] = useState('100');
+  const [pageCount, setPageCount] = useState('100'); // Keep as string for input field, parse for calculation
   const [bindingType, setBindingType] = useState('case');
   const [interiorColor, setInteriorColor] = useState('standard-bw');
   const [paperType, setPaperType] = useState('60-white');
   const [coverFinish, setCoverFinish] = useState('matte');
+  
   const [calculatedPrice, setCalculatedPrice] = useState('0.00');
   const [isPriceLoading, setIsPriceLoading] = useState(false);
   const [priceError, setPriceError] = useState(null);
+  
   const [availableBindings, setAvailableBindings] = useState(['case', 'linen', 'perfect', 'coil', 'saddle']);
   const [showShippingEstimates, setShowShippingEstimates] = useState(false);
   const [showRevenueEstimates, setShowRevenueEstimates] = useState(false);
@@ -147,492 +200,71 @@ import { useState, useEffect } from 'react';
   const [addToCartError, setAddToCartError] = useState(null);
 
   // Thesis Binding's Options
-  const [thesisBindingType, setThesisBindingType] = useState('');
-  const [thesisSpine, setThesisSpine] = useState('');
-  const [thesisExteriorColor, setThesisExteriorColor] = useState('');
-  const [thesisFoilStamping, setThesisFoilStamping] = useState('');
-  const [thesisScreenStamping, setThesisScreenStamping] = useState('');
-  const [thesisCornerProtector, setThesisCornerProtector] = useState('');
-  const [thesisInteriorColor, setThesisInteriorColor] = useState('');
-  const [thesisPaperType, setThesisPaperType] = useState('');
+  const [thesisBindingType, setThesisBindingType] = useState('leather'); // Default to a valid thesis binding type
+  const [thesisSpine, setThesisSpine] = useState('round');
+  const [thesisExteriorColor, setThesisExteriorColor] = useState('black');
+  const [thesisFoilStamping, setThesisFoilStamping] = useState('golden');
+  const [thesisScreenStamping, setThesisScreenStamping] = useState('golden');
+  const [thesisCornerProtector, setThesisCornerProtector] = useState('gold-sharp');
+  const [thesisInteriorColor, setThesisInteriorColor] = useState('premium-bw');
+  const [thesisPaperType, setThesisPaperType] = useState('70-white');
 
   const bindingRules = {
     'print-book': {
-      'pocketbook': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': Infinity },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
-      'novella': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'digest': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'a5': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'us_trade': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'royal': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'executive': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'crown_quarto': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'a4': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'square': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'us_letter': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'small_landscape': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
-      'us_letter_landscape': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470, 'perfect': 250 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 250) bindings.splice(bindings.indexOf('perfect'), 1);
-          return bindings;
-        },
-      },
-      'a4_landscape': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470, 'perfect': 250 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 250) bindings.splice(bindings.indexOf('perfect'), 1);
-          return bindings;
-        },
-      },
-      'small_square': { 
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          if (pages > 48) bindings.splice(bindings.indexOf('saddle'), 1);
-          if (pages > 470) bindings.splice(bindings.indexOf('coil'), 1);
-          return bindings;
-        },
-      },
+      'pocketbook': { minPages: { 'coil': 3 }, maxPages: { 'coil': Infinity }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
+      'novella': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'digest': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'a5': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'us_trade': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'royal': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'executive': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'crown_quarto': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'a4': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'square': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'us_letter': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'small_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
+      'us_letter_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470, 'perfect': 250 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1); return b; } },
+      'a4_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470, 'perfect': 250 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1); return b; } },
+      'small_square': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
     },
     'photo-book': {
-        'pocketbook': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': Infinity },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'novella': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
-      'digest': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case', 'linen');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'a5': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case', 'linen');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'us_trade': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case', 'linen');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'royal': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case', 'linen');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'executive': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'crown_quarto': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'a4': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case', 'linen');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'square': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'us_letter': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case', 'linen');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'small_landscape': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'us_letter_landscape': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470, 'perfect': 250 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case', 'linen');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'a4_landscape': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470, 'perfect': 250 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case', 'linen');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
-      'small_square': { 
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect');
-          return bindings;
-        },
-      },
+      'pocketbook': { minPages: { 'coil': 3 }, maxPages: { 'coil': Infinity }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
+      'novella': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
+      'digest': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
+      'a5': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
+      'us_trade': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
+      'royal': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
+      'executive': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
+      'crown_quarto': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
+      'a4': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
+      'square': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
+      'us_letter': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
+      'small_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
+      'us_letter_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470, 'perfect': 250 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1); return b; } },
+      'a4_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470, 'perfect': 250 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1); return b; } },
+      'small_square': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
     },
     'comic-book': {
-      'comic': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': Infinity },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
-      'larger-deluxe': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
-      'manga': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
+      'comic': { minPages: { 'coil': 3 }, maxPages: { 'coil': Infinity }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
+      'larger-deluxe': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
+      'manga': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
     },
     'magazine': {
-      'a4': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
-      'us_letter': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
+      'a4': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
+      'us_letter': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
     },
     'yearbook': {
-      'a4': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
-      'us_letter': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 4) bindings.push('saddle');
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
-      'us_letter_landscape': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470, 'perfect': 250 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
-      'a4_landscape': {
-        minPages: { 'coil': 3 },
-        maxPages: { 'coil': 470, 'perfect': 250 },
-        conditional: (pages) => {
-          const bindings = ['coil'];
-          if (pages >= 24) bindings.push('case');
-          if (pages >= 32) bindings.push('perfect', 'linen');
-          return bindings;
-        },
-      },
+      'a4': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
+      'us_letter': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
+      'us_letter_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470, 'perfect': 250 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1); return b; } },
+      'a4_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470, 'perfect': 250 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1); return b; } },
     },
     'calendar': {
-      'us_letter_landscape': {
-      minPages: { 'wire-o': 26 },
-      maxPages: { 'wire-o': 26 },
-      conditional: (pages) => {
-        return ['wire-o'];
-      },
+      'us_letter_landscape': { minPages: { 'wire-o': 26 }, maxPages: { 'wire-o': 26 }, conditional: (pages) => { return pages === 26 ? ['wire-o'] : []; } },
     },
-  },
     'thesis-binding': {
-      'a4': { // You can add more sizes if needed
-        minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, // Example minimum page count
-        maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, // Example maximum page count
-        conditional: (pages) => {
-          const bindings = [];
-          if (pages >= 24) { // Adjust the minimum page count as needed
-            bindings.push('leather', 'faux-leather', 'polythin');
-          }
-          return bindings;
-        },
-      },
-      'us_letter': { // You can add more sizes if needed
-        minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, // Example minimum page count
-        maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, // Example maximum page count
-        conditional: (pages) => {
-          const bindings = [];
-          if (pages >= 24) { // Adjust the minimum page count as needed
-            bindings.push('leather', 'faux-leather', 'polythin');
-          }
-          return bindings;
-        },
-      },
+      'a4': { minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, conditional: (pages) => { const b = []; if (pages >= 24 && pages <=800) { b.push('leather', 'faux-leather', 'polythin');} return b; } },
+      'us_letter': { minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, conditional: (pages) => { const b = []; if (pages >= 24 && pages <=800) { b.push('leather', 'faux-leather', 'polythin');} return b; } },
     },
   };
 
@@ -643,15 +275,15 @@ import { useState, useEffect } from 'react';
     let available = [];
 
     if (activeOption === 'calendar') {
-      available = pageNum === 26 ? ['wire-o'] : [];
+      available = (rulesForBookSize && rulesForBookSize.conditional) ? rulesForBookSize.conditional(pageNum) : [];
     } else if (activeOption === 'thesis-binding') {
-      if (pageNum >= 24 && rulesForBookSize?.conditional) {
+      if (rulesForBookSize && rulesForBookSize.conditional) {
         available = rulesForBookSize.conditional(pageNum);
       }
-    }
-     else if (pageNum >= 3 && rulesForBookSize && rulesForBookSize.conditional) { // Check if pageNum is >= 3
+    } else if (pageNum >= 3 && rulesForBookSize && rulesForBookSize.conditional) {
       available = rulesForBookSize.conditional(pageNum);
     }
+    
     setAvailableBindings(available);
 
     if (!available.includes(bindingType)) {
@@ -661,8 +293,9 @@ import { useState, useEffect } from 'react';
         setBindingType('');
       }
     }
-  }, [activeOption, pageCount, bindingType, selectedBookSize]);
+  }, [activeOption, pageCount, selectedBookSize]); // Removed bindingType from dependencies to avoid potential infinite loop, it's reset if not available.
 
+  
   const handlePageCountChange = (e) => {
     let value = e.target.value;
 
@@ -673,26 +306,31 @@ import { useState, useEffect } from 'react';
 
     if (/^\d+$/.test(value)) {
       const numValue = parseInt(value, 10);
-      let maxPages = 600;
+      let minPages = 1;
+      let maxPages = 1000; // General high max
 
       if (activeOption === 'thesis-binding') {
-        maxPages = 800;
+        minPages = 24; // From thesis bindingRules
+        maxPages = 800; // From thesis bindingRules
       } else if (activeOption === 'calendar') {
-        maxPages = 26;
-      }
+        minPages = 26; // For wire-o
+        maxPages = 26; // For wire-o
+      } else {
+        // Try to get min/max from current binding if possible, otherwise general defaults
+        const currentBindingRule = bindingRules[activeOption]?.[selectedBookSize]?.minPages?.[bindingType];
+        if (currentBindingRule) minPages = Math.max(minPages, currentBindingRule);
 
-      const constrainedValue = Math.min(Math.max(numValue, 1), maxPages);
+        // Max page could also be dynamic based on binding, but for input validation a general cap is simpler here
+        // The bindingRules useEffect will handle disabling specific bindings if page count exceeds their specific max.
+      }
+      
+      const constrainedValue = Math.min(Math.max(numValue, minPages), maxPages);
       setPageCount(constrainedValue.toString());
     }
   };
 
   const isBindingDisabled = (bindingValue) => {
-    if (activeOption === 'calendar' && bindingValue === 'wire-o') {
-      return pageCount !== '26';
-    }
-    if (activeOption === 'thesis-binding') {
-      return !availableBindings.includes(bindingValue);
-    }
+    // This is now primarily driven by availableBindings
     return !availableBindings.includes(bindingValue);
   };
 
@@ -702,85 +340,155 @@ import { useState, useEffect } from 'react';
     const rules = rulesForBookSize || {};
     const pageNum = parseInt(pageCount) || 0;
 
-    if (rules.minPages && rules.minPages[bindingValue] && pageNum < rules.minPages[bindingValue]) {
-      return `Minimum ${rules.minPages[bindingValue]} pages required`;
-    }
-    if (rules.maxPages && rules.maxPages[bindingValue] !== Infinity && pageNum > rules.maxPages[bindingValue]) {
-      return `Maximum ${rules.maxPages[bindingValue]} pages allowed`;
+    if (!availableBindings.includes(bindingValue)) {
+      if (rules.minPages && rules.minPages[bindingValue] && pageNum < rules.minPages[bindingValue]) {
+        return `Minimum ${rules.minPages[bindingValue]} pages required`;
+      }
+      if (rules.maxPages && rules.maxPages[bindingValue] !== Infinity && pageNum > rules.maxPages[bindingValue]) {
+        return `Maximum ${rules.maxPages[bindingValue]} pages allowed`;
+      }
+      if (activeOption === 'calendar' && bindingValue === 'wire-o' && pageNum !== 26) {
+        return `Requires exactly 26 pages`;
+      }
+      return 'Not available for current selection';
     }
     return '';
   };
+  
+  // --- USEEFFECT FOR PRICE CALCULATION ---
+  useEffect(() => {
+    const fetchPrice = async () => {
+      setIsPriceLoading(true);
+      setPriceError(null);
+
+      const itemConfig = {
+        activeOption,
+        selectedBookSize,
+        pageCount: parseInt(pageCount) || 0,
+        bindingType,
+        // These are for non-thesis options
+        interiorColor: activeOption !== 'thesis-binding' ? interiorColor : undefined,
+        paperType: activeOption !== 'thesis-binding' ? paperType : undefined,
+        coverFinish: activeOption !== 'thesis-binding' ? coverFinish : undefined,
+        // Thesis-specific options
+        ...(activeOption === 'thesis-binding' && {
+          thesisBindingType,
+          thesisSpine,
+          thesisExteriorColor,
+          thesisFoilStamping,
+          thesisScreenStamping,
+          thesisCornerProtector,
+          thesisInteriorColor, // This will be 'premium-bw' or 'premium-color'
+          thesisPaperType,
+        }),
+      };
+
+      try {
+        // console.log("BodyContent: Sending itemConfig to calculateBookPrice:", JSON.stringify(itemConfig, null, 2));
+        const response = await calculateBookPrice(itemConfig);
+        // console.log("BodyContent: Received response from calculateBookPrice:", response);
+        
+        if (response && typeof response.price === 'number') {
+          setCalculatedPrice(response.price.toFixed(2));
+        } else {
+          // console.warn('Price not found or invalid format for config:', itemConfig, response);
+          setCalculatedPrice('N/A');
+          // setPriceError('Price not available for this configuration.'); // Optional
+        }
+      } catch (error) {
+        console.error('BodyContent: Error fetching price:', error);
+        setPriceError('Could not calculate price.');
+        setCalculatedPrice('N/A');
+      } finally {
+        setIsPriceLoading(false);
+      }
+    };
+
+    const parsedPageCount = parseInt(pageCount) || 0;
+
+    if (parsedPageCount <= 0 && activeOption !== 'calendar') {
+        setCalculatedPrice('0.00');
+        setIsPriceLoading(false);
+        return;
+    }
+    if (activeOption === 'calendar' && parsedPageCount !== 26) {
+        setCalculatedPrice('N/A'); // Calendars might only have a price at 26 pages
+        setIsPriceLoading(false);
+        return;
+    }
+    // Ensure a binding type is selected, especially after availableBindings might change it.
+    if (!bindingType && availableBindings.length > 0) {
+        // If bindingType is reset, wait for the state update then this effect will run again.
+        // Or, if it was reset to '', don't calculate price.
+        setCalculatedPrice('0.00');
+        setIsPriceLoading(false);
+        return;
+    }
+    if (!bindingType && activeOption !== 'thesis-binding' && activeOption !== 'calendar' /* these might have default or single bindings */) {
+        setCalculatedPrice('0.00');
+        setIsPriceLoading(false);
+        return;
+    }
+
+
+    fetchPrice();
+
+  }, [
+    activeOption, selectedBookSize, pageCount, bindingType, interiorColor, paperType, coverFinish,
+    thesisBindingType, thesisSpine, thesisExteriorColor, thesisFoilStamping, thesisScreenStamping,
+    thesisCornerProtector, thesisInteriorColor, thesisPaperType, availableBindings // Added availableBindings as it can influence bindingType
+  ]);
+
 
   const renderBindingOption = (opt) => (
     <RadioOption
       key={opt.id}
       {...opt}
-      name="bindingType"
-      checked={bindingType === opt.value}
-      onChange={setBindingType}
+      name={activeOption === 'thesis-binding' ? "thesisBindingType" : "bindingType"}
+      checked={activeOption === 'thesis-binding' ? thesisBindingType === opt.value : bindingType === opt.value}
+      onChange={activeOption === 'thesis-binding' ? setThesisBindingType : setBindingType}
       disabled={isBindingDisabled(opt.value)}
       tooltip={getBindingTooltip(opt.value)}
     />
   );
 
   const renderBindingSections = () => {
-    let bindingOptions = [];
+    let bindingOptionsConfig = [];
 
     if (['print-book', 'comic-book','yearbook', 'magazine'].includes(activeOption)) {
-      bindingOptions = [
-        {
-          title: 'Paperback Options',
-          options: [
+      bindingOptionsConfig = [
+        { title: 'Paperback Options', options: [
             { id: 'binding-perfect', value: 'perfect', imageSrc: perfectBoundImg, labelText: 'Perfect Bound' },
             { id: 'binding-coil', value: 'coil', imageSrc: coilBoundImg, labelText: 'Coil Bound' },
             { id: 'binding-saddle', value: 'saddle', imageSrc: saddleStitchImg, labelText: 'Saddle Stitch' },
-          ]
-        },
-        {
-          title: 'Hardcover Options',
-          options: [
+        ]},
+        { title: 'Hardcover Options', options: [
             { id: 'binding-case', value: 'case', imageSrc: caseWrapImg, labelText: 'Case Wrap' },
             { id: 'binding-linen', value: 'linen', imageSrc: linenWrapImg, labelText: 'Linen Wrap' },
-          ]
-        }
+        ]}
       ];
-    } 
-    else if (activeOption === 'photo-book') {
-      bindingOptions = [
-        {
-          options: [
-            { id: 'binding-case', value: 'case', imageSrc: caseWrapImg, labelText: 'Case Wrap' },
-            { id: 'binding-linen', value: 'linen', imageSrc: linenWrapImg, labelText: 'Linen Wrap' },
-            { id: 'binding-perfect', value: 'perfect', imageSrc: perfectBoundImg, labelText: 'Perfect Bound' },
-          ]
-        }
-      ];
+    } else if (activeOption === 'photo-book') {
+      bindingOptionsConfig = [{ options: [
+        { id: 'binding-case', value: 'case', imageSrc: caseWrapImg, labelText: 'Case Wrap' },
+        { id: 'binding-perfect', value: 'perfect', imageSrc: perfectBoundImg, labelText: 'Perfect Bound' },
+        { id: 'binding-coil', value: 'coil', imageSrc: coilBoundImg, labelText: 'Coil Bound' }, 
+      ]}];
     } else if (activeOption === 'calendar') {
-      bindingOptions = [
-        {
-          options: [
-            { id: 'binding-wire-o', value: 'wire-o', imageSrc: wireOImg, labelText: 'Wire-O Binding' },
-          ]
-        }
-      ];
+      bindingOptionsConfig = [{ options: [
+        { id: 'binding-wire-o', value: 'wire-o', imageSrc: wireOImg, labelText: 'Wire-O Binding' },
+      ]}];
     } else if (activeOption === 'thesis-binding') {
-      bindingOptions = [
-        {
-          title: 'Binding Type', // Adjust title as needed
-          options: [
-            { id: 'binding-leather', value: 'leather', imageSrc: caseWrapImg, labelText: 'Leather Case Wrap' }, // Use appropriate imageSrc
-            { id: 'binding-faux-leather', value: 'faux-leather', imageSrc: caseWrapImg, labelText: 'Faux Leather Case Wrap' }, // Use appropriate imageSrc
-            { id: 'binding-polythin', value: 'polythin', imageSrc: caseWrapImg, labelText: 'Polythin Rexine Case Wrap' }, // Use appropriate imageSrc
-          ],
-        },
-      ];
-        }
+      bindingOptionsConfig = [{ title: 'Binding Type', options: [
+        { id: 'binding-leather', value: 'leather', imageSrc: caseWrapImg, labelText: 'Leather Case Wrap' },
+        { id: 'binding-faux-leather', value: 'faux-leather', imageSrc: caseWrapImg, labelText: 'Faux Leather Case Wrap' },
+        { id: 'binding-polythin', value: 'polythin', imageSrc: caseWrapImg, labelText: 'Polythin Rexine Case Wrap' },
+      ]}];
+    }
 
     return (
       <div className="config-section">
         <h3 className="config-title">Binding Type</h3>
-
-        {bindingOptions.map((section, index) => (
+        {bindingOptionsConfig.map((section, index) => (
           <div key={index} className="binding-section">
             {section.title && <h4 className="binding-title">{section.title}</h4>}
             <div className="options-grid">
@@ -794,6 +502,44 @@ import { useState, useEffect } from 'react';
 
   const renderContent = () => {
     let bookSizeOptions;
+    // Effect to reset selections when activeOption changes
+    useEffect(() => {
+        // Reset to defaults for the new activeOption
+        if (activeOption === 'comic-book') {
+            setSelectedBookSize('comic');
+            setInteriorColor('premium-bw'); // Default for comic
+            setPaperType('70-white'); // Default for comic
+        } else if (activeOption === 'magazine') {
+            setSelectedBookSize('a4');
+            setInteriorColor('premium-color');
+            setPaperType('80-white');
+        } else if (activeOption === 'yearbook') {
+            setSelectedBookSize('a4');
+            setInteriorColor('premium-color');
+            setPaperType('80-white');
+        } else if (activeOption === 'thesis-binding') {
+            setSelectedBookSize('a4');
+            setThesisBindingType('leather'); // Ensure this is a valid option
+            setPageCount('100'); // Default page count
+             // Other thesis defaults are set in useState initial values
+        } else if (activeOption === 'calendar') {
+            setSelectedBookSize('us_letter_landscape');
+            setPageCount('26'); // Calendar specific
+            setInteriorColor('premium-color'); // Typically full color
+            setPaperType('100-white'); // Typically thicker paper
+        } else if (activeOption === 'photo-book') {
+            setSelectedBookSize('digest'); // A common photo book size
+            setInteriorColor('premium-color');
+            setPaperType('80-white'); // Coated paper for photos
+        }
+         else { // Default to print-book settings
+            setSelectedBookSize('pocketbook');
+            setInteriorColor('standard-bw');
+            setPaperType('60-white');
+            setPageCount('100');
+        }
+    }, [activeOption]);
+
 
     if (activeOption === 'comic-book') {
       bookSizeOptions = [
@@ -801,48 +547,28 @@ import { useState, useEffect } from 'react';
         { value: 'larger-deluxe', label: 'Larger Deluxe (7 x 10.875 in)' },
         { value: 'manga', label: 'Manga (Japanese Style Comics) (5 x 7.5 in)' },
       ];
-      if (selectedBookSize === 'pocketbook' || !['comic', 'larger-deluxe', 'manga'].includes(selectedBookSize)) {
-        setSelectedBookSize('comic');
-      }
-    } 
-    else if (activeOption === 'magazine') {
+    } else if (activeOption === 'magazine') {
       bookSizeOptions = [
         { value: 'a4', label: 'A4 (8.27 x 11.69 in)' },
         { value: 'us_letter', label: 'US Letter (8.5 x 11 in)' },
       ];
-      if (selectedBookSize === 'pocketbook' || !['a4', 'us_letter'].includes(selectedBookSize)) {
-        setSelectedBookSize('a4');
-      }
-    }
-    else if (activeOption === 'yearbook') {
+    } else if (activeOption === 'yearbook') {
       bookSizeOptions = [
         { value: 'a4', label: 'A4 (8.27 x 11.69 in)' },
         { value: 'us_letter', label: 'US Letter (8.5 x 11 in)' },
         { value: 'a4_landscape', label: 'A4 Landscape (11.69 x 8.27 in)' },
         { value: 'us_letter_landscape', label: 'US Letter Landscape (11 x 8.5 in)' }
       ];
-      if (selectedBookSize === 'pocketbook' || !['a4', 'us_letter', 'a4_landscape', 'us_letter_landscape'].includes(selectedBookSize)) {
-        setSelectedBookSize('a4');
-      }
-    }
-    else if (activeOption === 'thesis-binding') {
+    } else if (activeOption === 'thesis-binding') {
       bookSizeOptions = [
         { value: 'a4', label: 'A4 (8.27 x 11.69 in)' },
         { value: 'us_letter', label: 'US Letter (8.5 x 11 in)' },
       ];
-      if (selectedBookSize === 'pocketbook' || !['a4', 'us_letter'].includes(selectedBookSize)) {
-        setSelectedBookSize('a4');
-      }
-    }
-    else if (activeOption === 'calendar') {
+    } else if (activeOption === 'calendar') {
       bookSizeOptions = [
         { value: 'us_letter_landscape', label: 'US Letter Landscape (11 x 8.5 in)' }
       ];
-      if (selectedBookSize === 'pocketbook' || !['us_letter_landscape'].includes(selectedBookSize)) {
-        setSelectedBookSize('us_letter_landscape');
-      }
-    }
-    else {
+    } else { // Default for print-book and photo-book (photo-book might have a more curated list)
       bookSizeOptions = [
         { value: 'pocketbook', label: 'Pocket Book (4.25 x 6.875 in)' },
         { value: 'novella', label: 'Novella (5 x 8 in)' },
@@ -860,10 +586,6 @@ import { useState, useEffect } from 'react';
         { value: 'us_letter_landscape', label: 'US Letter Landscape (11 x 8.5 in)' },
         { value: 'a4_landscape', label: 'A4 Landscape (11.69 x 8.27 in)' }
       ];
-      // Reset default book size if switching away from comic-book
-      if (activeOption !== 'comic-book' && !['pocketbook', 'novella', 'digest', 'a5', 'us_trade', 'royal', 'executive', 'crown_quarto', 'small_square', 'a4', 'square', 'us_letter', 'small_landscape', 'us_letter_landscape', 'a4_landscape'].includes(selectedBookSize)) {
-        setSelectedBookSize('pocketbook');
-      }
     }
 
     return (
@@ -892,10 +614,10 @@ import { useState, useEffect } from 'react';
                       className="select-input"
                       value={pageCount}
                       onChange={handlePageCountChange}
-                      min="24" // Minimum for thesis binding based on your rules
-                      max="800" // Maximum for thesis binding
+                      min={activeOption === 'calendar' ? "26" : activeOption === 'thesis-binding' ? "24" : "1"} // Basic min
+                      max={activeOption === 'calendar' ? "26" : activeOption === 'thesis-binding' ? "800" : "1200"} // Basic max
                       step="1"
-                      placeholder="24-800 pages"
+                      placeholder={activeOption === 'calendar' ? "26 pages" : activeOption === 'thesis-binding' ? "24-800 pages" : "e.g., 100"}
                       required
                     />
                   </div>
@@ -903,310 +625,182 @@ import { useState, useEffect } from 'react';
               </div>
 
               {renderBindingSections()}
-{/* Thesis New Options start here */}
-{activeOption === 'thesis-binding' && (
-                <>
-                  <div className="config-section">
-                    <h3 className="config-title">Spine</h3>
-                    <div className="options-grid options-grid-2">
-                      <RadioOption id="spine-round" name="thesisSpine" value="round" checked={thesisSpine === 'round'} onChange={setThesisSpine} labelText="Round" />
-                      <RadioOption id="spine-flat" name="thesisSpine" value="flat" checked={thesisSpine === 'flat'} onChange={setThesisSpine} labelText="Flat" />
-                    </div>
-                  </div>
 
-                  <div className="config-section">
-                    <h3 className="config-title">Exterior Color</h3>
-                    <div className="options-grid options-grid-4">
-                      <RadioOption id="color-black" name="thesisExteriorColor" value="black" checked={thesisExteriorColor === 'black'} onChange={setThesisExteriorColor} labelText="Black" />
-                      <RadioOption id="color-brown" name="thesisExteriorColor" value="brown" checked={thesisExteriorColor === 'brown'} onChange={setThesisExteriorColor} labelText="Brown" />
-                      <RadioOption id="color-maroon" name="thesisExteriorColor" value="maroon" checked={thesisExteriorColor === 'maroon'} onChange={setThesisExteriorColor} labelText="Maroon" />
-                      <RadioOption id="color-dark-blue" name="thesisExteriorColor" value="dark-blue" checked={thesisExteriorColor === 'dark-blue'} onChange={setThesisExteriorColor} labelText="Dark Blue" />
-                    </div>
-                  </div>
+              {activeOption === 'thesis-binding' && (
+                <>
+                  <div className="config-section"> <h3 className="config-title">Spine</h3> <div className="options-grid options-grid-2"> <RadioOption id="spine-round" name="thesisSpine" value="round" checked={thesisSpine === 'round'} onChange={setThesisSpine} labelText="Round" imageSrc={sixtyCreamImg}/> <RadioOption id="spine-flat" name="thesisSpine" value="flat" checked={thesisSpine === 'flat'} onChange={setThesisSpine} labelText="Flat" /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Exterior Color</h3> <div className="options-grid options-grid-4"> <RadioOption id="color-black" name="thesisExteriorColor" value="black" checked={thesisExteriorColor === 'black'} onChange={setThesisExteriorColor} labelText="Black" /> <RadioOption id="color-brown" name="thesisExteriorColor" value="brown" checked={thesisExteriorColor === 'brown'} onChange={setThesisExteriorColor} labelText="Brown" /> <RadioOption id="color-maroon" name="thesisExteriorColor" value="maroon" checked={thesisExteriorColor === 'maroon'} onChange={setThesisExteriorColor} labelText="Maroon" /> <RadioOption id="color-dark-blue" name="thesisExteriorColor" value="dark-blue" checked={thesisExteriorColor === 'dark-blue'} onChange={setThesisExteriorColor} labelText="Dark Blue" /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Foil Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="foil-golden" name="thesisFoilStamping" value="golden" checked={thesisFoilStamping === 'golden'} onChange={setThesisFoilStamping} labelText="Golden" /> <RadioOption id="foil-silver" name="thesisFoilStamping" value="silver" checked={thesisFoilStamping === 'silver'} onChange={setThesisFoilStamping} labelText="Silver" /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Screen Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="screen-golden" name="thesisScreenStamping" value="golden" checked={thesisScreenStamping === 'golden'} onChange={setThesisScreenStamping} labelText="Golden" /> <RadioOption id="screen-silver" name="thesisScreenStamping" value="silver" checked={thesisScreenStamping === 'silver'} onChange={setThesisScreenStamping} labelText="Silver" /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">4 Book Corner Protector</h3> <div className="options-grid"> <RadioOption id="corner-gold-sharp" name="thesisCornerProtector" value="gold-sharp" checked={thesisCornerProtector === 'gold-sharp'} onChange={setThesisCornerProtector} labelText="Gold Sharp Corner" /> <RadioOption id="corner-gold-round" name="thesisCornerProtector" value="gold-round" checked={thesisCornerProtector === 'gold-round'} onChange={setThesisCornerProtector} labelText="Gold Round Corner" /> <RadioOption id="corner-vintage" name="thesisCornerProtector" value="vintage" checked={thesisCornerProtector === 'vintage'} onChange={setThesisCornerProtector} labelText="Vintage Designs Corner" /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Interior Color</h3> <div className="options-grid options-grid-2"> <RadioOption id="interior-premium-bw" name="thesisInteriorColor" value="premium-bw" checked={thesisInteriorColor === 'premium-bw'} onChange={setThesisInteriorColor} labelText="Premium Black & white" imageSrc={premiumBwImg} /> <RadioOption id="interior-premium-color" name="thesisInteriorColor" value="premium-color" checked={thesisInteriorColor === 'premium-color'} onChange={setThesisInteriorColor} labelText="Premium Color" imageSrc={premiumColorImg} /> </div> </div>
+                  <div className="config-section last-section-config"> <h3 className="config-title">Paper Type</h3> <div className="options-grid options-grid-4"> <RadioOption id="paper-70-white" name="thesisPaperType" value="70-white" checked={thesisPaperType === '70-white'} onChange={setThesisPaperType} labelText="70# White-Uncoated" imageSrc={sixtyWhiteImg} /> <RadioOption id="paper-60-cream" name="thesisPaperType" value="60-cream" checked={thesisPaperType === '60-cream'} onChange={setThesisPaperType} labelText="60# Cream-Uncoated" imageSrc={sixtyCreamImg} /> <RadioOption id="paper-60-white-uncoated" name="thesisPaperType" value="60-white-uncoated" checked={thesisPaperType === '60-white-uncoated'} onChange={setThesisPaperType} labelText="60# White-uncoated" imageSrc={sixtyWhiteImg} /> <RadioOption id="paper-80-white" name="thesisPaperType" value="80-white" checked={thesisPaperType === '80-white'} onChange={setThesisPaperType} labelText="80# White-Coated" imageSrc={eightyWhiteImg} /> </div> </div>
+                </>
+              )}
 
-                  <div className="config-section">
-                    <h3 className="config-title">Foil Stamping</h3>
-                    <div className="options-grid options-grid-2">
-                      <RadioOption id="foil-golden" name="thesisFoilStamping" value="golden" checked={thesisFoilStamping === 'golden'} onChange={setThesisFoilStamping} labelText="Golden" />
-                      <RadioOption id="foil-silver" name="thesisFoilStamping" value="silver" checked={thesisFoilStamping === 'silver'} onChange={setThesisFoilStamping} labelText="Silver" />
-                    </div>
-                  </div>
-
-                  <div className="config-section">
-                    <h3 className="config-title">Screen Stamping</h3>
-                    <div className="options-grid options-grid-2">
-                      <RadioOption id="screen-golden" name="thesisScreenStamping" value="golden" checked={thesisScreenStamping === 'golden'} onChange={setThesisScreenStamping} labelText="Golden" />
-                      <RadioOption id="screen-silver" name="thesisScreenStamping" value="silver" checked={thesisScreenStamping === 'silver'} onChange={setThesisScreenStamping} labelText="Silver" />
-                    </div>
-                  </div>
-
-                  <div className="config-section">
-                    <h3 className="config-title">4 Book Corner Protector</h3>
-                    <div className="options-grid">
-                      <RadioOption id="corner-gold-sharp" name="thesisCornerProtector" value="gold-sharp" checked={thesisCornerProtector === 'gold-sharp'} onChange={setThesisCornerProtector} labelText="Gold Sharp Corner" />
-                      <RadioOption id="corner-gold-round" name="thesisCornerProtector" value="gold-round" checked={thesisCornerProtector === 'gold-round'} onChange={setThesisCornerProtector} labelText="Gold Round Corner" />
-                      <RadioOption id="corner-vintage" name="thesisCornerProtector" value="vintage" checked={thesisCornerProtector === 'vintage'} onChange={setThesisCornerProtector} labelText="Vintage Designs Corner" />
-                    </div>
-                  </div>
-
-                  <div className="config-section">
-                    <h3 className="config-title">Interior Color</h3>
-                    <div className="options-grid options-grid-2">
-                      <RadioOption id="interior-premium-bw" name="thesisInteriorColor" value="premium-bw" checked={thesisInteriorColor === 'premium-bw'} onChange={setThesisInteriorColor} labelText="Premium Black & white" />
-                      <RadioOption id="interior-premium-color" name="thesisInteriorColor" value="premium-color" checked={thesisInteriorColor === 'premium-color'} onChange={setThesisInteriorColor} labelText="Premium Color" />
-                    </div>
-                  </div>
-
-                  <div className="config-section last-section-config">
-                    <h3 className="config-title">Paper Type</h3>
-                    <div className="options-grid options-grid-4">
-                      <RadioOption id="paper-70-white" name="thesisPaperType" value="70-white" checked={thesisPaperType === '70-white'} onChange={setThesisPaperType} labelText="70# White-Uncoated" />
-                      <RadioOption id="paper-60-cream" name="thesisPaperType" value="60-cream" checked={thesisPaperType === '60-cream'} onChange={setThesisPaperType} labelText="60# Cream-Uncoated" />
-                      <RadioOption id="paper-60-white-uncoated" name="thesisPaperType" value="60-white-uncoated" checked={thesisPaperType === '60-white-uncoated'} onChange={setThesisPaperType} labelText="60# White-uncoated" />
-                      <RadioOption id="paper-80-white" name="thesisPaperType" value="80-white" checked={thesisPaperType === '80-white'} onChange={setThesisPaperType} labelText="80# White-Coated" />
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {activeOption !== 'thesis-binding' && (
-                <>
-                  <div className="config-section">
-                    <h3 className="config-title">Interior Color</h3>
-                    <div className="options-grid options-grid-4">
-                      {[
-                        { id: 'color-standard-bw', value: 'standard-bw', imageSrc: standardBwImg, labelText: 'Standard Black & White' },
-                        { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium Black & White' },
-                        { id: 'color-standard-color', value: 'standard-color', imageSrc: standardColorImg, labelText: 'Standard Color' },
-                        { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
-                      ].map(opt => (
-                        <RadioOption
-                          key={opt.id}
-                          {...opt}
-                          name="interiorColor"
-                          checked={interiorColor === opt.value}
-                          onChange={setInteriorColor}
-                        />
-                      ))}
-                  </div>
-                </div>
-
-                <div className="config-section">
-                  <h3 className="config-title">Paper Type</h3>
-                    <div className="options-grid">
-                      {[
-                        { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
-                        { id: 'paper-60-white', value: '60-white', imageSrc: sixtyWhiteImg, labelText: '60# White — Uncoated' },
-                        { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
-                        ...(activeOption === 'calendar' ? [
-                          { id: 'paper-100-white', value: '100-white', imageSrc: eightyWhiteImg, labelText: '100# White — Coated' }
-                        ] : [])
-                      ].map(opt => (
-                        <RadioOption
-                          key={opt.id}
-                          {...opt}
-                          name="paperType"
-                          checked={paperType === opt.value}
-                          onChange={setPaperType}
-                        />
-                      ))}
-                  </div>
-                </div>
-
-                <div className="config-section last-section-config">
-                  <h3 className="config-title">Cover Finish</h3>
-                    <div className="options-grid options-grid-2">
-                      {[
-                        { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
-                        { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
-                      ].map(opt => (
-                        <RadioOption
-                          key={opt.id}
-                          {...opt}
-                          name="coverFinish"
-                          checked={coverFinish === opt.value}
-                          onChange={setCoverFinish}
-                        />
-                      ))}
-                  </div>
-                </div>
-              </>
-              )}
-
-            </div>
-            <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}>
-              <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}>
-                <h3 className="collapsible-title">Quantity & Shipping Estimates</h3>
-                <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>
-              </div>
-              {showShippingEstimates && (
-                <div className="collapsible-content">
-                  <p>Enter quantity and destination to get shipping estimates.</p>
-                  <div className="input-group">
-                    <input type="number" placeholder="Quantity" className="select-input" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value || 0))} />
-                    <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[
-                      { value: '', label: 'Select Country' },
-                      { value: 'us', label: 'United States' },
-                      { value: 'ca', label: 'Canada' },
-                      { value: 'gb', label: 'United Kingdom' },
-                    ]} placeholder="Select Country" />
-                  </div>
-                  <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}>
-                    Estimated Shipping: {shippingEstimate !== null ? `$${shippingEstimate} USD` : 'Calculate Above'}
-                  </p>
-                </div>
+              {activeOption !== 'thesis-binding' && (
+                <>
+                  <div className="config-section">
+      <h3 className="config-title">Interior Color</h3>
+      <div className="options-grid options-grid-4">
+        {activeOption === 'photo-book' || activeOption === 'comic-book' || activeOption === 'magazine' || activeOption === 'yearbook' ? (
+          [
+            { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium B&W' },
+            { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
+          ))
+        ) : (activeOption === 'calendar' ? (
+          [
+            { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
+          ))
+        ) : ( // Default for Print Book, Comic Book, Magazine, Yearbook
+          [
+            { id: 'color-standard-bw', value: 'standard-bw', imageSrc: standardBwImg, labelText: 'Standard B&W' },
+            { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium B&W' },
+            { id: 'color-standard-color', value: 'standard-color', imageSrc: standardColorImg, labelText: 'Standard Color' },
+            { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
+          ))
+        ))}
+      </div>
+    </div>
+    
+    <div className="config-section">
+      <h3 className="config-title">Paper Type</h3>
+      <div className="options-grid">
+        {activeOption === 'photo-book' ? (
+          [
+            { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
+          ))
+        ) : (activeOption === 'comic-book' || activeOption === 'magazine' || activeOption === 'yearbook' ? (
+          [
+            { id: 'paper-70-white', value: '70-white-uncoated', labelText: '70# White-Uncoated', imageSrc: sixtyWhiteImg },
+            { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
+            { id: 'paper-60-white-uncoated', value: '60-white-uncoated', imageSrc: sixtyWhiteImg, labelText: '60# White-uncoated' },
+            { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
+          ))
+        ) : (activeOption === 'calendar' ? (
+          [
+            { id: 'paper-100-white', value: '100-white', imageSrc: eightyWhiteImg, labelText: '100# White — Coated' }
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
+          ))
+        ) : ( // Default for Print Book
+          [
+            { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
+            { id: 'paper-60-white', value: '60-white', imageSrc: sixtyWhiteImg, labelText: '60# White — Uncoated' },
+            { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
+          ))
+        )))}
+      </div>
+    </div>
+    
+    <div className="config-section last-section-config">
+      <h3 className="config-title">Cover Finish</h3>
+      <div className="options-grid options-grid-2">
+        {(activeOption === 'calendar') ? ( // Calendar specific cover finishes if any
+          [
+            { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
+            { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="coverFinish" checked={coverFinish === opt.value} onChange={setCoverFinish} />
+          ))
+        ) : ( // Default for other book types
+          [
+            { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
+            { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
+          ].map(opt => (
+            <RadioOption key={opt.id} {...opt} name="coverFinish" checked={coverFinish === opt.value} onChange={setCoverFinish} />
+          ))
+        )}
+      </div>
+    </div>
+                </>
               )}
             </div>
 
-            <div className={`collapsible-section ${showRevenueEstimates ? 'is-open' : ''}`}>
-              <div className="collapsible-header" onClick={() => setShowRevenueEstimates(!showRevenueEstimates)}>
-                <h3 className="collapsible-title">Revenue Estimates</h3>
-                <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5.0 0 1 0-.708z"/></svg>
-              </div>
-              {showRevenueEstimates && (
-                <div className="collapsible-content">
-                  <p>Calculate potential revenue based on price and estimated sales.</p>
-                  <div className="input-group">
-                    <input type="number" placeholder="Estimated Sales Quantity" className="select-input" value={estimatedSales} onChange={(e) => setEstimatedSales(parseInt(e.target.value || 0))} />
-                  </div>
-                  <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}>
-                    Estimated Revenue: {estimatedRevenue !== null ? `$${estimatedRevenue} USD` : 'Calculate Above'}
-                  </p>
-                </div>
-              )}
-            </div>
+            <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}> <h3 className="collapsible-title">Shipping Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showShippingEstimates && ( <div className="collapsible-content"> <p>Enter Destination to get shipping estimates.</p> <div className="input-group"> <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[ { value: '', label: 'Select Country' }, { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'gb', label: 'United Kingdom' }, ]} placeholder="Select Country" /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Shipping: {shippingEstimate !== null ? `$${shippingEstimate} USD` : 'Calculate Above'} </p> </div> )} </div>
+            <div className={`collapsible-section ${showRevenueEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowRevenueEstimates(!showRevenueEstimates)}> <h3 className="collapsible-title">Revenue Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showRevenueEstimates && ( <div className="collapsible-content"> <p>Calculate potential revenue based on price and estimated sales.</p> <div className="input-group"> <input type="number" placeholder="Estimated Sales Quantity" className="select-input" value={estimatedSales} onChange={(e) => setEstimatedSales(Math.max(0, parseInt(e.target.value || 0)))} /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Revenue: {estimatedRevenue !== null ? `$${estimatedRevenue} USD` : 'Calculate Above'} </p> </div> )} </div>
           </div>
 
-              <div className="print-book-summary">
-                <div className="summary-preview">
-                  <img src={bookPreviewImg} alt={`${formatOptionLabel(activeOption)} Preview`} className="book-preview-image" />
-                  <div className="pages-indicator">
-                    <div className="pages-badge">{pageCount || 'N/A'} Pages</div>
-                  </div>
-                  <div className="distribution-badge">Distribution Eligible</div>
-                </div>
-
-                <div className="summary-details">
-                  {activeOption === 'thesis-binding' ? (
-                    <>
-                      <div className="summary-detail-row">
-                        <div className="summary-detail">
-                          <div className="detail-label">Book Size</div>
-                          <div className="detail-value">{bookSizeMap[selectedBookSize] || 'Not Selected'}</div>
-                        </div>
-                        <div className="summary-detail">
-                          <div className="detail-label">Page Count</div>
-                          <div className="detail-value">{pageCount ? `${pageCount} Pages` : 'Not Selected'}</div>
-                        </div>
-                      </div>
-                      <div className="summary-detail-row">
-                        <div className="summary-detail">
-                          <div className="detail-label">Binding Type</div>
-                          <div className="detail-value">{bindingMap[bindingType] || 'Not Selected'}</div>
-                        </div>
-                        <div className="summary-detail">
-                          <div className="detail-label">Spine</div>
-                          <div className="detail-value">{thesisSpine || 'Not Selected'}</div>
-                        </div>
-                      </div>
-                      <div className="summary-detail-row">
-                        <div className="summary-detail">
-                          <div className="detail-label">Exterior Color</div>
-                          <div className="detail-value">{thesisExteriorColor || 'Not Selected'}</div>
-                        </div>
-                        <div className="summary-detail">
-                          <div className="detail-label">Foil Stamping</div>
-                          <div className="detail-value">{thesisFoilStamping || 'Not Selected'}</div>
-                        </div>
-                      </div>
-                      <div className="summary-detail-row">
-                        <div className="summary-detail">
-                          <div className="detail-label">Screen Stamping</div>
-                          <div className="detail-value">{thesisScreenStamping || 'Not Selected'}</div>
-                        </div>
-                        <div className="summary-detail">
-                          <div className="detail-label">Corner Protector</div>
-                          <div className="detail-value">{thesisCornerProtector || 'Not Selected'}</div>
-                        </div>
-                      </div>
-                      <div className="summary-detail-row">
-                        <div className="summary-detail">
-                          <div className="detail-label">Interior Color</div>
-                          <div className="detail-value">{thesisInteriorColor === 'premium-bw' ? 'Premium Black & white' : thesisInteriorColor === 'premium-color' ? 'Premium Color' : 'Not Selected'}</div>
-                        </div>
-                        <div className="summary-detail">
-                          <div className="detail-label">Paper Type</div>
-                          <div className="detail-value">{thesisPaperType || 'Not Selected'}</div>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="summary-detail-row">
-                        <div className="summary-detail">
-                          <div className="detail-label">Book Size</div>
-                          <div className="detail-value">{bookSizeMap[selectedBookSize] || 'Not Selected'}</div>
-                        </div>
-                        <div className="summary-detail">
-                          <div className="detail-label">Page Count</div>
-                          <div className="detail-value">{pageCount ? `${pageCount} Pages` : 'Not Selected'}</div>
-                        </div>
-                      </div>
-                      <div className="summary-detail-row">
-                        <div className="summary-detail">
-                          <div className="detail-label">Binding Type</div>
-                          <div className="detail-value">{bindingMap[bindingType] || 'Not Selected'}</div>
-                        </div>
-                        <div className="summary-detail">
-                          <div className="detail-label">Interior Color</div>
-                          <div className="detail-value">{interiorColorMap[interiorColor] || 'Not Selected'}</div>
-                        </div>
-                      </div>
-                      <div className="summary-detail-row">
-                        <div className="summary-detail">
-                          <div className="detail-label">Paper Type</div>
-                          <div className="detail-value">{paperTypeMap[paperType] || 'Not Selected'}</div>
-                        </div>
-                        <div className="summary-detail">
-                          <div className="detail-label">Cover Finish</div>
-                          <div className="detail-value">{coverFinishMap[coverFinish] || 'Not Selected'}</div>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-
-            <div className="summary-actions">
-              <button className="btn btn-gradient"> Book Templates <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
-              <button className="btn btn-gradient"> Custom Cover Template <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
-              <button className="btn btn-primary"
-                onClick={() => {
-                  setIsAddingToCart(true);
-                  setAddToCartError(null);
-                  setTimeout(() => {
-                    navigate('/checkout/shipping');
-                  }, 1000);
-                }}
-                disabled={isAddingToCart}>
-                {isAddingToCart ? 'Adding to Cart...' : `Create Your ${formatOptionLabel(activeOption)}`}
-              </button>
+          <div className="print-book-summary">
+            <div className="summary-preview"> <img src={bookPreviewImg} alt={`${formatOptionLabel(activeOption)} Preview`} className="book-preview-image" /> <div className="pages-indicator"> <div className="pages-badge">{pageCount || 'N/A'} Pages</div> </div> <div className="distribution-badge">Distribution Eligible</div> </div>
+            <div className="summary-details">
+              {activeOption === 'thesis-binding' ? (
+                <>
+                  <div className="summary-detail-row"> <div className="summary-detail"> <div className="detail-label">Book Size</div> <div className="detail-value">{bookSizeMap[selectedBookSize] || 'N/A'}</div> </div> <div className="summary-detail"> <div className="detail-label">Page Count</div> <div className="detail-value">{pageCount ? `${pageCount} Pages` : 'N/A'}</div> </div> </div>
+                  <div className="summary-detail-row"> <div className="summary-detail"> <div className="detail-label">Binding Type</div> <div className="detail-value">{bindingMap[thesisBindingType] || 'N/A'}</div> </div> <div className="summary-detail"> <div className="detail-label">Spine</div> <div className="detail-value">{formatOptionLabel(thesisSpine) || 'N/A'}</div> </div> </div>
+                  <div className="summary-detail-row"> <div className="summary-detail"> <div className="detail-label">Exterior Color</div> <div className="detail-value">{formatOptionLabel(thesisExteriorColor) || 'N/A'}</div> </div> <div className="summary-detail"> <div className="detail-label">Foil Stamping</div> <div className="detail-value">{formatOptionLabel(thesisFoilStamping) || 'N/A'}</div> </div> </div>
+                  <div className="summary-detail-row"> <div className="summary-detail"> <div className="detail-label">Screen Stamping</div> <div className="detail-value">{formatOptionLabel(thesisScreenStamping) || 'N/A'}</div> </div> <div className="summary-detail"> <div className="detail-label">Corner Protector</div> <div className="detail-value">{formatOptionLabel(thesisCornerProtector) || 'N/A'}</div> </div> </div>
+                  <div className="summary-detail-row"> <div className="summary-detail"> <div className="detail-label">Interior Color</div> <div className="detail-value">{interiorColorMap[thesisInteriorColor] || 'N/A'}</div> </div> <div className="summary-detail"> <div className="detail-label">Paper Type</div> <div className="detail-value">{paperTypeMap[thesisPaperType] || (thesisPaperType ? formatOptionLabel(thesisPaperType) : 'N/A')}</div> </div> </div>
+                </>
+              ) : (
+                <>
+                  <div className="summary-detail-row"> <div className="summary-detail"> <div className="detail-label">Book Size</div> <div className="detail-value">{bookSizeMap[selectedBookSize] || 'N/A'}</div> </div> <div className="summary-detail"> <div className="detail-label">Page Count</div> <div className="detail-value">{pageCount ? `${pageCount} Pages` : 'N/A'}</div> </div> </div>
+                  <div className="summary-detail-row"> <div className="summary-detail"> <div className="detail-label">Binding Type</div> <div className="detail-value">{bindingMap[bindingType] || 'N/A'}</div> </div> <div className="summary-detail"> <div className="detail-label">Interior Color</div> <div className="detail-value">{interiorColorMap[interiorColor] || 'N/A'}</div> </div> </div>
+                  <div className="summary-detail-row"> <div className="summary-detail"> <div className="detail-label">Paper Type</div> <div className="detail-value">{paperTypeMap[paperType] || 'N/A'}</div> </div> <div className="summary-detail"> <div className="detail-label">Cover Finish</div> <div className="detail-value">{coverFinishMap[coverFinish] || 'N/A'}</div> </div> </div>
+                </>
+              )}
             </div>
-            {addToCartError && (
-              <div className="add-to-cart-error-message" style={{ color: 'red', fontSize: '0.9em', marginTop: '5px' }}>
-                {addToCartError}
-              </div>
-            )}
-
             <div className="summary-price">
               {isPriceLoading ? (
                 <div className="price-value">Loading...</div>
               ) : priceError ? (
-                <div className="price-error">{priceError}</div>
+                <div className="price-error" style={{color: 'red'}}>{priceError}</div>
               ) : (
                 <div className="price-value">{calculatedPrice} USD</div>
               )}
               <div className="price-label">Per {formatOptionLabel(activeOption)}</div>
             </div>
+            <div className="summary-actions">
+              <button className="btn btn-gradient">Book Templates <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
+              <button className="btn btn-gradient">Custom Cover Template <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
+              <button className="btn btn-primary"
+                onClick={() => {
+  setIsAddingToCart(true);
+  setAddToCartError(null);
+
+  // --- Store selected options in Local Storage ---
+  const selectedOptions = {
+    activeOption,
+    selectedBookSize,
+    pageCount,
+    bindingType,
+    interiorColor,
+    paperType,
+    coverFinish,
+    ...(activeOption === 'thesis-binding' && {
+      thesisBindingType,
+      thesisSpine,
+      thesisExteriorColor,
+      thesisFoilStamping,
+      thesisScreenStamping,
+      thesisCornerProtector,
+      thesisInteriorColor,
+      thesisPaperType,
+    }),
+  };
+  localStorage.setItem('bookCustomizations', JSON.stringify(selectedOptions));
+
+  setTimeout(() => {
+    navigate('/checkout/shipping');
+  }, 1000);
+ }}
+                disabled={isAddingToCart || isPriceLoading || !!priceError || calculatedPrice === 'N/A' || calculatedPrice === '0.00'}>
+                {isAddingToCart ? 'Adding to Cart...' : `Create Your ${formatOptionLabel(activeOption)}`}
+              </button>
+            </div>
+            {addToCartError && ( <div className="add-to-cart-error-message" style={{ color: 'red', fontSize: '0.9em', marginTop: '5px' }}> {addToCartError} </div> )}
           </div>
         </div>
       </div>
@@ -1222,6 +816,6 @@ import { useState, useEffect } from 'react';
       </div>
     </section>
   );
- };
+};
 
- export default BodyContent;
+export default BodyContent;
