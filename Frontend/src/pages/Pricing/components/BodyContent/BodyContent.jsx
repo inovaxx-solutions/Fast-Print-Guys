@@ -18,9 +18,9 @@ import sixtyCreamImg from '../../../../assets/60cream.png';
 import sixtyWhiteImg from '../../../../assets/60white.png';
 import eightyWhiteImg from '../../../../assets/80white.png';
 import bookPreviewImg from '../../../../assets/leftcol_img.png';
-import sixtyWhiteImg from '../../../../assets/placeholder1.png';
-import eightyWhiteImg from '../../../../assets/placeholder2.png';
-import bookPreviewImg from '../../../../assets/placeholder3.png';
+// import sixtyWhiteImg from '../../../../assets/placeholder1.png';
+// import eightyWhiteImg from '../../../../assets/placeholder2.png';
+// import bookPreviewImg from '../../../../assets/placeholder3.png';
 
 // import spineRoundImage from '../../../../assets/spine-round.png';
 // import spineFlatImage from '../../../../assets/spine-flat.png';
