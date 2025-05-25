@@ -76,33 +76,33 @@ const bindingMap = {
   'polythin': 'Polythin Rexine Case Wrap'
 };
 
-const thesisSpineMap = {
-  'round': spineRoundImage,
-  'flat': spineFlatImage,
-};
+// const thesisSpineMap = {
+//   'round': spineRoundImage,
+//   'flat': spineFlatImage,
+// };
 
-const thesisExteriorColorMap = {
-  'black': exteriorBlackImage,
-  'brown': exteriorBrownImage,
-  'maroon': exteriorMaroonImage,
-  'dark-blue': exteriorDarkBlueImage,
-};
+// const thesisExteriorColorMap = {
+//   'black': exteriorBlackImage,
+//   'brown': exteriorBrownImage,
+//   'maroon': exteriorMaroonImage,
+//   'dark-blue': exteriorDarkBlueImage,
+// };
 
-const thesisFoilStampingMap = {
-  'golden': foilGoldenImage,
-  'silver': foilSilverImage,
-};
+// const thesisFoilStampingMap = {
+//   'golden': foilGoldenImage,
+//   'silver': foilSilverImage,
+// };
 
-const thesisScreenStampingMap = {
-  'golden': screenGoldenImage,
-  'silver': screenSilverImage,
-};
+// const thesisScreenStampingMap = {
+//   'golden': screenGoldenImage,
+//   'silver': screenSilverImage,
+// };
 
-const thesisCornerProtectorMap = {
-  'gold-sharp': cornerGoldSharpImage,
-  'gold-round': cornerGoldRoundImage,
-  'vintage': cornerVintageImage,
-};
+// const thesisCornerProtectorMap = {
+//   'gold-sharp': cornerGoldSharpImage,
+//   'gold-round': cornerGoldRoundImage,
+//   'vintage': cornerVintageImage,
+// };
 
 const interiorColorMap = {
   'standard-bw': 'Standard Black & White',
@@ -729,7 +729,7 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
               )}
             </div>
 
-            <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}> <h3 className="collapsible-title">Shipping Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showShippingEstimates && ( <div className="collapsible-content"> <p>Enter Destination to get shipping estimates.</p> <div className="input-group"> <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[ { value: '', label: 'Select Country' }, { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'gb', label: 'United Kingdom' }, ]} placeholder="Select Country" /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Shipping: {shippingEstimate !== null ? `$${shippingEstimate} USD` : 'Calculate Above'} </p> </div> )} </div>
+            <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}> <h3 className="collapsible-title">Quantity & Shipping Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showShippingEstimates && ( <div className="collapsible-content"> <p>Enter Quantity & Destination to get shipping estimates.</p> <div className="input-group"> <input type="number" placeholder="Quantity" className="select-input" value={quantity} onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value || 0)))} /> <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[ { value: '', label: 'Select Country' }, { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'gb', label: 'United Kingdom' }, ]} placeholder="Select Country" /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Shipping: {shippingEstimate !== null ? `$${shippingEstimate} USD` : 'Calculate Above'} </p> </div> )} </div>
             <div className={`collapsible-section ${showRevenueEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowRevenueEstimates(!showRevenueEstimates)}> <h3 className="collapsible-title">Revenue Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showRevenueEstimates && ( <div className="collapsible-content"> <p>Calculate potential revenue based on price and estimated sales.</p> <div className="input-group"> <input type="number" placeholder="Estimated Sales Quantity" className="select-input" value={estimatedSales} onChange={(e) => setEstimatedSales(Math.max(0, parseInt(e.target.value || 0)))} /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Revenue: {estimatedRevenue !== null ? `$${estimatedRevenue} USD` : 'Calculate Above'} </p> </div> )} </div>
           </div>
 
