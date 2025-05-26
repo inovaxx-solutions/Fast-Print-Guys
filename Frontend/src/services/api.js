@@ -75,7 +75,28 @@
             {
               id: 'item-abc',
               productId: 'print-book',
-              name: 'Custom Print Book',
+              name: (() => {
+                if (customizations) {
+                  switch (customizations.activeOption) {
+                    case 'photo-book':
+                      return 'Custom Photo Book';
+                    case 'comic-book':
+                      return 'Custom Comic Book';
+                    case 'magazine':
+                      return 'Custom Magazine';
+                    case 'yearbook':
+                      return 'Custom Yearbook';
+                    case 'calendar':
+                      return 'Custom Calendar';
+                    case 'thesis-binding':
+                      return 'Thesis Binding';
+                    default:
+                      return 'Custom Print Book';
+                  }
+                } else {
+                  return 'Custom Print Book'; // Default if no customizations found
+                }
+              })(),
               // --- Use retrieved customizations if available, otherwise default ---
               configuration: customizations || {
                 activeOption: 'print-book',

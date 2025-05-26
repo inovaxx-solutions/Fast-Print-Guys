@@ -7,6 +7,7 @@ import coilBoundImg from '../../../../assets/coilbound.png';
 import saddleStitchImg from '../../../../assets/saddlestich.png';
 import caseWrapImg from '../../../../assets/casewrap.png';
 import linenWrapImg from '../../../../assets/linenwrap.png';
+import leatherWrapImg from '../../../../assets/leatherwrap.png';
 import wireOImg from '../../../../assets/wire-o.png';
 import standardBwImg from '../../../../assets/standardbw.png';
 import premiumBwImg from '../../../../assets/premiumbw.png';
@@ -18,9 +19,9 @@ import sixtyCreamImg from '../../../../assets/60cream.png';
 import sixtyWhiteImg from '../../../../assets/60white.png';
 import eightyWhiteImg from '../../../../assets/80white.png';
 import bookPreviewImg from '../../../../assets/leftcol_img.png';
-// import sixtyWhiteImg from '../../../../assets/placeholder1.png';
-// import eightyWhiteImg from '../../../../assets/placeholder2.png';
-// import bookPreviewImg from '../../../../assets/placeholder3.png';
+import placeholder1Img from '../../../../assets/placeholder1.png';
+import placeholder2Img from '../../../../assets/placeholder2.png';
+import placeholder3Img from '../../../../assets/placeholder3.png';
 
 // import spineRoundImage from '../../../../assets/spine-round.png';
 // import spineFlatImage from '../../../../assets/spine-flat.png';
@@ -123,6 +124,27 @@ const coverFinishMap = {
   'matte': 'Matte',
 };
 
+
+const photoBookBindingDisplayConfig = {
+  pocketbook: [
+    { id: 'binding-coil', value: 'coil', imageSrc: coilBoundImg, labelText: 'Coil Bound' },
+    { id: 'binding-case', value: 'case', imageSrc: caseWrapImg, labelText: 'Case Wrap' },
+    { id: 'binding-perfect', value: 'perfect', imageSrc: perfectBoundImg, labelText: 'Perfect Bound' },
+  ],
+  novella: [
+    { id: 'binding-perfect', value: 'perfect', imageSrc: perfectBoundImg, labelText: 'Perfect Bound' },
+    { id: 'binding-case', value: 'case', imageSrc: caseWrapImg, labelText: 'Case Wrap' },
+  ],
+  // Default for other photo book sizes
+  other: [
+    { id: 'binding-perfect', value: 'perfect', imageSrc: perfectBoundImg, labelText: 'Perfect Bound' },
+    { id: 'binding-coil', value: 'coil', imageSrc: coilBoundImg, labelText: 'Coil Bound' },
+    { id: 'binding-linen', value: 'linen', imageSrc: linenWrapImg, labelText: 'Linen Wrap' },
+  ]
+};
+
+
+
 const RadioOption = ({ id, name, value, checked, onChange, imageSrc, labelText, disabled, tooltip }) => (
   <div className={`option-item ${disabled ? 'disabled' : ''}`}>
     <label htmlFor={id} className="option-label">
@@ -199,6 +221,23 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [addToCartError, setAddToCartError] = useState(null);
 
+  // Add new state variables for pricing details
+  const [subtotal, setSubtotal] = useState(0);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [shippingCost, setShippingCost] = useState(10); // Hardcoded shipping
+  const [finalTotalPrice, setFinalTotalPrice] = useState(0);
+
+  const handleQuantityChange = (e) => {
+    const newQuantity = parseInt(e.target.value, 10);
+    if (newQuantity >= 1) {
+      setQuantity(newQuantity);
+    } else if (e.target.value === '') {
+      setQuantity(''); // Allow clearing the input
+    } else {
+      setQuantity(1); // Or set to a minimum valid quantity like 1
+    }
+  };
+
   // Thesis Binding's Options
   const [thesisBindingType, setThesisBindingType] = useState('leather'); // Default to a valid thesis binding type
   const [thesisSpine, setThesisSpine] = useState('round');
@@ -208,6 +247,22 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
   const [thesisCornerProtector, setThesisCornerProtector] = useState('gold-sharp');
   const [thesisInteriorColor, setThesisInteriorColor] = useState('premium-bw');
   const [thesisPaperType, setThesisPaperType] = useState('70-white');
+
+  // --- EFFECT: Calculate discount and total price when quantity or price changes ---
+  // --- EFFECT: Calculate discount and total price when quantity or price changes ---
+  useEffect(() => {
+    const basePrice = parseFloat(calculatedPrice) || 0;
+    const currentQuantity = parseInt(quantity) || 0;
+    const calculatedSubtotal = basePrice * currentQuantity;
+    const calculatedDiscount = currentQuantity > 100 ? calculatedSubtotal * 0.1 : 0;
+    const priceAfterDiscount = calculatedSubtotal - calculatedDiscount;
+    const calculatedFinalTotal = priceAfterDiscount + shippingCost; // Add shipping cost
+
+    setSubtotal(calculatedSubtotal);
+    setDiscountAmount(calculatedDiscount);
+    // shippingCost is already set in state
+    setFinalTotalPrice(calculatedFinalTotal);
+  }, [quantity, calculatedPrice, shippingCost]);
 
   const bindingRules = {
     'print-book': {
@@ -228,21 +283,187 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
       'small_square': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); if (pages > 48 && b.includes('saddle')) b.splice(b.indexOf('saddle'), 1); if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); return b; } },
     },
     'photo-book': {
-      'pocketbook': { minPages: { 'coil': 3 }, maxPages: { 'coil': Infinity }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
-      'novella': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
-      'digest': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
-      'a5': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
-      'us_trade': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
-      'royal': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
-      'executive': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
-      'crown_quarto': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
-      'a4': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
-      'square': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
-      'us_letter': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); return b; } },
-      'small_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
-      'us_letter_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470, 'perfect': 250 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1); return b; } },
-      'a4_landscape': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470, 'perfect': 250 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case', 'linen'); if (pages >= 32) b.push('perfect'); if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1); return b; } },
-      'small_square': { minPages: { 'coil': 3 }, maxPages: { 'coil': 470 }, conditional: (pages) => { const b = ['coil']; if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect'); return b; } },
+      'pocketbook': { // Show 'coil', 'case', 'perfect'
+        minPages: { 'coil': 3, 'case': 24, 'perfect': 32 },
+        maxPages: { 'coil': Infinity, 'case': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('case');
+          if (pages >= 32) b.push('perfect');
+          return b;
+        }
+      },
+      'novella': { // Show ONLY 'perfect' and 'case'
+        minPages: { 'case': 24, 'perfect': 32 },
+        maxPages: { 'case': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 24) b.push('case');
+          if (pages >= 32) b.push('perfect');
+          return b;
+        }
+      },
+      // For all other photo book sizes, show ONLY 'perfect', 'coil', 'linen'
+      'digest': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity }, // Example max for coil
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1); // Example from original logic
+          return b;
+        }
+      },
+      'a5': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'us_trade': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'royal': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'executive': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          // Assuming executive might not always get linen in original photo-book if it was case only. Add linen as per new rule.
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'crown_quarto': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'a4': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'square': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'us_letter': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'small_landscape': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity }, // Note: original small_landscape for photobook only had coil and case/perfect. Now gets linen too.
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen'); // Added linen
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'us_letter_landscape': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': 250 }, // Perfect max from original rule
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1);
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'a4_landscape': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': 250 }, // Perfect max from original rule
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen');
+          if (pages >= 32) b.push('perfect');
+          if (pages > 250 && b.includes('perfect')) b.splice(b.indexOf('perfect'), 1);
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
+      'small_square': {
+        minPages: { 'coil': 3, 'linen': 24, 'perfect': 32 },
+        maxPages: { 'coil': 470, 'linen': Infinity, 'perfect': Infinity },
+        conditional: (pages) => {
+          const b = [];
+          if (pages >= 3) b.push('coil');
+          if (pages >= 24) b.push('linen'); // Added linen
+          if (pages >= 32) b.push('perfect');
+          if (pages > 470 && b.includes('coil')) b.splice(b.indexOf('coil'), 1);
+          return b;
+        }
+      },
     },
     'comic-book': {
       'comic': { minPages: { 'coil': 3 }, maxPages: { 'coil': Infinity }, conditional: (pages) => { const b = ['coil']; if (pages >= 4) b.push('saddle'); if (pages >= 24) b.push('case'); if (pages >= 32) b.push('perfect', 'linen'); return b; } },
@@ -468,20 +689,27 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
         ]}
       ];
     } else if (activeOption === 'photo-book') {
-      bindingOptionsConfig = [{ options: [
-        { id: 'binding-case', value: 'case', imageSrc: caseWrapImg, labelText: 'Case Wrap' },
-        { id: 'binding-perfect', value: 'perfect', imageSrc: perfectBoundImg, labelText: 'Perfect Bound' },
-        { id: 'binding-coil', value: 'coil', imageSrc: coilBoundImg, labelText: 'Coil Bound' }, 
-      ]}];
+      let specificPhotoBookOptions;
+      if (selectedBookSize === 'pocketbook') {
+        specificPhotoBookOptions = photoBookBindingDisplayConfig.pocketbook;
+      } else if (selectedBookSize === 'novella') {
+        specificPhotoBookOptions = photoBookBindingDisplayConfig.novella;
+      } else {
+        specificPhotoBookOptions = photoBookBindingDisplayConfig.other;
+      }
+      bindingOptionsConfig = [{
+        // title: 'Binding Options', // You can add a title if you want
+        options: specificPhotoBookOptions
+      }];
     } else if (activeOption === 'calendar') {
       bindingOptionsConfig = [{ options: [
         { id: 'binding-wire-o', value: 'wire-o', imageSrc: wireOImg, labelText: 'Wire-O Binding' },
       ]}];
     } else if (activeOption === 'thesis-binding') {
       bindingOptionsConfig = [{ title: 'Binding Type', options: [
-        { id: 'binding-leather', value: 'leather', imageSrc: caseWrapImg, labelText: 'Leather Case Wrap' },
-        { id: 'binding-faux-leather', value: 'faux-leather', imageSrc: caseWrapImg, labelText: 'Faux Leather Case Wrap' },
-        { id: 'binding-polythin', value: 'polythin', imageSrc: caseWrapImg, labelText: 'Polythin Rexine Case Wrap' },
+        { id: 'binding-leather', value: 'leather', imageSrc: leatherWrapImg, labelText: 'Leather Case Wrap' },
+        { id: 'binding-faux-leather', value: 'faux-leather', imageSrc: coilBoundImg, labelText: 'Faux Leather Case Wrap' },
+        { id: 'binding-polythin', value: 'polythin', imageSrc: saddleStitchImg, labelText: 'Polythin Rexine Case Wrap' },
       ]}];
     }
 
@@ -628,12 +856,11 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
 
               {activeOption === 'thesis-binding' && (
                 <>
-                  <div className="config-section"> <h3 className="config-title">Spine</h3> <div className="options-grid options-grid-2"> <RadioOption id="spine-round" name="thesisSpine" value="round" checked={thesisSpine === 'round'} onChange={setThesisSpine} labelText="Round" imageSrc={sixtyCreamImg}/> <RadioOption id="spine-flat" name="thesisSpine" value="flat" checked={thesisSpine === 'flat'} onChange={setThesisSpine} labelText="Flat" /> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">Exterior Color</h3> <div className="options-grid options-grid-4"> <RadioOption id="color-black" name="thesisExteriorColor" value="black" checked={thesisExteriorColor === 'black'} onChange={setThesisExteriorColor} labelText="Black" /> <RadioOption id="color-brown" name="thesisExteriorColor" value="brown" checked={thesisExteriorColor === 'brown'} onChange={setThesisExteriorColor} labelText="Brown" /> <RadioOption id="color-maroon" name="thesisExteriorColor" value="maroon" checked={thesisExteriorColor === 'maroon'} onChange={setThesisExteriorColor} labelText="Maroon" /> <RadioOption id="color-dark-blue" name="thesisExteriorColor" value="dark-blue" checked={thesisExteriorColor === 'dark-blue'} onChange={setThesisExteriorColor} labelText="Dark Blue" /> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">Foil Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="foil-golden" name="thesisFoilStamping" value="golden" checked={thesisFoilStamping === 'golden'} onChange={setThesisFoilStamping} labelText="Golden" /> <RadioOption id="foil-silver" name="thesisFoilStamping" value="silver" checked={thesisFoilStamping === 'silver'} onChange={setThesisFoilStamping} labelText="Silver" /> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">Screen Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="screen-golden" name="thesisScreenStamping" value="golden" checked={thesisScreenStamping === 'golden'} onChange={setThesisScreenStamping} labelText="Golden" /> <RadioOption id="screen-silver" name="thesisScreenStamping" value="silver" checked={thesisScreenStamping === 'silver'} onChange={setThesisScreenStamping} labelText="Silver" /> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">4 Book Corner Protector</h3> <div className="options-grid"> <RadioOption id="corner-gold-sharp" name="thesisCornerProtector" value="gold-sharp" checked={thesisCornerProtector === 'gold-sharp'} onChange={setThesisCornerProtector} labelText="Gold Sharp Corner" /> <RadioOption id="corner-gold-round" name="thesisCornerProtector" value="gold-round" checked={thesisCornerProtector === 'gold-round'} onChange={setThesisCornerProtector} labelText="Gold Round Corner" /> <RadioOption id="corner-vintage" name="thesisCornerProtector" value="vintage" checked={thesisCornerProtector === 'vintage'} onChange={setThesisCornerProtector} labelText="Vintage Designs Corner" /> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">Interior Color</h3> <div className="options-grid options-grid-2"> <RadioOption id="interior-premium-bw" name="thesisInteriorColor" value="premium-bw" checked={thesisInteriorColor === 'premium-bw'} onChange={setThesisInteriorColor} labelText="Premium Black & white" imageSrc={premiumBwImg} /> <RadioOption id="interior-premium-color" name="thesisInteriorColor" value="premium-color" checked={thesisInteriorColor === 'premium-color'} onChange={setThesisInteriorColor} labelText="Premium Color" imageSrc={premiumColorImg} /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Spine</h3> <div className="options-grid options-grid-2"> <RadioOption id="spine-round" name="thesisSpine" value="round" checked={thesisSpine === 'round'} onChange={setThesisSpine} labelText="Round" imageSrc={caseWrapImg}/> <RadioOption id="spine-flat" name="thesisSpine" value="flat" checked={thesisSpine === 'flat'} onChange={setThesisSpine} labelText="Flat" imageSrc={linenWrapImg} /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Exterior Color</h3> <div className="options-grid options-grid-4"> <RadioOption id="color-black" name="thesisExteriorColor" value="black" checked={thesisExteriorColor === 'black'} onChange={setThesisExteriorColor} labelText="Black" imageSrc={placeholder1Img}/> <RadioOption id="color-brown" name="thesisExteriorColor" value="brown" checked={thesisExteriorColor === 'brown'} onChange={setThesisExteriorColor} labelText="Brown" imageSrc={placeholder2Img}/> <RadioOption id="color-maroon" name="thesisExteriorColor" value="maroon" checked={thesisExteriorColor === 'maroon'} onChange={setThesisExteriorColor} labelText="Maroon" imageSrc={placeholder3Img}/> <RadioOption id="color-dark-blue" name="thesisExteriorColor" value="dark-blue" checked={thesisExteriorColor === 'dark-blue'} onChange={setThesisExteriorColor} labelText="Dark Blue" imageSrc={placeholder3Img}/> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Foil Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="foil-golden" name="thesisFoilStamping" value="golden" checked={thesisFoilStamping === 'golden'} onChange={setThesisFoilStamping} labelText="Golden" imageSrc={placeholder1Img}/> <RadioOption id="foil-silver" name="thesisFoilStamping" value="silver" checked={thesisFoilStamping === 'silver'} onChange={setThesisFoilStamping} labelText="Silver" imageSrc={placeholder2Img}/> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Screen Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="screen-golden" name="thesisScreenStamping" value="golden" checked={thesisScreenStamping === 'golden'} onChange={setThesisScreenStamping} labelText="Golden" imageSrc={placeholder1Img}/> <RadioOption id="screen-silver" name="thesisScreenStamping" value="silver" checked={thesisScreenStamping === 'silver'} onChange={setThesisScreenStamping} labelText="Silver" imageSrc={placeholder2Img}/> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">4 Book Corner Protector</h3> <div className="options-grid"> <RadioOption id="corner-gold-sharp" name="thesisCornerProtector" value="gold-sharp" checked={thesisCornerProtector === 'gold-sharp'} onChange={setThesisCornerProtector} labelText="Gold Sharp Corner" imageSrc={placeholder1Img}/> <RadioOption id="corner-gold-round" name="thesisCornerProtector" value="gold-round" checked={thesisCornerProtector === 'gold-round'} onChange={setThesisCornerProtector} labelText="Gold Round Corner" imageSrc={placeholder2Img}/> <RadioOption id="corner-vintage" name="thesisCornerProtector" value="vintage" checked={thesisCornerProtector === 'vintage'} onChange={setThesisCornerProtector} labelText="Vintage Designs Corner" imageSrc={placeholder2Img}/> </div> </div>
                   <div className="config-section last-section-config"> <h3 className="config-title">Paper Type</h3> <div className="options-grid options-grid-4"> <RadioOption id="paper-70-white" name="thesisPaperType" value="70-white" checked={thesisPaperType === '70-white'} onChange={setThesisPaperType} labelText="70# White-Uncoated" imageSrc={sixtyWhiteImg} /> <RadioOption id="paper-60-cream" name="thesisPaperType" value="60-cream" checked={thesisPaperType === '60-cream'} onChange={setThesisPaperType} labelText="60# Cream-Uncoated" imageSrc={sixtyCreamImg} /> <RadioOption id="paper-60-white-uncoated" name="thesisPaperType" value="60-white-uncoated" checked={thesisPaperType === '60-white-uncoated'} onChange={setThesisPaperType} labelText="60# White-uncoated" imageSrc={sixtyWhiteImg} /> <RadioOption id="paper-80-white" name="thesisPaperType" value="80-white" checked={thesisPaperType === '80-white'} onChange={setThesisPaperType} labelText="80# White-Coated" imageSrc={eightyWhiteImg} /> </div> </div>
                 </>
               )}
@@ -729,7 +956,35 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
               )}
             </div>
 
-            <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}> <h3 className="collapsible-title">Quantity & Shipping Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showShippingEstimates && ( <div className="collapsible-content"> <p>Enter Quantity & Destination to get shipping estimates.</p> <div className="input-group"> <input type="number" placeholder="Quantity" className="select-input" value={quantity} onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value || 0)))} /> <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[ { value: '', label: 'Select Country' }, { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'gb', label: 'United Kingdom' }, ]} placeholder="Select Country" /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Shipping: {shippingEstimate !== null ? `$${shippingEstimate} USD` : 'Calculate Above'} </p> </div> )} </div>
+            <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}> <h3 className="collapsible-title">Quantity & Shipping Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showShippingEstimates && (
+              <div className="collapsible-content">
+                <div className="input-group">
+                  <input type="number" placeholder="Quantity" className="select-input" value={quantity} onChange={handleQuantityChange} min="1" />
+                  {/* Country select can remain if needed for other shipping logic, or be removed if only hardcoded shipping is used */}
+                  {/* <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[ { value: '', label: 'Select Country' }, { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'gb', label: 'United Kingdom' }, ]} placeholder="Select Country" /> */}
+                </div>
+                <div className="pricing-summary" style={{ marginTop: '1rem' }}>
+                  <p>Unit Price: ${parseFloat(calculatedPrice).toFixed(2)}</p>
+                  <p>Quantity: {quantity}</p>
+                  <p>Subtotal: ${subtotal.toFixed(2)}</p>
+                  {discountAmount > 0 && (
+                    <p style={{ color: 'green' }}>Discount (10%): -${discountAmount.toFixed(2)}</p>
+                  )}
+                  <p>Shipping: ${shippingCost.toFixed(2)}</p>
+                  <p style={{ fontWeight: 'bold', marginTop: '0.5rem' }}>Total Price: ${finalTotalPrice.toFixed(2)} USD</p>
+                </div>
+                {quantity >= 100 && discountAmount === 0 && (
+                  <p style={{ color: 'green', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                    A 10% bulk discount will be applied for 100+ items.
+                  </p>
+                )}
+                 {quantity >= 100 && discountAmount > 0 && (
+                  <p style={{ color: 'green', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                    10% bulk discount applied!
+                  </p>
+                )}
+              </div>
+            )} </div>
             <div className={`collapsible-section ${showRevenueEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowRevenueEstimates(!showRevenueEstimates)}> <h3 className="collapsible-title">Revenue Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showRevenueEstimates && ( <div className="collapsible-content"> <p>Calculate potential revenue based on price and estimated sales.</p> <div className="input-group"> <input type="number" placeholder="Estimated Sales Quantity" className="select-input" value={estimatedSales} onChange={(e) => setEstimatedSales(Math.max(0, parseInt(e.target.value || 0)))} /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Revenue: {estimatedRevenue !== null ? `$${estimatedRevenue} USD` : 'Calculate Above'} </p> </div> )} </div>
           </div>
 
@@ -772,6 +1027,7 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
 
   // --- Store selected options in Local Storage ---
   const selectedOptions = {
+    productName: formatOptionLabel(activeOption), // Add the product name here
     activeOption,
     selectedBookSize,
     pageCount,
@@ -789,8 +1045,16 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
       thesisInteriorColor,
       thesisPaperType,
     }),
+    // Add pricing details to localStorage
+    quantity: quantity, // Already present, but good to confirm
+    unitPrice: parseFloat(calculatedPrice).toFixed(2), // Already present
+    subtotal: subtotal.toFixed(2), // Already present
+    discountAmount: discountAmount.toFixed(2), // Already present
+    shippingCost: shippingCost.toFixed(2), // Already present
+    finalTotalPrice: finalTotalPrice.toFixed(2), // Renamed from totalPrice for clarity
+    calculatedPrice: parseFloat(calculatedPrice).toFixed(2) // Explicitly adding calculatedPrice if it wasn't already part of unitPrice logic
   };
-  localStorage.setItem('bookCustomizations', JSON.stringify(selectedOptions));
+  localStorage.setItem('bookCustomizations', JSON.stringify({...selectedOptions, quantity}));
 
   setTimeout(() => {
     navigate('/checkout/shipping');
