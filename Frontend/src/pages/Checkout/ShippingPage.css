@@ -7,6 +7,17 @@
     flex-direction: column;
 }
 
+.price-container {
+  display: block; /* Make this container a block */
+  margin-right: 10px;
+}
+
+.price-per-book {
+  display: block; /* This will make the span behave like a block-level element and take up the full width */
+  font-size: 0.8em;
+  color: #777;
+}
+
 .checkout-header-area {
     width: 100%;
     background: linear-gradient(to right, #1b6aba, #35b7ef);
@@ -290,6 +301,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    margin-right: 10px;
 }
 
 .item-image-placeholder {

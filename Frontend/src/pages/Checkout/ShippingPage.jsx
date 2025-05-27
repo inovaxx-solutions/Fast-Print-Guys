@@ -47,27 +47,44 @@
       setError(null);
       try {
         const cartData = await fetchCartDetails(''); // Initial fetch without state
- 
+
         // --- Retrieve customizations from Local Storage ---
         const storedCustomizations = localStorage.getItem('bookCustomizations');
         if (storedCustomizations) {
           const customizations = JSON.parse(storedCustomizations);
           console.log('Retrieved customizations on Shipping Page:', customizations);
-          // Update cart state or create a new state for customizations
-          
-          
-          const updatedCart = { ...cartData, customizations };
-          setCart(updatedCart);
-          localStorage.setItem('currentCart', JSON.stringify(updatedCart)); // Persist cart
-          console.log('Saved cart to localStorage:', updatedCart);
-          
-          
+
+          // Assuming cartData.items is an array with at least one item for the customized book
+          if (cartData.items && cartData.items.length > 0) {
+            const updatedItems = cartData.items.map(item => {
+              // You might need a more specific way to identify the correct item if your cart can have multiple items
+              if (item.name === customizations.productName) { // Example: matching by product name
+                return { ...item, quantity: parseInt(customizations.quantity, 10) };
+              }
+              return item;
+            });
+            const updatedCart = { ...cartData, items: updatedItems, customizations };
+            setCart(updatedCart);
+            localStorage.setItem('currentCart', JSON.stringify(updatedCart));
+            console.log('Saved cart to localStorage:', updatedCart);
+          } else {
+            const updatedCart = { ...cartData, customizations, items: [{
+              name: customizations.productName,
+              price: parseFloat(customizations.unitPrice), // Use the unit price from localStorage
+              quantity: parseInt(customizations.quantity, 10),
+              // Add other necessary properties for the cart item
+            }] };
+            setCart(updatedCart);
+            localStorage.setItem('currentCart', JSON.stringify(updatedCart));
+            console.log('Saved cart to localStorage:', updatedCart);
+          }
+
           // Optionally, clear the stored data
           localStorage.removeItem('bookCustomizations');
         } else {
           setCart(cartData);
         }
- 
+
         console.log('Fetched cart details for Shipping Page:', cartData);
       } catch (err) {
         console.error('Failed to fetch cart details:', err);
@@ -433,7 +450,7 @@ const handleSubmitShipping = async (event) => {
           <span className="item-name">{item.name || 'Book'}</span>
           <span className="item-configuration">{renderCustomizations()}</span>
         </div>
-        <div className="quantity-control">
+        {/* <div className="quantity-control">
           <label>
             Qty:
             <input
@@ -443,9 +460,13 @@ const handleSubmitShipping = async (event) => {
               onChange={handleQuantityChange}
               style={{ width: '60px', marginLeft: '8px' }}
             />
-          </label>
-        </div>
+          </label
+        </div> */}
+         <div className="price-container">
         <span className="item-price">${item.price?.toFixed(2) || '0.00'}</span>
+        <br />
+        <span className="price-per-book" style={{ fontSize: '0.8em', color: '#777' }}>Price per book</span>
+      </div>
       </div>
     );
   })}

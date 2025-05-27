@@ -358,7 +358,11 @@ useEffect(() => {
                     {/* FIXED: Use renderCustomizations() to show dynamic options */}
                     <span className="item-configuration">{renderCustomizations()}</span>
                   </div>
+                  <div className="price-container">
                   <span className="item-price">${item.price?.toFixed(2) || '0.00'}</span>
+                  <br />
+                  <span className="price-per-book" style={{ fontSize: '0.8em', color: '#777' }}>Price per book</span>
+                  </div>
                 </div>
               ))}
             </div>

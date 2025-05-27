@@ -961,7 +961,7 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
                 <div className="input-group">
                   <input type="number" placeholder="Quantity" className="select-input" value={quantity} onChange={handleQuantityChange} min="1" />
                   {/* Country select can remain if needed for other shipping logic, or be removed if only hardcoded shipping is used */}
-                  {/* <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[ { value: '', label: 'Select Country' }, { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'gb', label: 'United Kingdom' }, ]} placeholder="Select Country" /> */}
+                  <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[ { value: '', label: 'Select Country' }, { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'gb', label: 'United Kingdom' }, ]} placeholder="Select Country" />
                 </div>
                 <div className="pricing-summary" style={{ marginTop: '1rem' }}>
                   <p>Unit Price: ${parseFloat(calculatedPrice).toFixed(2)}</p>
