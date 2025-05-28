@@ -196,6 +196,309 @@ const formatOptionLabel = (optionId) => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 };
+///
+
+
+const bookSizeMeta = {
+  pocketbook: { height: 10.79, width: 17.46, thickness: 0.01, weight: 0.002261 },
+  novella: { height: 12.7, width: 20.32, thickness: 0.01, weight: 0.003097 },
+  digest: { height: 13.97, width: 21.59, thickness: 0.01, weight: 0.003619 },
+  a5: { height: 14.81, width: 21.01, thickness: 0.01, weight: 0.003734 },
+  us_trade: { height: 15.24, width: 22.86, thickness: 0.01, weight: 0.004181 },
+  royal: { height: 15.60, width: 23.39, thickness: 0.01, weight: 0.004379 },
+  executive: { height: 17.78, width: 25.4, thickness: 0.01, weight: 0.005419 },
+  crown_quarto: { height: 18.9, width: 24.59, thickness: 0.01, weight: 0.005577 },
+  small_square: { height: 19.05, width: 19.05, thickness: 0.01, weight: 0.004355 },
+  a4: { height: 21.01, width: 29.69, thickness: 0.01, weight: 0.007485 },
+  square: { height: 21.59, width: 21.59, thickness: 0.01, weight: 0.005594 },
+  us_letter: { height: 21.59, width: 27.94, thickness: 0.01, weight: 0.007239 },
+  small_landscape: { height: 22.86, width: 17.78, thickness: 0.01, weight: 0.004877 },
+  us_letter_landscape: { height: 27.94, width: 21.59, thickness: 0.01, weight: 0.007239 },
+  a4_landscape: { height: 29.69, width: 21.01, thickness: 0.01, weight: 0.007485 },
+  comic: { height: 16.83, width: 26.04, thickness: 0.01, weight: 0.005259 },
+  'larger-deluxe': { height: 17.78, width: 27.62, thickness: 0.01, weight: 0.005893 },
+  manga: { height: 12.7, width: 19.05, thickness: 0.01, weight: 0.002903 }
+};
+
+
+const bindingWeightMap = {
+  pocketbook: {
+    perfect: 0.027261,
+    saddle: 0.012261,
+    case: 0.152261,
+    linen: 0.162261,
+    coil: 0.032261,
+    leather: 0.252261,
+    'faux-leather': 0.202261,
+    polythin: 0.182261
+  },
+  novella: {
+    perfect: 0.028097,
+    saddle: 0.013097,
+    case: 0.153097,
+    linen: 0.163097,
+    coil: 0.033097,
+    leather: 0.253097,
+    'faux-leather': 0.203097,
+    polythin: 0.183097
+  },
+  digest: {
+    perfect: 0.028619,
+    saddle: 0.013619,
+    case: 0.153619,
+    linen: 0.163619,
+    coil: 0.033619,
+    leather: 0.253619,
+    'faux-leather': 0.203619,
+    polythin: 0.183619
+  },
+  a5: {
+    perfect: 0.028734,
+    saddle: 0.013734,
+    case: 0.153734,
+    linen: 0.163734,
+    coil: 0.033734,
+    leather: 0.253734,
+    'faux-leather': 0.203734,
+    polythin: 0.183734
+  },
+  us_trade: {
+    perfect: 0.029181,
+    saddle: 0.014181,
+    case: 0.154181,
+    linen: 0.164181,
+    coil: 0.034181,
+    leather: 0.254181,
+    'faux-leather': 0.204181,
+    polythin: 0.184181
+  },
+  royal: {
+    perfect: 0.029379,
+    saddle: 0.014379,
+    case: 0.154379,
+    linen: 0.164379,
+    coil: 0.034379,
+    leather: 0.254379,
+    'faux-leather': 0.204379,
+    polythin: 0.184379
+  },
+  executive: {
+    perfect: 0.030419,
+    saddle: 0.015419,
+    case: 0.155419,
+    linen: 0.165419,
+    coil: 0.035419,
+    leather: 0.255419,
+    'faux-leather': 0.205419,
+    polythin: 0.185419
+  },
+  crown_quarto: {
+    perfect: 0.030577,
+    saddle: 0.015577,
+    case: 0.155577,
+    linen: 0.165577,
+    coil: 0.035577,
+    leather: 0.255577,
+    'faux-leather': 0.205577,
+    polythin: 0.185577
+  },
+  small_square: {
+    perfect: 0.029355,
+    saddle: 0.014355,
+    case: 0.154355,
+    linen: 0.164355,
+    coil: 0.034355,
+    leather: 0.254355,
+    'faux-leather': 0.204355,
+    polythin: 0.184355
+  },
+  a4: {
+    perfect: 0.032485,
+    saddle: 0.017485,
+    case: 0.157485,
+    linen: 0.167485,
+    coil: 0.037485,
+    leather: 0.257485,
+    'faux-leather': 0.207485,
+    polythin: 0.187485
+  },
+  square: {
+    perfect: 0.030594,
+    saddle: 0.015594,
+    case: 0.155594,
+    linen: 0.165594,
+    coil: 0.035594,
+    leather: 0.255594,
+    'faux-leather': 0.205594,
+    polythin: 0.185594
+  },
+  us_letter: {
+    perfect: 0.032239,
+    saddle: 0.017239,
+    case: 0.157239,
+    linen: 0.167239,
+    coil: 0.037239,
+    leather: 0.257239,
+    'faux-leather': 0.207239,
+    polythin: 0.187239
+  },
+  small_landscape: {
+    perfect: 0.029877,
+    saddle: 0.014877,
+    case: 0.154877,
+    linen: 0.164877,
+    coil: 0.034877,
+    leather: 0.254877,
+    'faux-leather': 0.204877,
+    polythin: 0.184877
+  },
+  us_letter_landscape: {
+    perfect: 0.032239,
+    saddle: 0.017239,
+    case: 0.157239,
+    linen: 0.167239,
+    coil: 0.037239,
+    leather: 0.257239,
+    'faux-leather': 0.207239,
+    polythin: 0.187239
+  },
+  a4_landscape: {
+    perfect: 0.032485,
+    saddle: 0.017485,
+    case: 0.157485,
+    linen: 0.167485,
+    coil: 0.037485,
+    leather: 0.257485,
+    'faux-leather': 0.207485,
+    polythin: 0.187485
+  },
+  comic: {
+    perfect: 0.030259,
+    saddle: 0.015259,
+    case: 0.155259,
+    linen: 0.165259,
+    coil: 0.035259,
+    leather: 0.255259,
+    'faux-leather': 0.205259,
+    polythin: 0.185259
+  },
+  'larger-deluxe': {
+    perfect: 0.030893,
+    saddle: 0.015893,
+    case: 0.155893,
+    linen: 0.165893,
+    coil: 0.035893,
+    leather: 0.255893,
+    'faux-leather': 0.205893,
+    polythin: 0.185893
+  },
+  manga: {
+    perfect: 0.027903,
+    saddle: 0.012903,
+    case: 0.152903,
+    linen: 0.162903,
+    coil: 0.032903,
+    leather: 0.252903,
+    'faux-leather': 0.202903,
+    polythin: 0.182903
+  }
+};
+
+const bufferSpineMap = {
+  pocketbook: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.01 },
+    case:    { bufferKg: 0.5443, spineCm: 1.01 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  novella: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 0.72 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  digest: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  a5: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  us_trade: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.98 },
+    case:    { bufferKg: 0.5443, spineCm: 1.87 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  royal: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  executive: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  crown_quarto: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  small_square: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  a4: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  square: {
+    perfect: { bufferKg: 0.2268, spineCm: 0.32 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  us_letter: {
+    perfect: { bufferKg: 0.2268, spineCm: 3.01 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  small_landscape: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  us_letter_landscape: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  },
+  a4_landscape: {
+    perfect: { bufferKg: 0.2268, spineCm: 1.3 },
+    case:    { bufferKg: 0.5443, spineCm: 1.3 },
+    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    leather: { bufferKg: 0.8165, spineCm: 1.3 }
+  }
+};
+
+
+
 
 const BodyContent = ({ activeOption = 'print-book' }) => {
   const navigate = useNavigate();
@@ -263,6 +566,44 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
     // shippingCost is already set in state
     setFinalTotalPrice(calculatedFinalTotal);
   }, [quantity, calculatedPrice, shippingCost]);
+
+//setting book dimensions
+const [bookHeight, setBookHeight] = useState(0);
+const [bookWidth, setBookWidth] = useState(0);
+const [bookThickness, setBookThickness] = useState(0);
+const [pageWeight, setPageWeight] = useState(0);
+const [bindingWeight, setBindingWeight] = useState(0);
+
+const [spineCm, setSpineCm] = useState(0);
+const [bindingBufferKg, setBindingBufferKg] = useState(0);
+
+
+
+useEffect(() => {
+  const meta = bookSizeMeta[selectedBookSize];
+  if (meta) {
+    setBookHeight(meta.height);
+    setBookWidth(meta.width);
+    setBookThickness(meta.thickness);
+    setPageWeight(meta.weight);
+  }
+
+  const bindingMap = bindingWeightMap[selectedBookSize];
+  if (bindingMap) {
+    const bindingVal = activeOption === 'thesis-binding' ? thesisBindingType : bindingType;
+    setBindingWeight(bindingMap[bindingVal] || 0);
+  }
+
+  const spineBuffer = bufferSpineMap[selectedBookSize]?.[bindingType];
+  if (spineBuffer) {
+    setSpineCm(spineBuffer.spineCm);
+    setBindingBufferKg(spineBuffer.bufferKg);
+  } else {
+    setSpineCm(0);
+    setBindingBufferKg(0);
+  }
+}, [selectedBookSize, bindingType, thesisBindingType, activeOption]);
+
 
   const bindingRules = {
     'print-book': {
@@ -1077,6 +1418,35 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
         <div className="content-wrapper">
           {renderContent()}
         </div>
+      
+
+<div style={{
+  marginTop: "20px",
+  padding: "15px",
+  border: "1px solid #ccc",
+  borderRadius: "8px",
+  backgroundColor: "#f8f8f8",
+  fontFamily: "monospace"
+}}>
+  <h4>📦 Debug Info</h4>
+  <p><strong>Book Size:</strong> {selectedBookSize}</p>
+  <p><strong>Binding Type:</strong> {bindingType}</p>
+  <p><strong>Height:</strong> {bookHeight} cm</p>
+  <p><strong>Width:</strong> {bookWidth} cm</p>
+  <p><strong>Thickness:</strong> {bookThickness} cm</p>
+  <p><strong>Spine:</strong> {spineCm} cm</p>
+  <p><strong>Page Weight:</strong> {pageWeight} kg</p>
+  <p><strong>Binding Weight:</strong> {bindingWeight} kg</p>
+  <p><strong>Buffer Weight:</strong> {bindingBufferKg} kg</p>
+  <p><strong>Quantity:</strong> {quantity}</p>
+  <p><strong>Total Weight:</strong> {((pageWeight + bindingWeight + bindingBufferKg) * quantity).toFixed(3)} kg</p>
+</div>
+
+
+
+      
+      
+      
       </div>
     </section>
   );
