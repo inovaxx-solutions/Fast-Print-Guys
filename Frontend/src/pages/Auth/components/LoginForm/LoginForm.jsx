@@ -68,7 +68,7 @@ function LoginForm() {
       if (response.user.role === 'admin') {
         navigate('/admin'); // Redirect to admin page
       } else {
-        navigate('/profile'); // Redirect to user profile
+        navigate('/pricing'); // Redirect to user profile
       }
     } catch (err) {
       setError('Login failed. Please check your credentials.');

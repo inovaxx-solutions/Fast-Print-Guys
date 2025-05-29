@@ -9,7 +9,7 @@ import api from './api'; // Import the configured Axios instance from your api.j
 export const signup = async (userData) => {
   try {
     const response = await api.post('/auth/signup', userData);
-    console.log('Signup successful:', response.data);
+    // console.log('Signup successful:', response.data);
     return response.data;
   } catch (error) {
     console.error('Signup failed:', error.response?.data || error.message);
@@ -25,7 +25,7 @@ export const signup = async (userData) => {
 export const login = async (credentials) => {
   try {
     const response = await api.post('/auth/login', credentials);
-    console.log('Login successful:', response.data);
+    // console.log('Login successful:', response.data);
     return response.data;
   } catch (error) {
     console.error('Login failed:', error.response?.data || error.message);

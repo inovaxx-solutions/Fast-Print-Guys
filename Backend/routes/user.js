@@ -20,7 +20,7 @@ const authenticateToken = (req, res, next) => {
 router.get('/me', authenticateToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    console.log(user)
+    // console.log(user)
     if (!user) return res.sendStatus(404); // User not found
     res.json({ userName: user.userName, email: user.email, role: user.role });
   } catch (error) {

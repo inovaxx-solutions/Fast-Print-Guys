@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 import './BodyContent.css';
 
 import perfectBoundImg from '../../../../assets/perfectbound.png';
@@ -529,6 +530,56 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
   const [discountAmount, setDiscountAmount] = useState(0);
   const [shippingCost, setShippingCost] = useState(10); // Hardcoded shipping
   const [finalTotalPrice, setFinalTotalPrice] = useState(0);
+  
+  const handleCreateClick = async () => {
+    setIsAddingToCart(true);
+    setAddToCartError(null);
+  
+    try {
+      // // build your payload from state
+      // const payload = {
+      //   bookThickness,
+      //   bookWidth,
+      //   bookHeight,
+      //   // …any other values you need…
+      // };
+  
+      // send it as JSON
+      const response = await axios.get(
+        'http://127.0.0.1:5000/api/shipping/rates',
+        { params: { bookWidth, bookHeight, bookThickness } }
+      );
+      console.log('✅ request sent', response.data);
+  
+      navigate('/checkout/shipping');
+    } catch (err) {
+      console.error('failed to ping shipping/rates', err);
+      setAddToCartError('Could not reach shipping API.');
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+  
+
+// … and in your JSX …
+<button
+   className="btn btn-primary"
+   onClick={handleCreateClick}
+   disabled={
+     isAddingToCart ||
+     isPriceLoading ||
+     !!priceError ||
+     calculatedPrice === 'N/A' ||
+     calculatedPrice === '0.00'
+   }
+ >
+   {isAddingToCart
+     ? 'Fetching Shipping…'
+     : `Create Your ${formatOptionLabel(activeOption)}`}
+ </button>
+
+
+
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
@@ -1361,49 +1412,21 @@ useEffect(() => {
             <div className="summary-actions">
               <button className="btn btn-gradient">Book Templates <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
               <button className="btn btn-gradient">Custom Cover Template <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
-              <button className="btn btn-primary"
-                onClick={() => {
-  setIsAddingToCart(true);
-  setAddToCartError(null);
-
-  // --- Store selected options in Local Storage ---
-  const selectedOptions = {
-    productName: formatOptionLabel(activeOption), // Add the product name here
-    activeOption,
-    selectedBookSize,
-    pageCount,
-    bindingType,
-    interiorColor,
-    paperType,
-    coverFinish,
-    ...(activeOption === 'thesis-binding' && {
-      thesisBindingType,
-      thesisSpine,
-      thesisExteriorColor,
-      thesisFoilStamping,
-      thesisScreenStamping,
-      thesisCornerProtector,
-      thesisInteriorColor,
-      thesisPaperType,
-    }),
-    // Add pricing details to localStorage
-    quantity: quantity, // Already present, but good to confirm
-    unitPrice: parseFloat(calculatedPrice).toFixed(2), // Already present
-    subtotal: subtotal.toFixed(2), // Already present
-    discountAmount: discountAmount.toFixed(2), // Already present
-    shippingCost: shippingCost.toFixed(2), // Already present
-    finalTotalPrice: finalTotalPrice.toFixed(2), // Renamed from totalPrice for clarity
-    calculatedPrice: parseFloat(calculatedPrice).toFixed(2) // Explicitly adding calculatedPrice if it wasn't already part of unitPrice logic
-  };
-  localStorage.setItem('bookCustomizations', JSON.stringify({...selectedOptions, quantity}));
-
-  setTimeout(() => {
-    navigate('/checkout/shipping');
-  }, 1000);
- }}
-                disabled={isAddingToCart || isPriceLoading || !!priceError || calculatedPrice === 'N/A' || calculatedPrice === '0.00'}>
-                {isAddingToCart ? 'Adding to Cart...' : `Create Your ${formatOptionLabel(activeOption)}`}
-              </button>
+              <button
+       className="btn btn-primary"
+       onClick={handleCreateClick}
+       disabled={
+         isAddingToCart ||
+         isPriceLoading ||
+         !!priceError ||
+         calculatedPrice === 'N/A' ||
+         calculatedPrice === '0.00'
+       }
+     >
+       {isAddingToCart
+         ? 'Fetching Shipping…'
+         : `Create Your ${formatOptionLabel(activeOption)}`}
+     </button>
             </div>
             {addToCartError && ( <div className="add-to-cart-error-message" style={{ color: 'red', fontSize: '0.9em', marginTop: '5px' }}> {addToCartError} </div> )}
           </div>
