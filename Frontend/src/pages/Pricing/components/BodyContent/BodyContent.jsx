@@ -498,6 +498,20 @@ const bufferSpineMap = {
   }
 };
 
+const boxOptions = [
+  {
+    name: "Small Box",
+    dimensionsCm: { length: 25.4, width: 35.56, height: 7.62 } // 10x14x3 in
+  },
+  {
+    name: "Medium Box",
+    dimensionsCm: { length: 30.48, width: 30.48, height: 30.48 } // 12x12x12 in
+  },
+  {
+    name: "Large Box",
+    dimensionsCm: { length: 35.56, width: 35.56, height: 35.56 } // 14x14x14 in
+  }
+];
 
 
 
@@ -628,6 +642,7 @@ const [bindingWeight, setBindingWeight] = useState(0);
 const [spineCm, setSpineCm] = useState(0);
 const [bindingBufferKg, setBindingBufferKg] = useState(0);
 
+const [selectedBoxDetails, setSelectedBoxDetails] = useState(null);
 
 
 useEffect(() => {
@@ -1104,7 +1119,71 @@ useEffect(() => {
         { id: 'binding-polythin', value: 'polythin', imageSrc: saddleStitchImg, labelText: 'Polythin Rexine Case Wrap' },
       ]}];
     }
+const getShippingBoxDetails = ({
+  pageWeight,
+  pageCount,
+  bindingWeight,
+  bindingBufferKg,
+  spineCm,
+  bookHeight,
+  bookWidth,
+  quantity
+}) => {
+  const bufferCm = 1.2;
+  const boxWeightKg = 0.2;
 
+  const totalPageWeight = pageWeight * pageCount;
+  const singleBookWeight = totalPageWeight + bindingWeight;
+  const totalWeightKg = singleBookWeight * quantity + boxWeightKg;
+
+const paperThickness = bookSizeMeta[selectedBookSize]?.thickness || 0.01;
+
+
+  const estLength = bookWidth + bufferCm;
+  const estWidth = bookHeight + bufferCm;
+  const estHeight = (spineCm + (pageCount * paperThickness)) * quantity;
+
+  const selectedBox = boxOptions.find(box => {
+    const { length, width, height } = box.dimensionsCm;
+    return estLength <= length && estWidth <= width && estHeight <= height;
+  }) || boxOptions[boxOptions.length - 1];
+
+  return {
+    boxName: selectedBox.name,
+    boxDimensions: selectedBox.dimensionsCm,
+    totalWeightKg: parseFloat(totalWeightKg.toFixed(3)),
+    estLength: parseFloat(estLength.toFixed(2)),
+    estWidth: parseFloat(estWidth.toFixed(2)),
+    estHeight: parseFloat(estHeight.toFixed(2)),
+    perBookWeight: parseFloat(singleBookWeight.toFixed(3)),
+  };
+};
+
+
+useEffect(() => {
+  const boxData = getShippingBoxDetails({
+    pageWeight,
+    pageCount: parseInt(pageCount) || 0, // ⚠️ ensure it's a number
+    bindingWeight,
+    bindingBufferKg,
+    spineCm,
+    bookHeight,
+    bookWidth,
+    quantity
+  });
+  setSelectedBoxDetails(boxData);
+}, [
+  pageWeight,
+  pageCount,
+  bindingWeight,
+  bindingBufferKg,
+  spineCm,
+  bookHeight,
+  bookWidth,
+  quantity
+]);
+
+//change^
     return (
       <div className="config-section">
         <h3 className="config-title">Binding Type</h3>
@@ -1463,13 +1542,27 @@ useEffect(() => {
   <p><strong>Buffer Weight:</strong> {bindingBufferKg} kg</p>
   <p><strong>Quantity:</strong> {quantity}</p>
   <p><strong>Total Weight:</strong> {((pageWeight + bindingWeight + bindingBufferKg) * quantity).toFixed(3)} kg</p>
+
+{selectedBoxDetails && (
+  <div style={{ marginTop: "20px", padding: "10px", border: "1px dashed #aaa" }}>
+    <h4>📦 Box Calculation</h4>
+    <p><strong>Box Selected:</strong> {selectedBoxDetails.boxName}</p>
+    <p><strong>Box Dimensions:</strong> {selectedBoxDetails.boxDimensions.length} × {selectedBoxDetails.boxDimensions.width} × {selectedBoxDetails.boxDimensions.height} cm</p>
+    <p><strong>Estimated Used Dimensions:</strong> {selectedBoxDetails.estLength} × {selectedBoxDetails.estWidth} × {selectedBoxDetails.estHeight} cm</p>
+    <p><strong>Per Book Weight:</strong> {selectedBoxDetails.perBookWeight} kg</p>
+    <p><strong>Total Weight (incl. box):</strong> {selectedBoxDetails.totalWeightKg} kg</p>
+  </div>
+)}
+
+
+
+
+
 </div>
 
 
 
-      
-      
-      
+
       </div>
     </section>
   );
