@@ -551,6 +551,31 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
     setIsAddingToCart(true);
     setAddToCartError(null);
 
+// +++ ADD THESE LINES +++
+  const bookConfig = {
+    activeOption,
+    selectedBookSize,
+    pageCount,
+    bindingType: activeOption === 'thesis-binding' ? thesisBindingType : bindingType,
+    interiorColor: activeOption === 'thesis-binding' ? thesisInteriorColor : interiorColor,
+    paperType: activeOption === 'thesis-binding' ? thesisPaperType : paperType,
+    coverFinish: activeOption === 'thesis-binding' ? null : coverFinish,
+    ...(activeOption === 'thesis-binding' && {
+      thesisSpine,
+      thesisExteriorColor,
+      thesisFoilStamping,
+      thesisScreenStamping,
+      thesisCornerProtector
+    })
+  };
+
+  localStorage.setItem('bookConfig', JSON.stringify(bookConfig));
+  localStorage.setItem('bookPrice', calculatedPrice);
+  localStorage.setItem('bookQuantity', quantity);
+  // +++ END OF ADDITION +++
+
+
+
     try {
       // pull the box dims out of state
       const { length, width, height } = selectedBoxDetails.boxDimensions;
