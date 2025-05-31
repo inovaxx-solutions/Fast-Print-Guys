@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import './BodyContent.css';
+import { getData } from 'country-list';
 
 import perfectBoundImg from '../../../../assets/perfectbound.png';
 import coilBoundImg from '../../../../assets/coilbound.png';
@@ -517,6 +518,7 @@ const boxOptions = [
 
 const BodyContent = ({ activeOption = 'print-book' }) => {
   const navigate = useNavigate();
+  const [countries, setCountries] = useState([]);
   const [selectedBookSize, setSelectedBookSize] = useState('pocketbook');
   const [pageCount, setPageCount] = useState('100'); // Keep as string for input field, parse for calculation
   const [bindingType, setBindingType] = useState('case');
@@ -550,29 +552,28 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
     setAddToCartError(null);
   
     try {
-      // // build your payload from state
-      // const payload = {
-      //   bookThickness,
-      //   bookWidth,
-      //   bookHeight,
-      //   // …any other values you need…
-      // };
+      // pull the box dims out of state
+      const { estLength, estWidth, estHeight } = selectedBoxDetails;
   
-      // send it as JSON
-      const response = await axios.get(
-        'http://127.0.0.1:5000/api/shipping/rates',
-        { params: { bookWidth, bookHeight, bookThickness } }
-      );
-      console.log('✅ request sent', response.data);
+      const response = await axios.get('http://127.0.0.1:5000/api/shipping/rates', {
+        params: {
+          length: estLength,
+          width:  estWidth,
+          height: estHeight,
+          country: selectedCountry,
+        }
+      });
   
+      console.log('✅ shipping/rates response', response.data);
       navigate('/checkout/shipping');
     } catch (err) {
-      console.error('failed to ping shipping/rates', err);
+      console.error('failed to fetch shipping rates', err);
       setAddToCartError('Could not reach shipping API.');
     } finally {
       setIsAddingToCart(false);
     }
   };
+  
   
 
 // … and in your JSX …
@@ -630,6 +631,8 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
     setDiscountAmount(calculatedDiscount);
     // shippingCost is already set in state
     setFinalTotalPrice(calculatedFinalTotal);
+    localStorage.setItem('subtotal', calculatedSubtotal); // Store subtotal in local storage
+    console.log('Subtotal stored in localStorage:', calculatedSubtotal); // Debug log
   }, [quantity, calculatedPrice, shippingCost]);
 
 //setting book dimensions
@@ -668,6 +671,7 @@ useEffect(() => {
     setSpineCm(0);
     setBindingBufferKg(0);
   }
+  setCountries(getData());
 }, [selectedBookSize, bindingType, thesisBindingType, activeOption]);
 
 
@@ -1183,6 +1187,15 @@ useEffect(() => {
   quantity
 ]);
 
+useEffect(() => {
+    if (!selectedBoxDetails) return;
+  
+    localStorage.setItem('boxLength', selectedBoxDetails.estLength);
+    localStorage.setItem('boxWidth', selectedBoxDetails.estWidth);
+    localStorage.setItem('boxHeight', selectedBoxDetails.estHeight);
+    localStorage.setItem('calculatedPrice', calculatedPrice)
+  }, [selectedBoxDetails]);
+
 //change^
     return (
       <div className="config-section">
@@ -1429,11 +1442,33 @@ useEffect(() => {
 
             <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}> <h3 className="collapsible-title">Quantity & Shipping Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showShippingEstimates && (
               <div className="collapsible-content">
-                <div className="input-group">
-                  <input type="number" placeholder="Quantity" className="select-input" value={quantity} onChange={handleQuantityChange} min="1" />
-                  {/* Country select can remain if needed for other shipping logic, or be removed if only hardcoded shipping is used */}
-                  <SelectInput id="country" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} options={[ { value: '', label: 'Select Country' }, { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'gb', label: 'United Kingdom' }, ]} placeholder="Select Country" />
-                </div>
+                 <div className="input-group">
+  <input
+    type="number"
+    placeholder="Quantity"
+    className="select-input"
+    value={quantity}
+    onChange={handleQuantityChange}
+    min="1"
+  />
+  <div className="select-wrapper">
+    <select
+      id="country"
+      value={selectedCountry}
+      onChange={e => setSelectedCountry(e.target.value)}
+      className="select-input"
+    >
+      <option value="" disabled>Select Country</option>
+      {countries.map(({ name, code }) => (
+        <option key={code} value={code}>
+          {name}
+        </option>
+      ))}
+    </select>
+    <svg className="select-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>
+  </div>
+</div>
+
                 <div className="pricing-summary" style={{ marginTop: '1rem' }}>
                   <p>Unit Price: ${parseFloat(calculatedPrice).toFixed(2)}</p>
                   <p>Quantity: {quantity}</p>
