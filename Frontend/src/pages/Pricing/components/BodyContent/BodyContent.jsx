@@ -185,7 +185,7 @@ const SelectInput = ({ id, value, onChange, options, placeholder, label }) => (
       ))}
     </select>
     <svg className="select-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-      <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+      <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
     </svg>
   </div>
 );
@@ -409,92 +409,92 @@ const bindingWeightMap = {
 const bufferSpineMap = {
   pocketbook: {
     perfect: { bufferKg: 0.2268, spineCm: 1.01 },
-    case:    { bufferKg: 0.5443, spineCm: 1.01 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.01 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   novella: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 0.72 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 0.72 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   digest: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   a5: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   us_trade: {
     perfect: { bufferKg: 0.2268, spineCm: 1.98 },
-    case:    { bufferKg: 0.5443, spineCm: 1.87 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.87 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   royal: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   executive: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   crown_quarto: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   small_square: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   a4: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   square: {
     perfect: { bufferKg: 0.2268, spineCm: 0.32 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   us_letter: {
     perfect: { bufferKg: 0.2268, spineCm: 3.01 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   small_landscape: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   us_letter_landscape: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   },
   a4_landscape: {
     perfect: { bufferKg: 0.2268, spineCm: 1.3 },
-    case:    { bufferKg: 0.5443, spineCm: 1.3 },
-    coil:    { bufferKg: 0.2268, spineCm: 1.3 },
+    case: { bufferKg: 0.5443, spineCm: 1.3 },
+    coil: { bufferKg: 0.2268, spineCm: 1.3 },
     leather: { bufferKg: 0.8165, spineCm: 1.3 }
   }
 };
@@ -525,11 +525,11 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
   const [interiorColor, setInteriorColor] = useState('standard-bw');
   const [paperType, setPaperType] = useState('60-white');
   const [coverFinish, setCoverFinish] = useState('matte');
-  
+
   const [calculatedPrice, setCalculatedPrice] = useState('0.00');
   const [isPriceLoading, setIsPriceLoading] = useState(false);
   const [priceError, setPriceError] = useState(null);
-  
+
   const [availableBindings, setAvailableBindings] = useState(['case', 'linen', 'perfect', 'coil', 'saddle']);
   const [showShippingEstimates, setShowShippingEstimates] = useState(false);
   const [showRevenueEstimates, setShowRevenueEstimates] = useState(false);
@@ -546,24 +546,24 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
   const [discountAmount, setDiscountAmount] = useState(0);
   const [shippingCost, setShippingCost] = useState(10); // Hardcoded shipping
   const [finalTotalPrice, setFinalTotalPrice] = useState(0);
-  
+
   const handleCreateClick = async () => {
     setIsAddingToCart(true);
     setAddToCartError(null);
-  
+
     try {
       // pull the box dims out of state
       const { estLength, estWidth, estHeight } = selectedBoxDetails;
-  
+
       const response = await axios.get('http://127.0.0.1:5000/api/shipping/rates', {
         params: {
           length: estLength,
-          width:  estWidth,
+          width: estWidth,
           height: estHeight,
           country: selectedCountry,
         }
       });
-  
+
       console.log('✅ shipping/rates response', response.data);
       navigate('/checkout/shipping');
     } catch (err) {
@@ -573,25 +573,25 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
       setIsAddingToCart(false);
     }
   };
-  
-  
 
-// … and in your JSX …
-<button
-   className="btn btn-primary"
-   onClick={handleCreateClick}
-   disabled={
-     isAddingToCart ||
-     isPriceLoading ||
-     !!priceError ||
-     calculatedPrice === 'N/A' ||
-     calculatedPrice === '0.00'
-   }
- >
-   {isAddingToCart
-     ? 'Fetching Shipping…'
-     : `Create Your ${formatOptionLabel(activeOption)}`}
- </button>
+
+
+  // … and in your JSX …
+  <button
+    className="btn btn-primary"
+    onClick={handleCreateClick}
+    disabled={
+      isAddingToCart ||
+      isPriceLoading ||
+      !!priceError ||
+      calculatedPrice === 'N/A' ||
+      calculatedPrice === '0.00'
+    }
+  >
+    {isAddingToCart
+      ? 'Fetching Shipping…'
+      : `Create Your ${formatOptionLabel(activeOption)}`}
+  </button>
 
 
 
@@ -635,44 +635,44 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
     console.log('Subtotal stored in localStorage:', calculatedSubtotal); // Debug log
   }, [quantity, calculatedPrice, shippingCost]);
 
-//setting book dimensions
-const [bookHeight, setBookHeight] = useState(0);
-const [bookWidth, setBookWidth] = useState(0);
-const [bookThickness, setBookThickness] = useState(0);
-const [pageWeight, setPageWeight] = useState(0);
-const [bindingWeight, setBindingWeight] = useState(0);
+  //setting book dimensions
+  const [bookHeight, setBookHeight] = useState(0);
+  const [bookWidth, setBookWidth] = useState(0);
+  const [bookThickness, setBookThickness] = useState(0);
+  const [pageWeight, setPageWeight] = useState(0);
+  const [bindingWeight, setBindingWeight] = useState(0);
 
-const [spineCm, setSpineCm] = useState(0);
-const [bindingBufferKg, setBindingBufferKg] = useState(0);
+  const [spineCm, setSpineCm] = useState(0);
+  const [bindingBufferKg, setBindingBufferKg] = useState(0);
 
-const [selectedBoxDetails, setSelectedBoxDetails] = useState(null);
+  const [selectedBoxDetails, setSelectedBoxDetails] = useState(null);
 
 
-useEffect(() => {
-  const meta = bookSizeMeta[selectedBookSize];
-  if (meta) {
-    setBookHeight(meta.height);
-    setBookWidth(meta.width);
-    setBookThickness(meta.thickness);
-    setPageWeight(meta.weight);
-  }
+  useEffect(() => {
+    const meta = bookSizeMeta[selectedBookSize];
+    if (meta) {
+      setBookHeight(meta.height);
+      setBookWidth(meta.width);
+      setBookThickness(meta.thickness);
+      setPageWeight(meta.weight);
+    }
 
-  const bindingMap = bindingWeightMap[selectedBookSize];
-  if (bindingMap) {
-    const bindingVal = activeOption === 'thesis-binding' ? thesisBindingType : bindingType;
-    setBindingWeight(bindingMap[bindingVal] || 0);
-  }
+    const bindingMap = bindingWeightMap[selectedBookSize];
+    if (bindingMap) {
+      const bindingVal = activeOption === 'thesis-binding' ? thesisBindingType : bindingType;
+      setBindingWeight(bindingMap[bindingVal] || 0);
+    }
 
-  const spineBuffer = bufferSpineMap[selectedBookSize]?.[bindingType];
-  if (spineBuffer) {
-    setSpineCm(spineBuffer.spineCm);
-    setBindingBufferKg(spineBuffer.bufferKg);
-  } else {
-    setSpineCm(0);
-    setBindingBufferKg(0);
-  }
-  setCountries(getData());
-}, [selectedBookSize, bindingType, thesisBindingType, activeOption]);
+    const spineBuffer = bufferSpineMap[selectedBookSize]?.[bindingType];
+    if (spineBuffer) {
+      setSpineCm(spineBuffer.spineCm);
+      setBindingBufferKg(spineBuffer.bufferKg);
+    } else {
+      setSpineCm(0);
+      setBindingBufferKg(0);
+    }
+    setCountries(getData());
+  }, [selectedBookSize, bindingType, thesisBindingType, activeOption]);
 
 
   const bindingRules = {
@@ -895,8 +895,8 @@ useEffect(() => {
       'us_letter_landscape': { minPages: { 'wire-o': 26 }, maxPages: { 'wire-o': 26 }, conditional: (pages) => { return pages === 26 ? ['wire-o'] : []; } },
     },
     'thesis-binding': {
-      'a4': { minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, conditional: (pages) => { const b = []; if (pages >= 24 && pages <=800) { b.push('leather', 'faux-leather', 'polythin');} return b; } },
-      'us_letter': { minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, conditional: (pages) => { const b = []; if (pages >= 24 && pages <=800) { b.push('leather', 'faux-leather', 'polythin');} return b; } },
+      'a4': { minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, conditional: (pages) => { const b = []; if (pages >= 24 && pages <= 800) { b.push('leather', 'faux-leather', 'polythin'); } return b; } },
+      'us_letter': { minPages: { 'leather': 24, 'faux-leather': 24, 'polythin': 24 }, maxPages: { 'leather': 800, 'faux-leather': 800, 'polythin': 800 }, conditional: (pages) => { const b = []; if (pages >= 24 && pages <= 800) { b.push('leather', 'faux-leather', 'polythin'); } return b; } },
     },
   };
 
@@ -915,7 +915,7 @@ useEffect(() => {
     } else if (pageNum >= 3 && rulesForBookSize && rulesForBookSize.conditional) {
       available = rulesForBookSize.conditional(pageNum);
     }
-    
+
     setAvailableBindings(available);
 
     if (!available.includes(bindingType)) {
@@ -927,7 +927,7 @@ useEffect(() => {
     }
   }, [activeOption, pageCount, selectedBookSize]); // Removed bindingType from dependencies to avoid potential infinite loop, it's reset if not available.
 
-  
+
   const handlePageCountChange = (e) => {
     let value = e.target.value;
 
@@ -955,7 +955,7 @@ useEffect(() => {
         // Max page could also be dynamic based on binding, but for input validation a general cap is simpler here
         // The bindingRules useEffect will handle disabling specific bindings if page count exceeds their specific max.
       }
-      
+
       const constrainedValue = Math.min(Math.max(numValue, minPages), maxPages);
       setPageCount(constrainedValue.toString());
     }
@@ -986,7 +986,7 @@ useEffect(() => {
     }
     return '';
   };
-  
+
   // --- USEEFFECT FOR PRICE CALCULATION ---
   useEffect(() => {
     const fetchPrice = async () => {
@@ -1019,7 +1019,7 @@ useEffect(() => {
         // console.log("BodyContent: Sending itemConfig to calculateBookPrice:", JSON.stringify(itemConfig, null, 2));
         const response = await calculateBookPrice(itemConfig);
         // console.log("BodyContent: Received response from calculateBookPrice:", response);
-        
+
         if (response && typeof response.price === 'number') {
           setCalculatedPrice(response.price.toFixed(2));
         } else {
@@ -1039,27 +1039,27 @@ useEffect(() => {
     const parsedPageCount = parseInt(pageCount) || 0;
 
     if (parsedPageCount <= 0 && activeOption !== 'calendar') {
-        setCalculatedPrice('0.00');
-        setIsPriceLoading(false);
-        return;
+      setCalculatedPrice('0.00');
+      setIsPriceLoading(false);
+      return;
     }
     if (activeOption === 'calendar' && parsedPageCount !== 26) {
-        setCalculatedPrice('N/A'); // Calendars might only have a price at 26 pages
-        setIsPriceLoading(false);
-        return;
+      setCalculatedPrice('N/A'); // Calendars might only have a price at 26 pages
+      setIsPriceLoading(false);
+      return;
     }
     // Ensure a binding type is selected, especially after availableBindings might change it.
     if (!bindingType && availableBindings.length > 0) {
-        // If bindingType is reset, wait for the state update then this effect will run again.
-        // Or, if it was reset to '', don't calculate price.
-        setCalculatedPrice('0.00');
-        setIsPriceLoading(false);
-        return;
+      // If bindingType is reset, wait for the state update then this effect will run again.
+      // Or, if it was reset to '', don't calculate price.
+      setCalculatedPrice('0.00');
+      setIsPriceLoading(false);
+      return;
     }
     if (!bindingType && activeOption !== 'thesis-binding' && activeOption !== 'calendar' /* these might have default or single bindings */) {
-        setCalculatedPrice('0.00');
-        setIsPriceLoading(false);
-        return;
+      setCalculatedPrice('0.00');
+      setIsPriceLoading(false);
+      return;
     }
 
 
@@ -1087,17 +1087,21 @@ useEffect(() => {
   const renderBindingSections = () => {
     let bindingOptionsConfig = [];
 
-    if (['print-book', 'comic-book','yearbook', 'magazine'].includes(activeOption)) {
+    if (['print-book', 'comic-book', 'yearbook', 'magazine'].includes(activeOption)) {
       bindingOptionsConfig = [
-        { title: 'Paperback Options', options: [
+        {
+          title: 'Paperback Options', options: [
             { id: 'binding-perfect', value: 'perfect', imageSrc: perfectBoundImg, labelText: 'Perfect Bound' },
             { id: 'binding-coil', value: 'coil', imageSrc: coilBoundImg, labelText: 'Coil Bound' },
             { id: 'binding-saddle', value: 'saddle', imageSrc: saddleStitchImg, labelText: 'Saddle Stitch' },
-        ]},
-        { title: 'Hardcover Options', options: [
+          ]
+        },
+        {
+          title: 'Hardcover Options', options: [
             { id: 'binding-case', value: 'case', imageSrc: caseWrapImg, labelText: 'Case Wrap' },
             { id: 'binding-linen', value: 'linen', imageSrc: linenWrapImg, labelText: 'Linen Wrap' },
-        ]}
+          ]
+        }
       ];
     } else if (activeOption === 'photo-book') {
       let specificPhotoBookOptions;
@@ -1113,90 +1117,94 @@ useEffect(() => {
         options: specificPhotoBookOptions
       }];
     } else if (activeOption === 'calendar') {
-      bindingOptionsConfig = [{ options: [
-        { id: 'binding-wire-o', value: 'wire-o', imageSrc: wireOImg, labelText: 'Wire-O Binding' },
-      ]}];
+      bindingOptionsConfig = [{
+        options: [
+          { id: 'binding-wire-o', value: 'wire-o', imageSrc: wireOImg, labelText: 'Wire-O Binding' },
+        ]
+      }];
     } else if (activeOption === 'thesis-binding') {
-      bindingOptionsConfig = [{ title: 'Binding Type', options: [
-        { id: 'binding-leather', value: 'leather', imageSrc: leatherWrapImg, labelText: 'Leather Case Wrap' },
-        { id: 'binding-faux-leather', value: 'faux-leather', imageSrc: coilBoundImg, labelText: 'Faux Leather Case Wrap' },
-        { id: 'binding-polythin', value: 'polythin', imageSrc: saddleStitchImg, labelText: 'Polythin Rexine Case Wrap' },
-      ]}];
+      bindingOptionsConfig = [{
+        title: 'Binding Type', options: [
+          { id: 'binding-leather', value: 'leather', imageSrc: leatherWrapImg, labelText: 'Leather Case Wrap' },
+          { id: 'binding-faux-leather', value: 'faux-leather', imageSrc: coilBoundImg, labelText: 'Faux Leather Case Wrap' },
+          { id: 'binding-polythin', value: 'polythin', imageSrc: saddleStitchImg, labelText: 'Polythin Rexine Case Wrap' },
+        ]
+      }];
     }
-const getShippingBoxDetails = ({
-  pageWeight,
-  pageCount,
-  bindingWeight,
-  bindingBufferKg,
-  spineCm,
-  bookHeight,
-  bookWidth,
-  quantity
-}) => {
-  const bufferCm = 1.2;
-  const boxWeightKg = 0.2;
+    const getShippingBoxDetails = ({
+      pageWeight,
+      pageCount,
+      bindingWeight,
+      bindingBufferKg,
+      spineCm,
+      bookHeight,
+      bookWidth,
+      quantity
+    }) => {
+      const bufferCm = 1.2;
+      const boxWeightKg = 0.2;
 
-  const totalPageWeight = pageWeight * pageCount;
-  const singleBookWeight = totalPageWeight + bindingWeight;
-  const totalWeightKg = singleBookWeight * quantity + boxWeightKg;
+      const totalPageWeight = pageWeight * pageCount;
+      const singleBookWeight = totalPageWeight + bindingWeight;
+      const totalWeightKg = singleBookWeight * quantity + boxWeightKg;
 
-const paperThickness = bookSizeMeta[selectedBookSize]?.thickness || 0.01;
-
-
-  const estLength = bookWidth + bufferCm;
-  const estWidth = bookHeight + bufferCm;
-  const estHeight = (spineCm + (pageCount * paperThickness)) * quantity;
-
-  const selectedBox = boxOptions.find(box => {
-    const { length, width, height } = box.dimensionsCm;
-    return estLength <= length && estWidth <= width && estHeight <= height;
-  }) || boxOptions[boxOptions.length - 1];
-
-  return {
-    boxName: selectedBox.name,
-    boxDimensions: selectedBox.dimensionsCm,
-    totalWeightKg: parseFloat(totalWeightKg.toFixed(3)),
-    estLength: parseFloat(estLength.toFixed(2)),
-    estWidth: parseFloat(estWidth.toFixed(2)),
-    estHeight: parseFloat(estHeight.toFixed(2)),
-    perBookWeight: parseFloat(singleBookWeight.toFixed(3)),
-  };
-};
+      const paperThickness = bookSizeMeta[selectedBookSize]?.thickness || 0.01;
 
 
-useEffect(() => {
-  const boxData = getShippingBoxDetails({
-    pageWeight,
-    pageCount: parseInt(pageCount) || 0, // ⚠️ ensure it's a number
-    bindingWeight,
-    bindingBufferKg,
-    spineCm,
-    bookHeight,
-    bookWidth,
-    quantity
-  });
-  setSelectedBoxDetails(boxData);
-}, [
-  pageWeight,
-  pageCount,
-  bindingWeight,
-  bindingBufferKg,
-  spineCm,
-  bookHeight,
-  bookWidth,
-  quantity
-]);
+      const estLength = bookWidth + bufferCm;
+      const estWidth = bookHeight + bufferCm;
+      const estHeight = (spineCm + (pageCount * paperThickness)) * quantity;
 
-useEffect(() => {
-    if (!selectedBoxDetails) return;
-  
-    localStorage.setItem('boxLength', selectedBoxDetails.estLength);
-    localStorage.setItem('boxWidth', selectedBoxDetails.estWidth);
-    localStorage.setItem('boxHeight', selectedBoxDetails.estHeight);
-    localStorage.setItem('calculatedPrice', calculatedPrice)
-  }, [selectedBoxDetails]);
+      const selectedBox = boxOptions.find(box => {
+        const { length, width, height } = box.dimensionsCm;
+        return estLength <= length && estWidth <= width && estHeight <= height;
+      }) || boxOptions[boxOptions.length - 1];
 
-//change^
+      return {
+        boxName: selectedBox.name,
+        boxDimensions: selectedBox.dimensionsCm,
+        totalWeightKg: parseFloat(totalWeightKg.toFixed(3)),
+        estLength: parseFloat(estLength.toFixed(2)),
+        estWidth: parseFloat(estWidth.toFixed(2)),
+        estHeight: parseFloat(estHeight.toFixed(2)),
+        perBookWeight: parseFloat(singleBookWeight.toFixed(3)),
+      };
+    };
+
+
+    useEffect(() => {
+      const boxData = getShippingBoxDetails({
+        pageWeight,
+        pageCount: parseInt(pageCount) || 0, // ⚠️ ensure it's a number
+        bindingWeight,
+        bindingBufferKg,
+        spineCm,
+        bookHeight,
+        bookWidth,
+        quantity
+      });
+      setSelectedBoxDetails(boxData);
+    }, [
+      pageWeight,
+      pageCount,
+      bindingWeight,
+      bindingBufferKg,
+      spineCm,
+      bookHeight,
+      bookWidth,
+      quantity
+    ]);
+
+    useEffect(() => {
+      if (!selectedBoxDetails) return;
+
+      localStorage.setItem('boxLength', selectedBoxDetails.estLength);
+      localStorage.setItem('boxWidth', selectedBoxDetails.estWidth);
+      localStorage.setItem('boxHeight', selectedBoxDetails.estHeight);
+      localStorage.setItem('calculatedPrice', calculatedPrice)
+    }, [selectedBoxDetails]);
+
+    //change^
     return (
       <div className="config-section">
         <h3 className="config-title">Binding Type</h3>
@@ -1216,40 +1224,40 @@ useEffect(() => {
     let bookSizeOptions;
     // Effect to reset selections when activeOption changes
     useEffect(() => {
-        // Reset to defaults for the new activeOption
-        if (activeOption === 'comic-book') {
-            setSelectedBookSize('comic');
-            setInteriorColor('premium-bw'); // Default for comic
-            setPaperType('70-white'); // Default for comic
-        } else if (activeOption === 'magazine') {
-            setSelectedBookSize('a4');
-            setInteriorColor('premium-color');
-            setPaperType('80-white');
-        } else if (activeOption === 'yearbook') {
-            setSelectedBookSize('a4');
-            setInteriorColor('premium-color');
-            setPaperType('80-white');
-        } else if (activeOption === 'thesis-binding') {
-            setSelectedBookSize('a4');
-            setThesisBindingType('leather'); // Ensure this is a valid option
-            setPageCount('100'); // Default page count
-             // Other thesis defaults are set in useState initial values
-        } else if (activeOption === 'calendar') {
-            setSelectedBookSize('us_letter_landscape');
-            setPageCount('26'); // Calendar specific
-            setInteriorColor('premium-color'); // Typically full color
-            setPaperType('100-white'); // Typically thicker paper
-        } else if (activeOption === 'photo-book') {
-            setSelectedBookSize('digest'); // A common photo book size
-            setInteriorColor('premium-color');
-            setPaperType('80-white'); // Coated paper for photos
-        }
-         else { // Default to print-book settings
-            setSelectedBookSize('pocketbook');
-            setInteriorColor('standard-bw');
-            setPaperType('60-white');
-            setPageCount('100');
-        }
+      // Reset to defaults for the new activeOption
+      if (activeOption === 'comic-book') {
+        setSelectedBookSize('comic');
+        setInteriorColor('premium-bw'); // Default for comic
+        setPaperType('70-white'); // Default for comic
+      } else if (activeOption === 'magazine') {
+        setSelectedBookSize('a4');
+        setInteriorColor('premium-color');
+        setPaperType('80-white');
+      } else if (activeOption === 'yearbook') {
+        setSelectedBookSize('a4');
+        setInteriorColor('premium-color');
+        setPaperType('80-white');
+      } else if (activeOption === 'thesis-binding') {
+        setSelectedBookSize('a4');
+        setThesisBindingType('leather'); // Ensure this is a valid option
+        setPageCount('100'); // Default page count
+        // Other thesis defaults are set in useState initial values
+      } else if (activeOption === 'calendar') {
+        setSelectedBookSize('us_letter_landscape');
+        setPageCount('26'); // Calendar specific
+        setInteriorColor('premium-color'); // Typically full color
+        setPaperType('100-white'); // Typically thicker paper
+      } else if (activeOption === 'photo-book') {
+        setSelectedBookSize('digest'); // A common photo book size
+        setInteriorColor('premium-color');
+        setPaperType('80-white'); // Coated paper for photos
+      }
+      else { // Default to print-book settings
+        setSelectedBookSize('pocketbook');
+        setInteriorColor('standard-bw');
+        setPaperType('60-white');
+        setPageCount('100');
+      }
     }, [activeOption]);
 
 
@@ -1340,11 +1348,11 @@ useEffect(() => {
 
               {activeOption === 'thesis-binding' && (
                 <>
-                  <div className="config-section"> <h3 className="config-title">Spine</h3> <div className="options-grid options-grid-2"> <RadioOption id="spine-round" name="thesisSpine" value="round" checked={thesisSpine === 'round'} onChange={setThesisSpine} labelText="Round" imageSrc={caseWrapImg}/> <RadioOption id="spine-flat" name="thesisSpine" value="flat" checked={thesisSpine === 'flat'} onChange={setThesisSpine} labelText="Flat" imageSrc={linenWrapImg} /> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">Exterior Color</h3> <div className="options-grid options-grid-4"> <RadioOption id="color-black" name="thesisExteriorColor" value="black" checked={thesisExteriorColor === 'black'} onChange={setThesisExteriorColor} labelText="Black" imageSrc={placeholder1Img}/> <RadioOption id="color-brown" name="thesisExteriorColor" value="brown" checked={thesisExteriorColor === 'brown'} onChange={setThesisExteriorColor} labelText="Brown" imageSrc={placeholder2Img}/> <RadioOption id="color-maroon" name="thesisExteriorColor" value="maroon" checked={thesisExteriorColor === 'maroon'} onChange={setThesisExteriorColor} labelText="Maroon" imageSrc={placeholder3Img}/> <RadioOption id="color-dark-blue" name="thesisExteriorColor" value="dark-blue" checked={thesisExteriorColor === 'dark-blue'} onChange={setThesisExteriorColor} labelText="Dark Blue" imageSrc={placeholder3Img}/> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">Foil Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="foil-golden" name="thesisFoilStamping" value="golden" checked={thesisFoilStamping === 'golden'} onChange={setThesisFoilStamping} labelText="Golden" imageSrc={placeholder1Img}/> <RadioOption id="foil-silver" name="thesisFoilStamping" value="silver" checked={thesisFoilStamping === 'silver'} onChange={setThesisFoilStamping} labelText="Silver" imageSrc={placeholder2Img}/> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">Screen Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="screen-golden" name="thesisScreenStamping" value="golden" checked={thesisScreenStamping === 'golden'} onChange={setThesisScreenStamping} labelText="Golden" imageSrc={placeholder1Img}/> <RadioOption id="screen-silver" name="thesisScreenStamping" value="silver" checked={thesisScreenStamping === 'silver'} onChange={setThesisScreenStamping} labelText="Silver" imageSrc={placeholder2Img}/> </div> </div>
-                  <div className="config-section"> <h3 className="config-title">4 Book Corner Protector</h3> <div className="options-grid"> <RadioOption id="corner-gold-sharp" name="thesisCornerProtector" value="gold-sharp" checked={thesisCornerProtector === 'gold-sharp'} onChange={setThesisCornerProtector} labelText="Gold Sharp Corner" imageSrc={placeholder1Img}/> <RadioOption id="corner-gold-round" name="thesisCornerProtector" value="gold-round" checked={thesisCornerProtector === 'gold-round'} onChange={setThesisCornerProtector} labelText="Gold Round Corner" imageSrc={placeholder2Img}/> <RadioOption id="corner-vintage" name="thesisCornerProtector" value="vintage" checked={thesisCornerProtector === 'vintage'} onChange={setThesisCornerProtector} labelText="Vintage Designs Corner" imageSrc={placeholder2Img}/> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Spine</h3> <div className="options-grid options-grid-2"> <RadioOption id="spine-round" name="thesisSpine" value="round" checked={thesisSpine === 'round'} onChange={setThesisSpine} labelText="Round" imageSrc={caseWrapImg} /> <RadioOption id="spine-flat" name="thesisSpine" value="flat" checked={thesisSpine === 'flat'} onChange={setThesisSpine} labelText="Flat" imageSrc={linenWrapImg} /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Exterior Color</h3> <div className="options-grid options-grid-4"> <RadioOption id="color-black" name="thesisExteriorColor" value="black" checked={thesisExteriorColor === 'black'} onChange={setThesisExteriorColor} labelText="Black" imageSrc={placeholder1Img} /> <RadioOption id="color-brown" name="thesisExteriorColor" value="brown" checked={thesisExteriorColor === 'brown'} onChange={setThesisExteriorColor} labelText="Brown" imageSrc={placeholder2Img} /> <RadioOption id="color-maroon" name="thesisExteriorColor" value="maroon" checked={thesisExteriorColor === 'maroon'} onChange={setThesisExteriorColor} labelText="Maroon" imageSrc={placeholder3Img} /> <RadioOption id="color-dark-blue" name="thesisExteriorColor" value="dark-blue" checked={thesisExteriorColor === 'dark-blue'} onChange={setThesisExteriorColor} labelText="Dark Blue" imageSrc={placeholder3Img} /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Foil Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="foil-golden" name="thesisFoilStamping" value="golden" checked={thesisFoilStamping === 'golden'} onChange={setThesisFoilStamping} labelText="Golden" imageSrc={placeholder1Img} /> <RadioOption id="foil-silver" name="thesisFoilStamping" value="silver" checked={thesisFoilStamping === 'silver'} onChange={setThesisFoilStamping} labelText="Silver" imageSrc={placeholder2Img} /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">Screen Stamping</h3> <div className="options-grid options-grid-2"> <RadioOption id="screen-golden" name="thesisScreenStamping" value="golden" checked={thesisScreenStamping === 'golden'} onChange={setThesisScreenStamping} labelText="Golden" imageSrc={placeholder1Img} /> <RadioOption id="screen-silver" name="thesisScreenStamping" value="silver" checked={thesisScreenStamping === 'silver'} onChange={setThesisScreenStamping} labelText="Silver" imageSrc={placeholder2Img} /> </div> </div>
+                  <div className="config-section"> <h3 className="config-title">4 Book Corner Protector</h3> <div className="options-grid"> <RadioOption id="corner-gold-sharp" name="thesisCornerProtector" value="gold-sharp" checked={thesisCornerProtector === 'gold-sharp'} onChange={setThesisCornerProtector} labelText="Gold Sharp Corner" imageSrc={placeholder1Img} /> <RadioOption id="corner-gold-round" name="thesisCornerProtector" value="gold-round" checked={thesisCornerProtector === 'gold-round'} onChange={setThesisCornerProtector} labelText="Gold Round Corner" imageSrc={placeholder2Img} /> <RadioOption id="corner-vintage" name="thesisCornerProtector" value="vintage" checked={thesisCornerProtector === 'vintage'} onChange={setThesisCornerProtector} labelText="Vintage Designs Corner" imageSrc={placeholder2Img} /> </div> </div>
                   <div className="config-section last-section-config"> <h3 className="config-title">Paper Type</h3> <div className="options-grid options-grid-4"> <RadioOption id="paper-70-white" name="thesisPaperType" value="70-white" checked={thesisPaperType === '70-white'} onChange={setThesisPaperType} labelText="70# White-Uncoated" imageSrc={sixtyWhiteImg} /> <RadioOption id="paper-60-cream" name="thesisPaperType" value="60-cream" checked={thesisPaperType === '60-cream'} onChange={setThesisPaperType} labelText="60# Cream-Uncoated" imageSrc={sixtyCreamImg} /> <RadioOption id="paper-60-white-uncoated" name="thesisPaperType" value="60-white-uncoated" checked={thesisPaperType === '60-white-uncoated'} onChange={setThesisPaperType} labelText="60# White-uncoated" imageSrc={sixtyWhiteImg} /> <RadioOption id="paper-80-white" name="thesisPaperType" value="80-white" checked={thesisPaperType === '80-white'} onChange={setThesisPaperType} labelText="80# White-Coated" imageSrc={eightyWhiteImg} /> </div> </div>
                 </>
               )}
@@ -1352,122 +1360,122 @@ useEffect(() => {
               {activeOption !== 'thesis-binding' && (
                 <>
                   <div className="config-section">
-      <h3 className="config-title">Interior Color</h3>
-      <div className="options-grid options-grid-4">
-        {activeOption === 'photo-book' || activeOption === 'comic-book' || activeOption === 'magazine' || activeOption === 'yearbook' ? (
-          [
-            { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium B&W' },
-            { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
-          ))
-        ) : (activeOption === 'calendar' ? (
-          [
-            { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
-          ))
-        ) : ( // Default for Print Book, Comic Book, Magazine, Yearbook
-          [
-            { id: 'color-standard-bw', value: 'standard-bw', imageSrc: standardBwImg, labelText: 'Standard B&W' },
-            { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium B&W' },
-            { id: 'color-standard-color', value: 'standard-color', imageSrc: standardColorImg, labelText: 'Standard Color' },
-            { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
-          ))
-        ))}
-      </div>
-    </div>
-    
-    <div className="config-section">
-      <h3 className="config-title">Paper Type</h3>
-      <div className="options-grid">
-        {activeOption === 'photo-book' ? (
-          [
-            { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
-          ))
-        ) : (activeOption === 'comic-book' || activeOption === 'magazine' || activeOption === 'yearbook' ? (
-          [
-            { id: 'paper-70-white', value: '70-white-uncoated', labelText: '70# White-Uncoated', imageSrc: sixtyWhiteImg },
-            { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
-            { id: 'paper-60-white-uncoated', value: '60-white-uncoated', imageSrc: sixtyWhiteImg, labelText: '60# White-uncoated' },
-            { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
-          ))
-        ) : (activeOption === 'calendar' ? (
-          [
-            { id: 'paper-100-white', value: '100-white', imageSrc: eightyWhiteImg, labelText: '100# White — Coated' }
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
-          ))
-        ) : ( // Default for Print Book
-          [
-            { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
-            { id: 'paper-60-white', value: '60-white', imageSrc: sixtyWhiteImg, labelText: '60# White — Uncoated' },
-            { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
-          ))
-        )))}
-      </div>
-    </div>
-    
-    <div className="config-section last-section-config">
-      <h3 className="config-title">Cover Finish</h3>
-      <div className="options-grid options-grid-2">
-        {(activeOption === 'calendar') ? ( // Calendar specific cover finishes if any
-          [
-            { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
-            { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="coverFinish" checked={coverFinish === opt.value} onChange={setCoverFinish} />
-          ))
-        ) : ( // Default for other book types
-          [
-            { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
-            { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
-          ].map(opt => (
-            <RadioOption key={opt.id} {...opt} name="coverFinish" checked={coverFinish === opt.value} onChange={setCoverFinish} />
-          ))
-        )}
-      </div>
-    </div>
+                    <h3 className="config-title">Interior Color</h3>
+                    <div className="options-grid options-grid-4">
+                      {activeOption === 'photo-book' || activeOption === 'comic-book' || activeOption === 'magazine' || activeOption === 'yearbook' ? (
+                        [
+                          { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium B&W' },
+                          { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
+                        ))
+                      ) : (activeOption === 'calendar' ? (
+                        [
+                          { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
+                        ))
+                      ) : ( // Default for Print Book, Comic Book, Magazine, Yearbook
+                        [
+                          { id: 'color-standard-bw', value: 'standard-bw', imageSrc: standardBwImg, labelText: 'Standard B&W' },
+                          { id: 'color-premium-bw', value: 'premium-bw', imageSrc: premiumBwImg, labelText: 'Premium B&W' },
+                          { id: 'color-standard-color', value: 'standard-color', imageSrc: standardColorImg, labelText: 'Standard Color' },
+                          { id: 'color-premium-color', value: 'premium-color', imageSrc: premiumColorImg, labelText: 'Premium Color' },
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="interiorColor" checked={interiorColor === opt.value} onChange={setInteriorColor} />
+                        ))
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="config-section">
+                    <h3 className="config-title">Paper Type</h3>
+                    <div className="options-grid">
+                      {activeOption === 'photo-book' ? (
+                        [
+                          { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
+                        ))
+                      ) : (activeOption === 'comic-book' || activeOption === 'magazine' || activeOption === 'yearbook' ? (
+                        [
+                          { id: 'paper-70-white', value: '70-white-uncoated', labelText: '70# White-Uncoated', imageSrc: sixtyWhiteImg },
+                          { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
+                          { id: 'paper-60-white-uncoated', value: '60-white-uncoated', imageSrc: sixtyWhiteImg, labelText: '60# White-uncoated' },
+                          { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
+                        ))
+                      ) : (activeOption === 'calendar' ? (
+                        [
+                          { id: 'paper-100-white', value: '100-white', imageSrc: eightyWhiteImg, labelText: '100# White — Coated' }
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
+                        ))
+                      ) : ( // Default for Print Book
+                        [
+                          { id: 'paper-60-cream', value: '60-cream', imageSrc: sixtyCreamImg, labelText: '60# Cream — Uncoated' },
+                          { id: 'paper-60-white', value: '60-white', imageSrc: sixtyWhiteImg, labelText: '60# White — Uncoated' },
+                          { id: 'paper-80-white', value: '80-white', imageSrc: eightyWhiteImg, labelText: '80# White — Coated' },
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="paperType" checked={paperType === opt.value} onChange={setPaperType} />
+                        ))
+                      )))}
+                    </div>
+                  </div>
+
+                  <div className="config-section last-section-config">
+                    <h3 className="config-title">Cover Finish</h3>
+                    <div className="options-grid options-grid-2">
+                      {(activeOption === 'calendar') ? ( // Calendar specific cover finishes if any
+                        [
+                          { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
+                          { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="coverFinish" checked={coverFinish === opt.value} onChange={setCoverFinish} />
+                        ))
+                      ) : ( // Default for other book types
+                        [
+                          { id: 'finish-glossy', value: 'glossy', imageSrc: glossyImg, labelText: 'Glossy' },
+                          { id: 'finish-matte', value: 'matte', imageSrc: matteImg, labelText: 'Matte' },
+                        ].map(opt => (
+                          <RadioOption key={opt.id} {...opt} name="coverFinish" checked={coverFinish === opt.value} onChange={setCoverFinish} />
+                        ))
+                      )}
+                    </div>
+                  </div>
                 </>
               )}
             </div>
 
-            <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}> <h3 className="collapsible-title">Quantity & Shipping Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showShippingEstimates && (
+            <div className={`collapsible-section ${showShippingEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowShippingEstimates(!showShippingEstimates)}> <h3 className="collapsible-title">Quantity & Shipping Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" /></svg> </div> {showShippingEstimates && (
               <div className="collapsible-content">
-                 <div className="input-group">
-  <input
-    type="number"
-    placeholder="Quantity"
-    className="select-input"
-    value={quantity}
-    onChange={handleQuantityChange}
-    min="1"
-  />
-  <div className="select-wrapper">
-    <select
-      id="country"
-      value={selectedCountry}
-      onChange={e => setSelectedCountry(e.target.value)}
-      className="select-input"
-    >
-      <option value="" disabled>Select Country</option>
-      {countries.map(({ name, code }) => (
-        <option key={code} value={code}>
-          {name}
-        </option>
-      ))}
-    </select>
-    <svg className="select-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>
-  </div>
-</div>
+                <div className="input-group">
+                  <input
+                    type="number"
+                    placeholder="Quantity"
+                    className="select-input"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    min="1"
+                  />
+                  <div className="select-wrapper">
+                    <select
+                      id="country"
+                      value={selectedCountry}
+                      onChange={e => setSelectedCountry(e.target.value)}
+                      className="select-input"
+                    >
+                      <option value="" disabled>Select Country</option>
+                      {countries.map(({ name, code }) => (
+                        <option key={code} value={code}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                    <svg className="select-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" /></svg>
+                  </div>
+                </div>
 
                 <div className="pricing-summary" style={{ marginTop: '1rem' }}>
                   <p>Unit Price: ${parseFloat(calculatedPrice).toFixed(2)}</p>
@@ -1484,14 +1492,14 @@ useEffect(() => {
                     A 10% bulk discount will be applied for 100+ items.
                   </p>
                 )}
-                 {quantity >= 100 && discountAmount > 0 && (
+                {quantity >= 100 && discountAmount > 0 && (
                   <p style={{ color: 'green', fontSize: '0.9rem', marginTop: '0.5rem' }}>
                     10% bulk discount applied!
                   </p>
                 )}
               </div>
             )} </div>
-            <div className={`collapsible-section ${showRevenueEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowRevenueEstimates(!showRevenueEstimates)}> <h3 className="collapsible-title">Revenue Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg> </div> {showRevenueEstimates && ( <div className="collapsible-content"> <p>Calculate potential revenue based on price and estimated sales.</p> <div className="input-group"> <input type="number" placeholder="Estimated Sales Quantity" className="select-input" value={estimatedSales} onChange={(e) => setEstimatedSales(Math.max(0, parseInt(e.target.value || 0)))} /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Revenue: {estimatedRevenue !== null ? `$${estimatedRevenue} USD` : 'Calculate Above'} </p> </div> )} </div>
+            <div className={`collapsible-section ${showRevenueEstimates ? 'is-open' : ''}`}> <div className="collapsible-header" onClick={() => setShowRevenueEstimates(!showRevenueEstimates)}> <h3 className="collapsible-title">Revenue Estimates</h3> <svg className="collapsible-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" /></svg> </div> {showRevenueEstimates && (<div className="collapsible-content"> <p>Calculate potential revenue based on price and estimated sales.</p> <div className="input-group"> <input type="number" placeholder="Estimated Sales Quantity" className="select-input" value={estimatedSales} onChange={(e) => setEstimatedSales(Math.max(0, parseInt(e.target.value || 0)))} /> </div> <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-medium)' }}> Estimated Revenue: {estimatedRevenue !== null ? `$${estimatedRevenue} USD` : 'Calculate Above'} </p> </div>)} </div>
           </div>
 
           <div className="print-book-summary">
@@ -1517,7 +1525,7 @@ useEffect(() => {
               {isPriceLoading ? (
                 <div className="price-value">Loading...</div>
               ) : priceError ? (
-                <div className="price-error" style={{color: 'red'}}>{priceError}</div>
+                <div className="price-error" style={{ color: 'red' }}>{priceError}</div>
               ) : (
                 <div className="price-value">{calculatedPrice} USD</div>
               )}
@@ -1527,22 +1535,22 @@ useEffect(() => {
               <button className="btn btn-gradient">Book Templates <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
               <button className="btn btn-gradient">Custom Cover Template <svg className="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> </button>
               <button
-       className="btn btn-primary"
-       onClick={handleCreateClick}
-       disabled={
-         isAddingToCart ||
-         isPriceLoading ||
-         !!priceError ||
-         calculatedPrice === 'N/A' ||
-         calculatedPrice === '0.00'
-       }
-     >
-       {isAddingToCart
-         ? 'Fetching Shipping…'
-         : `Create Your ${formatOptionLabel(activeOption)}`}
-     </button>
+                className="btn btn-primary"
+                onClick={handleCreateClick}
+                disabled={
+                  isAddingToCart ||
+                  isPriceLoading ||
+                  !!priceError ||
+                  calculatedPrice === 'N/A' ||
+                  calculatedPrice === '0.00'
+                }
+              >
+                {isAddingToCart
+                  ? 'Fetching Shipping…'
+                  : `Create Your ${formatOptionLabel(activeOption)}`}
+              </button>
             </div>
-            {addToCartError && ( <div className="add-to-cart-error-message" style={{ color: 'red', fontSize: '0.9em', marginTop: '5px' }}> {addToCartError} </div> )}
+            {addToCartError && (<div className="add-to-cart-error-message" style={{ color: 'red', fontSize: '0.9em', marginTop: '5px' }}> {addToCartError} </div>)}
           </div>
         </div>
       </div>
@@ -1555,45 +1563,45 @@ useEffect(() => {
         <div className="content-wrapper">
           {renderContent()}
         </div>
-      
-
-<div style={{
-  marginTop: "20px",
-  padding: "15px",
-  border: "1px solid #ccc",
-  borderRadius: "8px",
-  backgroundColor: "#f8f8f8",
-  fontFamily: "monospace"
-}}>
-  <h4>📦 Debug Info</h4>
-  <p><strong>Book Size:</strong> {selectedBookSize}</p>
-  <p><strong>Binding Type:</strong> {bindingType}</p>
-  <p><strong>Height:</strong> {bookHeight} cm</p>
-  <p><strong>Width:</strong> {bookWidth} cm</p>
-  <p><strong>Thickness:</strong> {bookThickness} cm</p>
-  <p><strong>Spine:</strong> {spineCm} cm</p>
-  <p><strong>Page Weight:</strong> {pageWeight} kg</p>
-  <p><strong>Binding Weight:</strong> {bindingWeight} kg</p>
-  <p><strong>Buffer Weight:</strong> {bindingBufferKg} kg</p>
-  <p><strong>Quantity:</strong> {quantity}</p>
-  <p><strong>Total Weight:</strong> {((pageWeight + bindingWeight + bindingBufferKg) * quantity).toFixed(3)} kg</p>
-
-{selectedBoxDetails && (
-  <div style={{ marginTop: "20px", padding: "10px", border: "1px dashed #aaa" }}>
-    <h4>📦 Box Calculation</h4>
-    <p><strong>Box Selected:</strong> {selectedBoxDetails.boxName}</p>
-    <p><strong>Box Dimensions:</strong> {selectedBoxDetails.boxDimensions.length} × {selectedBoxDetails.boxDimensions.width} × {selectedBoxDetails.boxDimensions.height} cm</p>
-    <p><strong>Estimated Used Dimensions:</strong> {selectedBoxDetails.estLength} × {selectedBoxDetails.estWidth} × {selectedBoxDetails.estHeight} cm</p>
-    <p><strong>Per Book Weight:</strong> {selectedBoxDetails.perBookWeight} kg</p>
-    <p><strong>Total Weight (incl. box):</strong> {selectedBoxDetails.totalWeightKg} kg</p>
-  </div>
-)}
 
 
+        <div style={{
+          marginTop: "20px",
+          padding: "15px",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          backgroundColor: "#f8f8f8",
+          fontFamily: "monospace"
+        }}>
+          <h4>📦 Debug Info</h4>
+          <p><strong>Book Size:</strong> {selectedBookSize}</p>
+          <p><strong>Binding Type:</strong> {bindingType}</p>
+          <p><strong>Height:</strong> {bookHeight} cm</p>
+          <p><strong>Width:</strong> {bookWidth} cm</p>
+          <p><strong>Thickness:</strong> {bookThickness} cm</p>
+          <p><strong>Spine:</strong> {spineCm} cm</p>
+          <p><strong>Page Weight:</strong> {pageWeight} kg</p>
+          <p><strong>Binding Weight:</strong> {bindingWeight} kg</p>
+          <p><strong>Buffer Weight:</strong> {bindingBufferKg} kg</p>
+          <p><strong>Quantity:</strong> {quantity}</p>
+          <p><strong>Total Weight:</strong> {((pageWeight + bindingWeight + bindingBufferKg) * quantity).toFixed(3)} kg</p>
+
+          {selectedBoxDetails && (
+            <div style={{ marginTop: "20px", padding: "10px", border: "1px dashed #aaa" }}>
+              <h4>📦 Box Calculation</h4>
+              <p><strong>Box Selected:</strong> {selectedBoxDetails.boxName}</p>
+              <p><strong>Box Dimensions:</strong> {selectedBoxDetails.boxDimensions.length} × {selectedBoxDetails.boxDimensions.width} × {selectedBoxDetails.boxDimensions.height} cm</p>
+              <p><strong>Estimated Used Dimensions:</strong> {selectedBoxDetails.estLength} × {selectedBoxDetails.estWidth} × {selectedBoxDetails.estHeight} cm</p>
+              <p><strong>Per Book Weight:</strong> {selectedBoxDetails.perBookWeight} kg</p>
+              <p><strong>Total Weight (incl. box):</strong> {selectedBoxDetails.totalWeightKg} kg</p>
+            </div>
+          )}
 
 
 
-</div>
+
+
+        </div>
 
 
 
