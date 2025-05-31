@@ -553,13 +553,13 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
 
     try {
       // pull the box dims out of state
-      const { estLength, estWidth, estHeight } = selectedBoxDetails;
+      const { length, width, height } = selectedBoxDetails.boxDimensions;
 
       const response = await axios.get('http://127.0.0.1:5000/api/shipping/rates', {
         params: {
-          length: estLength,
-          width: estWidth,
-          height: estHeight,
+          length,
+          width,
+          height,
           country: selectedCountry,
         }
       });
