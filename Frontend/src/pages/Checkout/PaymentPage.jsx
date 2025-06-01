@@ -5,6 +5,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import visa from '../../assets/visa.png';
 import mastercard from '../../assets/mastercard.png';
 import americanexpress from '../../assets/American Express Card.png';
+import paypal from '../../assets/paypal.png';
 import stripeLogo from '../../assets/stripe.png';
 import './PaymentPage.css';
 import cartitemimage from '../../assets/cart-item-image.png';
@@ -21,24 +22,14 @@ const PaymentPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
-    const loadOrderDetails = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const storedCart = localStorage.getItem('currentCart');
-        if (storedCart) {
-          const cartData = JSON.parse(storedCart);
-          setCart(cartData);
-        } else {
-          setError('No cart data found. Please restart the checkout process.');
-        }
-      } catch (err) {
-        setError('Failed to load order details. Please try again.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadOrderDetails();
+    const storedCart = localStorage.getItem('currentCart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+      setIsLoading(false);
+    } else {
+      setError('No cart data found. Please restart the checkout process.');
+      setIsLoading(false);
+    }
   }, []);
 
   const handlePaymentMethodChange = (method) => {
@@ -46,7 +37,7 @@ const PaymentPage = () => {
     setPaymentError(null);
   };
 
-  const handleStripePayment = async () => {
+  const handlePayment = async () => {
     if (!cart) {
       setPaymentError('Order data is missing.');
       return;
@@ -55,63 +46,50 @@ const PaymentPage = () => {
     setIsProcessing(true);
     setPaymentError(null);
 
+    const amount = Math.round(cart.total * 100); // cents
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/create-checkout-session`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          orderId: cart.orderId,
-          amount: Math.round(cart.total * 100),
-          paymentMethodType: selectedPaymentMethod,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create payment session');
-      }
-
-      const session = await response.json();
-
-      if (session.error) {
-        setPaymentError(session.error);
-        setIsProcessing(false);
+      if (selectedPaymentMethod === 'paypal') {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/create-paypal-order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount, orderId: cart.orderId }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.approveUrl) throw new Error(data.error || 'PayPal error');
+        window.location.href = data.approveUrl;
         return;
       }
 
-      const stripe = await stripePromise;
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: session.id
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/create-checkout-session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount,
+          orderId: cart.orderId,
+          paymentMethodType: selectedPaymentMethod,
+        }),
       });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error || 'Stripe error');
 
-      if (error) {
-        setPaymentError(error.message);
-      }
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({ sessionId: data.id });
+      if (error) setPaymentError(error.message);
     } catch (err) {
-      setPaymentError(err.message || 'Payment processing failed. Please try again.');
+      setPaymentError(err.message || 'Payment failed. Try again.');
     } finally {
       setIsProcessing(false);
     }
   };
 
-  if (isLoading) {
-    return <div className="payment-page-container">Loading order details...</div>;
-  }
+  if (isLoading) return <div className="payment-page-container">Loading order details...</div>;
 
   if (error && !cart) {
     return (
       <div className="payment-page-container error-state">
         <p className="error-message">{error}</p>
         <button onClick={() => window.location.reload()}>Retry Loading Order</button>
-      </div>
-    );
-  }
-
-  if (!cart || !cart.items || cart.items.length === 0) {
-    return (
-      <div className="payment-page-container empty-order">
-        <h2>Order Not Found or Empty</h2>
-        <p>There was an issue loading your order details. Please return to the cart.</p>
-        <Link to="/cart">Go to Cart</Link>
       </div>
     );
   }
@@ -144,7 +122,7 @@ const PaymentPage = () => {
                   checked={selectedPaymentMethod === 'credit_card'}
                   onChange={() => handlePaymentMethodChange('credit_card')}
                 />
-                Pay with Credit Card
+                Credit Card
                 <div className="card-icons">
                   <img src={visa} alt="Visa" />
                   <img src={mastercard} alt="Mastercard" />
@@ -161,30 +139,39 @@ const PaymentPage = () => {
                   checked={selectedPaymentMethod === 'stripe_link'}
                   onChange={() => handlePaymentMethodChange('stripe_link')}
                 />
-                Pay with Stripe Link (Saved Card)
+                Pay Faster with Stripe Link
                 <div className="stripe-logo">
                   <img src={stripeLogo} alt="Stripe Link" style={{ height: '20px' }} />
                 </div>
               </label>
+
+              {/* PayPal */}
+              <label className="payment-method-option">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="paypal"
+                  checked={selectedPaymentMethod === 'paypal'}
+                  onChange={() => handlePaymentMethodChange('paypal')}
+                />
+                Pay with PayPal
+                <div className="paypal-logo">
+                  <img src={paypal} alt="PayPal" style={{ height: '20px' }} />
+                </div>
+              </label>
             </div>
 
-            {paymentError && (
-              <div className="error-message" role="alert">
-                {paymentError}
-              </div>
-            )}
+            {paymentError && <div className="error-message">{paymentError}</div>}
 
             <div className="payment-buttons">
-              <button
-                onClick={handleStripePayment}
-                disabled={isProcessing}
-                className="btn btn-primary"
-              >
+              <button onClick={handlePayment} disabled={isProcessing} className="btn btn-primary">
                 {isProcessing
-                  ? 'Processing Payment...'
+                  ? 'Processing...'
+                  : selectedPaymentMethod === 'paypal'
+                  ? 'Continue to PayPal'
                   : selectedPaymentMethod === 'stripe_link'
-                    ? 'Pay with Stripe Link'
-                    : 'Pay with Credit Card'}
+                  ? 'Pay with Stripe Link'
+                  : 'Pay with Credit Card'}
               </button>
             </div>
           </div>
@@ -194,13 +181,11 @@ const PaymentPage = () => {
               <h2>Order Summary</h2>
             </div>
             <div className="cart-items-container">
-              {cart.items.map(item => (
+              {cart.items.map((item) => (
                 <div key={item.id} className="cart-item">
                   <div className="item-image-container">
                     <img src={cartitemimage} alt="cart item" className="cart-item-image" />
-                    {item.quantity > 0 && (
-                      <span className="quantity-badge">{item.quantity}</span>
-                    )}
+                    {item.quantity > 0 && <span className="quantity-badge">{item.quantity}</span>}
                   </div>
                   <div className="item-details">
                     <span className="item-name">{item.name || 'Book'}</span>
@@ -209,14 +194,18 @@ const PaymentPage = () => {
                   <div className="price-container">
                     <span className="item-price">${item.price?.toFixed(2) || '0.00'}</span>
                     <br />
-                    <span className="price-per-book" style={{ fontSize: '0.8em', color: '#777' }}>Price per book</span>
+                    <span className="price-per-book" style={{ fontSize: '0.8em', color: '#777' }}>
+                      Price per book
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
+
             <div className="discount-section">
               <span>Discount Applied: ${cart.discountAmount?.toFixed(2) || '0.00'}</span>
             </div>
+
             <div className="totals-section">
               <div className="total-row">
                 <span>Subtotal</span>

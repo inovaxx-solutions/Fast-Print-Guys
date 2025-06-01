@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const shippingRouter = require('./routes/shipping.js');
 const authMiddleware = require('./middleware/authMiddleware');
+const paypal = require('@paypal/checkout-server-sdk');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -96,6 +97,50 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString() 
   });
 });
+
+function createPayPalClient() {
+  const environment = new paypal.core.SandboxEnvironment(
+    process.env.PAYPAL_CLIENT_ID,
+    process.env.PAYPAL_CLIENT_SECRET
+  );
+  return new paypal.core.PayPalHttpClient(environment);
+}
+
+app.post('/api/create-paypal-order', async (req, res) => {
+  const { amount, orderId } = req.body;
+  if (!amount) return res.status(400).json({ error: 'Amount is required' });
+
+  const request = new paypal.orders.OrdersCreateRequest();
+  request.prefer('return=representation');
+  request.requestBody({
+    intent: 'CAPTURE',
+    purchase_units: [{
+      reference_id: orderId || 'order',
+      amount: {
+        currency_code: 'USD',
+        value: (amount / 100).toFixed(2),
+      },
+    }],
+    application_context: {
+      return_url: `${process.env.CLIENT_URL}/checkout/confirmation`,
+      cancel_url: `${process.env.CLIENT_URL}/cart`
+    }
+  });
+
+  try {
+    const client = createPayPalClient();
+    const response = await client.execute(request);
+    const approveUrl = response.result.links.find(link => link.rel === 'approve')?.href;
+    if (!approveUrl) throw new Error('No approval link from PayPal');
+    res.json({ approveUrl });
+  } catch (err) {
+    console.error('PayPal Order Error:', err);
+    res.status(500).json({ error: 'PayPal order creation failed.' });
+  }
+});
+
+
+
 
 // Start the server
 app.listen(PORT, () => {
