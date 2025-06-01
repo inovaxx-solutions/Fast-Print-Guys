@@ -12,6 +12,7 @@ import SignupPage from './pages/Auth/SignupPage';
 import ShippingPage from './pages/Checkout/ShippingPage';
 import PaymentPage from './pages/Checkout/PaymentPage'; // PaymentPage is imported
 import './index.css'; // Global CSS import
+import CheckoutConfirmation from './pages/CheckoutConfirmation';
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
             <Route path="/checkout/payment" element={<PaymentPage />} /> 
             {/* Add other routes that need Navbar/Footer here */}
             {/* Example: <Route path="/about" element={<AboutPage />} /> */}
+    <Route path="/checkout/confirmation" element={<CheckoutConfirmation />} />
+
           </Route>
 
           {/* Routes for pages that DO NOT use the DefaultLayout (like Login, Signup) */}
