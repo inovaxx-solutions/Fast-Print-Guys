@@ -5,12 +5,10 @@ import { loadStripe } from '@stripe/stripe-js';
 import visa from '../../assets/visa.png';
 import mastercard from '../../assets/mastercard.png';
 import americanexpress from '../../assets/American Express Card.png';
-import paypal from '../../assets/paypal.png';
 import stripeLogo from '../../assets/stripe.png';
 import './PaymentPage.css';
 import cartitemimage from '../../assets/cart-item-image.png';
 
-// ✅ Load Stripe publishable key from env
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const PaymentPage = () => {
@@ -63,7 +61,7 @@ const PaymentPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId: cart.orderId,
-          amount: Math.round(cart.total * 100), // Convert dollars to cents
+          amount: Math.round(cart.total * 100),
           paymentMethodType: selectedPaymentMethod,
         }),
       });
@@ -137,6 +135,7 @@ const PaymentPage = () => {
             <p className="payment-info-subtitle">All Transactions Are Secure And Encrypted</p>
 
             <div className="payment-methods">
+              {/* Credit Card */}
               <label className="payment-method-option">
                 <input
                   type="radio"
@@ -145,7 +144,7 @@ const PaymentPage = () => {
                   checked={selectedPaymentMethod === 'credit_card'}
                   onChange={() => handlePaymentMethodChange('credit_card')}
                 />
-                Credit Card
+                Pay with Credit Card
                 <div className="card-icons">
                   <img src={visa} alt="Visa" />
                   <img src={mastercard} alt="Mastercard" />
@@ -153,25 +152,18 @@ const PaymentPage = () => {
                 </div>
               </label>
 
+              {/* Stripe Link */}
               <label className="payment-method-option">
                 <input
                   type="radio"
                   name="paymentMethod"
-                  value="stripe"
-                  checked={selectedPaymentMethod === 'stripe'}
-                  onChange={() => handlePaymentMethodChange('stripe')}
+                  value="stripe_link"
+                  checked={selectedPaymentMethod === 'stripe_link'}
+                  onChange={() => handlePaymentMethodChange('stripe_link')}
                 />
-                Stripe Account Checkout
+                Pay with Stripe Link (Saved Card)
                 <div className="stripe-logo">
-                  <img src={stripeLogo} alt="Stripe" style={{ height: '20px' }} />
-                </div>
-              </label>
-
-              <label className="payment-method-option">
-                <input type="radio" name="paymentMethod" value="paypal" disabled />
-                Paypal (Coming Soon)
-                <div className="paypal-logo">
-                  <img src={paypal} alt="PayPal" />
+                  <img src={stripeLogo} alt="Stripe Link" style={{ height: '20px' }} />
                 </div>
               </label>
             </div>
@@ -190,9 +182,9 @@ const PaymentPage = () => {
               >
                 {isProcessing
                   ? 'Processing Payment...'
-                  : selectedPaymentMethod === 'credit_card'
-                    ? 'Pay with Credit Card'
-                    : 'Pay with Stripe Account'}
+                  : selectedPaymentMethod === 'stripe_link'
+                    ? 'Pay with Stripe Link'
+                    : 'Pay with Credit Card'}
               </button>
             </div>
           </div>

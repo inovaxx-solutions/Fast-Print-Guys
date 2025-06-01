@@ -41,9 +41,10 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
   try {
     // Determine payment methods based on selection
-    const paymentMethods = paymentMethodType === 'stripe' 
-      ? ['card', 'link'] // Stripe Account supports card + Stripe's own payment method
-      : ['card'];        // Credit Card only supports card payments
+  const paymentMethods = paymentMethodType === 'stripe_link'
+  ? ['card', 'link']
+  : ['card'];
+      // Credit Card only supports card payments
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
