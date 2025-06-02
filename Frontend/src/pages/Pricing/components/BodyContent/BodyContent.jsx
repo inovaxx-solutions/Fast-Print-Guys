@@ -1598,7 +1598,7 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
           backgroundColor: "#f8f8f8",
           fontFamily: "monospace"
         }}>
-          <h4>📦 Debug Info</h4>
+          {/* <h4>📦 Debug Info</h4>
           <p><strong>Book Size:</strong> {selectedBookSize}</p>
           <p><strong>Binding Type:</strong> {bindingType}</p>
           <p><strong>Height:</strong> {bookHeight} cm</p>
@@ -1620,7 +1620,7 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
               <p><strong>Per Book Weight:</strong> {selectedBoxDetails.perBookWeight} kg</p>
               <p><strong>Total Weight (incl. box):</strong> {selectedBoxDetails.totalWeightKg} kg</p>
             </div>
-          )}
+          )} */}
 
 
 

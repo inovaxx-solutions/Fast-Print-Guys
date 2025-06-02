@@ -52,7 +52,7 @@ router.post('/create-order', async (req, res) => {
       taxes,
       total,
       paymentMethod,
-      paymentStatus: 'paid'
+      paymentStatus: 'pending'   // ← make sure this is "pending"
     });
     await newOrder.save();
 
