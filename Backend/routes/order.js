@@ -159,6 +159,7 @@ router.get('/all', authMiddleware, async (req, res) => {
 
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
+    console.log(orders);
     return res.json({ orders });
   } catch (err) {
     console.error('Error fetching all orders:', err);

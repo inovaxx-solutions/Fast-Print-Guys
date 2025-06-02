@@ -62,7 +62,8 @@ const AdminOrders = () => {
       <table className="orders-table">
         <thead>
           <tr>
-
+            <th>Item</th>
+            <th>Item Price</th>
             <th>Payment Method</th>
             <th>Status</th>
             <th>Total</th>
@@ -70,13 +71,20 @@ const AdminOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {orders.map((o) => (
-            <tr key={o._id}>
-              
-              <td>{o.paymentMethod}</td>
-              <td>{o.paymentStatus}</td>
-              <td>${o.total.toFixed(2)}</td>
-              <td>{new Date(o.createdAt).toLocaleString()}</td>
+        {orders.map((order) => (
+            <tr key={order._id}>
+              <td>
+                {order.items.map((item) => item.name).join(', ')}
+              </td>
+              <td>
+                {order.items
+                  .map((item) => `$${item.price.toFixed(2)}`)
+                  .join(', ')}
+              </td>
+              <td>{order.paymentMethod}</td>
+              <td>{order.paymentStatus}</td>
+              <td>${order.total.toFixed(2)}</td>
+              <td>{new Date(order.createdAt).toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
