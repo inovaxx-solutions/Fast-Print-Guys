@@ -65,7 +65,7 @@ const Navbar = () => {
         <nav className={`navbar-nav ${isMobileMenuOpen ? 'open' : ''}`}>
           <ul className="navbar-menu">
             <li className="navbar-item">
-              <Link to="/" className="navbar-link">Home</Link>
+              <Link to="https://fastprintguys.com/" className="navbar-link">Home</Link>
             </li>
             <li className="navbar-item has-dropdown">
               <div

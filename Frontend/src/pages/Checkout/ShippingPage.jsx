@@ -240,12 +240,12 @@ const ShippingPage = () => {
       });
 
       if (!fedexRateObj) {
-        throw new Error('No FedEx service found in Easyship response.');
+        setFedexError(<p className="error-message">No FedEx Service Found</p>);
       }
 
       const amount = fedexRateObj.total_charge;
       if (amount == null) {
-        throw new Error('Could not parse FedEx rate from Easyship response.');
+        setFedexError(<p className="error-message">Could not parse FedEx Service rate</p>);
       }
 
       // Recalculate cart totals now that we have shipping cost
@@ -578,15 +578,15 @@ const ShippingPage = () => {
                 </span>
               </div>
             </div>
-
-            <div style={{ marginTop: '1rem' }}>
+            <div className="calculate-total-container" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'top'}}>
               <button
-                className="btn btn-secondary"
+                className="calculate-total-btn"
                 onClick={fetchFedexRate}
                 disabled={isFetchingFedex}
               >
                 {isFetchingFedex ? 'Calculating Total…' : 'Calculate Total'}
               </button>
+              {isFetchingFedex && <div className="loading-spinner"></div>}
             </div>
           </div>
         </div>

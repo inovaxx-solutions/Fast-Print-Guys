@@ -1,50 +1,44 @@
+// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext.jsx'; // Adjust the path if needed
+import { AuthProvider } from './contexts/AuthContext.jsx';
 import DefaultLayout from './layouts/DefaultLayout';
 
-
-// Import your main page components
-// import HomePage from './pages/HomePage'; // Commented out as in your code
+// … your existing imports …
 import PricingPage from './pages/Pricing/PricingPage';
 import AdminOrders from './pages/Admin/AdminOrders.jsx';
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
 import ShippingPage from './pages/Checkout/ShippingPage';
-import PaymentPage from './pages/Checkout/PaymentPage'; // PaymentPage is imported
-import './index.css'; // Global CSS import
+import PaymentPage from './pages/Checkout/PaymentPage';
 import CheckoutConfirmation from './pages/CheckoutConfirmation';
+import RedirectToFastPrintGuys from './RedirectToFastPrintGuys'; // <— import it here
+
+import './index.css';
 
 function App() {
   return (
-    <AuthProvider> {/* AuthProvider wraps the entire app */}
-      <Router> {/* Router for navigation */}
-        <Routes> {/* Defines the available routes */}
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* 1) Add "/" route before others so it immediately redirects out */}
+          <Route path="/" element={<RedirectToFastPrintGuys />} />
 
-          {/* Route for pages that use the DefaultLayout (with Navbar and Footer) */}
-          {/* Nested routes rendered within the DefaultLayout component */}
+          {/* 2) All routes under DefaultLayout */}
           <Route element={<DefaultLayout />}>
-            {/* Nested routes using DefaultLayout */}
-            {/* <Route path="/" element={<HomePage />} /> */} {/* Example commented route */}
-            <Route path="/pricing" element={<PricingPage />} /> {/* Pricing page route */}
-            <Route path="/checkout/shipping" element={<ShippingPage />} /> {/* Shipping page route */}
-            <Route path="/checkout/payment" element={<PaymentPage />} /> 
-            {/* Add other routes that need Navbar/Footer here */}
-            {/* Example: <Route path="/about" element={<AboutPage />} /> */}
-    <Route path="/checkout/confirmation" element={<CheckoutConfirmation />} />
-
-
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/checkout/shipping" element={<ShippingPage />} />
+            <Route path="/checkout/payment" element={<PaymentPage />} />
+            <Route path="/checkout/confirmation" element={<CheckoutConfirmation />} />
             <Route path="/admin" element={<AdminOrders />} />
           </Route>
 
-          {/* Routes for pages that DO NOT use the DefaultLayout (like Login, Signup) */}
-          <Route path="/login" element={<LoginPage />} /> {/* Login page route */}
-          <Route path="/signup" element={<SignupPage />} /> {/* Signup page route */}
+          {/* 3) Auth‐less routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
 
-          {/* Optional: Add a catch-all route for 404 Not Found pages */}
-          {/* import NotFoundPage from './pages/NotFoundPage'; */}
+          {/* (Optional) 404 catch‐all can go here */}
           {/* <Route path="*" element={<NotFoundPage />} /> */}
-
         </Routes>
       </Router>
     </AuthProvider>
