@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 
 // 1. CORS & JSON parser
 app.use(cors({
-  origin: process.env.CLIENT_URL
+  origin: 'https://fast-print-guys-frontend.onrender.com'
 }));
 app.use(express.json());
 
@@ -136,5 +136,5 @@ app.get('/api/health', (req, res) => {
 // 8. Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🔗 CORS configured for: ${process.env.CLIENT_URL}`);
+  console.log(`🔗 CORS configured for: https://fast-print-guys-frontend.onrender.com`);
 });
