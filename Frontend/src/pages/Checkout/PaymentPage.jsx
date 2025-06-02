@@ -1,3 +1,4 @@
+// src/pages/PaymentPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import CheckoutStepIndicator from '../../components/CheckoutStepIndicator.jsx';
@@ -46,35 +47,87 @@ const PaymentPage = () => {
     setIsProcessing(true);
     setPaymentError(null);
 
-    const amount = Math.round(cart.total * 100); // cents
+    // 1) Build payload WITHOUT any custom orderId
+    const orderPayload = {
+      items: cart.items.map(item => ({
+        productId: item.id,
+        name:      item.name,
+        quantity:  item.quantity,
+        price:     item.price
+      })),
+      subtotal:       cart.subtotal,
+      discountAmount: cart.discountAmount || 0,
+      shippingCost:   cart.shippingCost || 0,
+      taxes:          cart.taxes || 0,
+      total:          cart.total,
+      paymentMethod:
+        selectedPaymentMethod === 'paypal'
+          ? 'paypal'
+          : selectedPaymentMethod === 'stripe_link'
+            ? 'stripe_link'
+            : 'stripe_card'
+    };
 
     try {
-      if (selectedPaymentMethod === 'paypal') {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/create-paypal-order`, {
+      // 2) Call /api/order/create-order
+      const createOrderRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/order/create-order`,
+        {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount, orderId: cart.orderId }),
-        });
+          body: JSON.stringify(orderPayload)
+        }
+      );
+      const createOrderData = await createOrderRes.json();
+      if (!createOrderRes.ok) {
+        throw new Error(createOrderData.error || 'Failed to create order.');
+      }
+
+      // 3) Extract the new Mongo "_id" from the response
+      const mongoOrderId = createOrderData.order._id;
+
+      // 4) Proceed with PayPal or Stripe, passing mongoOrderId
+      const amount = Math.round(cart.total * 100); // cents
+
+      if (selectedPaymentMethod === 'paypal') {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/create-paypal-order`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount, orderId: mongoOrderId })
+          }
+        );
         const data = await res.json();
-        if (!res.ok || !data.approveUrl) throw new Error(data.error || 'PayPal error');
+        if (!res.ok || !data.approveUrl) {
+          throw new Error(data.error || 'PayPal error');
+        }
+        // Redirect to PayPal approval URL
         window.location.href = data.approveUrl;
         return;
       }
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/create-checkout-session`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount,
-          orderId: cart.orderId,
-          paymentMethodType: selectedPaymentMethod,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error || 'Stripe error');
-
+      // Otherwise, use Stripe
+      const stripeSessionRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/create-checkout-session`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount,
+            orderId: mongoOrderId,
+            paymentMethodType: selectedPaymentMethod
+          })
+        }
+      );
+      const stripeSessionData = await stripeSessionRes.json();
+      if (!stripeSessionRes.ok || stripeSessionData.error) {
+        throw new Error(stripeSessionData.error || 'Stripe error');
+      }
       const stripe = await stripePromise;
-      const { error } = await stripe.redirectToCheckout({ sessionId: data.id });
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: stripeSessionData.id
+      });
       if (error) setPaymentError(error.message);
     } catch (err) {
       setPaymentError(err.message || 'Payment failed. Try again.');
@@ -168,10 +221,10 @@ const PaymentPage = () => {
                 {isProcessing
                   ? 'Processing...'
                   : selectedPaymentMethod === 'paypal'
-                  ? 'Continue to PayPal'
-                  : selectedPaymentMethod === 'stripe_link'
-                  ? 'Pay with Stripe Link'
-                  : 'Pay with Credit Card'}
+                    ? 'Continue to PayPal'
+                    : selectedPaymentMethod === 'stripe_link'
+                      ? 'Pay with Stripe Link'
+                      : 'Pay with Credit Card'}
               </button>
             </div>
           </div>

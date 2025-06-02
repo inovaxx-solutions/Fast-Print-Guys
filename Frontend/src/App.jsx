@@ -7,6 +7,7 @@ import DefaultLayout from './layouts/DefaultLayout';
 // Import your main page components
 // import HomePage from './pages/HomePage'; // Commented out as in your code
 import PricingPage from './pages/Pricing/PricingPage';
+import AdminOrders from './pages/Admin/AdminOrders.jsx';
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
 import ShippingPage from './pages/Checkout/ShippingPage';
@@ -32,6 +33,8 @@ function App() {
             {/* Example: <Route path="/about" element={<AboutPage />} /> */}
     <Route path="/checkout/confirmation" element={<CheckoutConfirmation />} />
 
+
+            <Route path="/admin" element={<AdminOrders />} />
           </Route>
 
           {/* Routes for pages that DO NOT use the DefaultLayout (like Login, Signup) */}

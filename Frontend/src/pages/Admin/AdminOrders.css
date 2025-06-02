@@ -1,0 +1,45 @@
+/* AdminOrders.css */
+.loading-spinner {
+    padding: 20px;
+    text-align: center;
+  }
+.admin-orders-container{
+  height: 100vh;
+  margin-top: 50px;
+}
+  
+  .error-message {
+    color: red;             /* very visible */
+    background: #ffe5e5;
+    padding: 10px;
+    margin: 20px;
+    border: 1px solid red;
+  }
+  
+  .no-orders-message {
+    padding: 20px;
+    text-align: center;
+    font-style: italic;
+  }
+  
+  .admin-orders-container {
+    padding: 20px;
+  }
+  
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .orders-table th,
+  .orders-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .orders-table th {
+    background: #3a3a3a;
+    font-weight: bold;
+  }
+  
