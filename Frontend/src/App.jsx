@@ -22,7 +22,7 @@ function App() {
       <Router>
         <Routes>
           {/* 1) Add "/" route before others so it immediately redirects out */}
-          <Route path="/" element={<RedirectToFastPrintGuys />} />
+          <Route path="/" element={<LoginPage />} />
 
           {/* 2) All routes under DefaultLayout */}
           <Route element={<DefaultLayout />}>

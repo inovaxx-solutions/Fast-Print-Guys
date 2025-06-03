@@ -14,10 +14,9 @@ const authMiddleware = require('./middleware/authMiddleware');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// 1. Middleware
+// 1. Middleware //merged here
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  credentials: true
+  origin: process.env.CLIENT_URL || 'http://localhost:5173'
 }));
 app.use(express.json());
 
@@ -63,7 +62,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         quantity: 1
       }],
       mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/checkout/confirmation?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `https://fast-print-guys-frontend.onrender.com/checkout/confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}/cart`,
       metadata: {
         orderId: orderId || 'unknown',
@@ -179,8 +178,8 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 10. Start server
+// 10. Start server//merged
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🔗 Client: ${process.env.CLIENT_URL}`);
+  console.log(`🔗 CORS configured for: ${process.env.CLIENT_URL}`);
 });
