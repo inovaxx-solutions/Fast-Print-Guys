@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -8,40 +7,37 @@ const paypal = require('@paypal/checkout-server-sdk');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
-const shippingRouter = require('./routes/shipping.js');
+const shippingRouter = require('./routes/shipping');
 const orderRoutes = require('./routes/order');
 const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// 1. CORS & JSON parser
+// 1. Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173'
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true
 }));
 app.use(express.json());
 
-// 2. Connect MongoDB
+// 2. MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-})
-  .then(() => console.log('✅  MongoDB connected.'))
-  .catch(err => console.error('❌  MongoDB connection error:', err));
+}).then(() => {
+  console.log('✅ MongoDB connected');
+}).catch(err => {
+  console.error('❌ MongoDB connection error:', err);
+});
 
-// 3. Existing routes
+// 3. Route mounting
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/shipping', shippingRouter);
-
-// 4. New order routes
 app.use('/api/order', orderRoutes);
 
-/**
- * 5. Unified Stripe Checkout endpoint
- *    You don't need to modify this except: now we assume
- *    the front end called /api/order/create-order first.
- */
+// 4. Stripe: Create Checkout Session
 app.post('/api/create-checkout-session', async (req, res) => {
   const { orderId, amount, paymentMethodType } = req.body;
 
@@ -50,9 +46,10 @@ app.post('/api/create-checkout-session', async (req, res) => {
   }
 
   try {
-    const paymentMethods = paymentMethodType === 'stripe_link' ? ['card', 'link'] : ['card'];
+    const paymentMethods = paymentMethodType === 'stripe_link'
+      ? ['card', 'link']
+      : ['card'];
 
-    // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: paymentMethods,
       line_items: [{
@@ -70,32 +67,43 @@ app.post('/api/create-checkout-session', async (req, res) => {
       cancel_url: `${process.env.CLIENT_URL}/cart`,
       metadata: {
         orderId: orderId || 'unknown',
-        paymentMethod: paymentMethodType
+        paymentType: paymentMethodType
       }
     });
 
-    return res.json({ id: session.id });
+    res.json({ id: session.id });
   } catch (error) {
-    console.error('Stripe Checkout error:', error);
-    return res.status(500).json({ error: error.message || 'Failed to create payment session' });
+    console.error('❌ Stripe Checkout error:', error);
+    res.status(500).json({ error: error.message || 'Failed to create payment session' });
   }
 });
 
-/**
- * 6. Create PayPal order endpoint
- *    - Creates a PayPal order and returns approveUrl.
- *    - We do NOT capture yet; capturing happens in GET /api/order/paypal-capture.
- */
-app.post('/api/create-paypal-order', async (req, res) => {
-  const { amount, orderId } = req.body;
-  if (!amount) return res.status(400).json({ error: 'Amount is required' });
+// 5. Stripe: Retrieve Session Details
+app.get('/api/checkout-session-details', async (req, res) => {
+  const { session_id } = req.query;
+  if (!session_id) return res.status(400).json({ error: 'Missing session ID' });
 
-  // Setup PayPal SDK client
-  const environment = new paypal.core.SandboxEnvironment(
+  try {
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    res.json(session);
+  } catch (error) {
+    console.error('❌ Stripe session fetch failed:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 6. PayPal: Create Order
+function createPayPalClient() {
+  const environment = new paypal.core.SandboxEnvironment( // Change to LiveEnvironment for production
     process.env.PAYPAL_CLIENT_ID,
     process.env.PAYPAL_CLIENT_SECRET
   );
-  const client = new paypal.core.PayPalHttpClient(environment);
+  return new paypal.core.PayPalHttpClient(environment);
+}
+
+app.post('/api/create-paypal-order', async (req, res) => {
+  const { amount, orderId } = req.body;
+  if (!amount) return res.status(400).json({ error: 'Amount is required' });
 
   const request = new paypal.orders.OrdersCreateRequest();
   request.prefer('return=representation');
@@ -109,32 +117,70 @@ app.post('/api/create-paypal-order', async (req, res) => {
       }
     }],
     application_context: {
-      return_url: `${process.env.CLIENT_URL}/checkout/paypal-callback?orderId=${orderId}`, 
+      return_url: `${process.env.CLIENT_URL}/checkout/confirmation?paypal=true&orderId=${orderId}`,
       cancel_url: `${process.env.CLIENT_URL}/cart`
     }
   });
 
   try {
+    const client = createPayPalClient();
     const response = await client.execute(request);
     const approveUrl = response.result.links.find(link => link.rel === 'approve')?.href;
     if (!approveUrl) throw new Error('No approval link from PayPal');
-    return res.json({ approveUrl, paypalOrderId: response.result.id });
+    res.json({ approveUrl });
   } catch (err) {
-    console.error('PayPal Order Error:', err);
-    return res.status(500).json({ error: 'PayPal order creation failed.' });
+    console.error('❌ PayPal Order Error:', err.message);
+    res.status(500).json({ error: 'PayPal order creation failed.' });
   }
 });
 
-// 7. Health check
+// 7. PayPal: Capture Order
+app.get('/api/capture-paypal-order', async (req, res) => {
+  const { token } = req.query;
+  if (!token) return res.status(400).json({ error: 'Missing PayPal token' });
+
+  const client = createPayPalClient();
+  const request = new paypal.orders.OrdersCaptureRequest(token);
+  request.requestBody({});
+
+  try {
+    const capture = await client.execute(request);
+    console.log('✅ PayPal capture result:', JSON.stringify(capture.result, null, 2));
+    res.json({
+      orderId: capture.result.id,
+      status: capture.result.status,
+      payer: capture.result.payer,
+      amount: capture.result.purchase_units[0].payments.captures[0].amount
+    });
+  } catch (err) {
+    console.error('❌ PayPal Capture Error:', err.message);
+    if (err.response) {
+      console.error('🔍 PayPal response:', JSON.stringify(err.response, null, 2));
+    }
+    res.status(500).json({ error: 'PayPal capture failed.' });
+  }
+});
+
+// 8. Protected Test Route
+app.get('/api/profile', authMiddleware, (req, res) => {
+  if (req.userRole === 'admin') return res.redirect('/admin');
+  res.json({
+    message: 'User profile',
+    userId: req.userId,
+    role: req.userRole
+  });
+});
+
+// 9. Health Check
 app.get('/api/health', (req, res) => {
-  return res.status(200).json({
+  res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString()
   });
 });
 
-// 8. Start server
+// 10. Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🔗 CORS configured for: ${process.env.CLIENT_URL}`);
+  console.log(`🔗 Client: ${process.env.CLIENT_URL}`);
 });

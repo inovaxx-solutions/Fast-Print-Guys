@@ -1,4 +1,3 @@
-// src/pages/PaymentPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import CheckoutStepIndicator from '../../components/CheckoutStepIndicator.jsx';
@@ -47,19 +46,20 @@ const PaymentPage = () => {
     setIsProcessing(true);
     setPaymentError(null);
 
-    // 1) Build payload WITHOUT any custom orderId
+    const amount = Math.round(cart.total * 100); // cents
+
     const orderPayload = {
       items: cart.items.map(item => ({
         productId: item.id,
-        name:      item.name,
-        quantity:  item.quantity,
-        price:     item.price
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price
       })),
-      subtotal:       cart.subtotal,
+      subtotal: cart.subtotal,
       discountAmount: cart.discountAmount || 0,
-      shippingCost:   cart.shippingCost || 0,
-      taxes:          cart.taxes || 0,
-      total:          cart.total,
+      shippingCost: cart.shippingCost || 0,
+      taxes: cart.taxes || 0,
+      total: cart.total,
       paymentMethod:
         selectedPaymentMethod === 'paypal'
           ? 'paypal'
@@ -69,64 +69,58 @@ const PaymentPage = () => {
     };
 
     try {
-      // 2) Call /api/order/create-order
-      const createOrderRes = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/order/create-order`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(orderPayload)
-        }
-      );
-      const createOrderData = await createOrderRes.json();
-      if (!createOrderRes.ok) {
-        throw new Error(createOrderData.error || 'Failed to create order.');
-      }
+      // 🟨 OPTIONAL — Save order to MongoDB before payment
+      // const createOrderRes = await fetch(
+      //   `${import.meta.env.VITE_API_URL}/api/order/create-order`,
+      //   {
+      //     method: 'POST',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify(orderPayload)
+      //   }
+      // );
+      // const createOrderData = await createOrderRes.json();
+      // if (!createOrderRes.ok) {
+      //   throw new Error(createOrderData.error || 'Failed to create order.');
+      // }
+      // const mongoOrderId = createOrderData.order._id;
 
-      // 3) Extract the new Mongo "_id" from the response
-      const mongoOrderId = createOrderData.order._id;
+      // 👇 Use this if database is disabled (no MongoDB)
+      const orderIdToUse = 'guest-order';
 
-      // 4) Proceed with PayPal or Stripe, passing mongoOrderId
-      const amount = Math.round(cart.total * 100); // cents
+      // 👇 If enabling DB in future, replace above with:
+      // const orderIdToUse = mongoOrderId;
 
       if (selectedPaymentMethod === 'paypal') {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/create-paypal-order`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ amount, orderId: mongoOrderId })
-          }
-        );
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/create-paypal-order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount, orderId: orderIdToUse })
+        });
         const data = await res.json();
         if (!res.ok || !data.approveUrl) {
           throw new Error(data.error || 'PayPal error');
         }
-        // Redirect to PayPal approval URL
         window.location.href = data.approveUrl;
         return;
       }
 
-      // Otherwise, use Stripe
-      const stripeSessionRes = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/create-checkout-session`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount,
-            orderId: mongoOrderId,
-            paymentMethodType: selectedPaymentMethod
-          })
-        }
-      );
-      const stripeSessionData = await stripeSessionRes.json();
-      if (!stripeSessionRes.ok || stripeSessionData.error) {
-        throw new Error(stripeSessionData.error || 'Stripe error');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/create-checkout-session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount,
+          orderId: orderIdToUse,
+          paymentMethodType: selectedPaymentMethod
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Stripe error');
       }
+
       const stripe = await stripePromise;
       const { error } = await stripe.redirectToCheckout({
-        sessionId: stripeSessionData.id
+        sessionId: data.id
       });
       if (error) setPaymentError(error.message);
     } catch (err) {
