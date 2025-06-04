@@ -580,12 +580,12 @@ const BodyContent = ({ activeOption = 'print-book' }) => {
       // pull the box dims out of state
       const { length, width, height } = selectedBoxDetails.boxDimensions;
 
-      const response = await axios.get('https://fast-print-guys.onrender.com/api/shipping/rates', {
+      const response = await axios.get('http://localhost:5000/api/shipping/rates', {
         params: {
           length,
           width,
           height,
-          country: selectedCountry,
+          country: selectedCountry
         }
       });
 

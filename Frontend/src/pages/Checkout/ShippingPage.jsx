@@ -221,7 +221,7 @@ const ShippingPage = () => {
         return;
       }
 
-      const resp = await axios.get('https://fast-print-guys.onrender.com/api/shipping/rates', {
+      const resp = await axios.get('http://localhost:5000/api/shipping/rates', {
         params: {
           length: boxLength,
           width: boxWidth,
@@ -230,8 +230,10 @@ const ShippingPage = () => {
           state: region.trim(),
           city: city.trim(),
           postal_code: postalCode.trim(),
-        },
+        },        
       });
+      console.log(boxLength, boxHeight, country.trim(), region.trim(), city.trim(), postalCode.trim())
+
 
       const allRates = resp.data.rates || [];
       const fedexRateObj = allRates.find((r) => {

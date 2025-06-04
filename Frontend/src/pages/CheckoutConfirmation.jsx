@@ -5,7 +5,7 @@ import './CheckoutConfirmation.css';
 
 const CheckoutConfirmation = () => {
   const [searchParams] = useSearchParams();
-  const [statusMessage, setStatusMessage] = useState('Verifying payment...');
+  const [statusMessage, setStatusMessage] = useState('Verifying payment…');
   const [errorMessage, setErrorMessage] = useState(null);
   const [details, setDetails] = useState(null);
 
@@ -18,16 +18,19 @@ const CheckoutConfirmation = () => {
     // 1) Stripe confirmation
     if (sessionId) {
       axios
-        .get(`${import.meta.env.VITE_API_URL}/api/checkout-session-details?session_id=${sessionId}`)
+        .post(`${import.meta.env.VITE_API_URL}/api/order/stripe-complete`, {
+          sessionId
+        })
         .then((res) => {
-          const data = res.data;
+          // server returns { success: true, order }
+          const order = res.data.order;
           setDetails({
-            id: sessionId,
-            amount: (data.amount_total / 100).toFixed(2),
-            currency: data.currency.toUpperCase(),
-            method: data.payment_method_types?.[0] || 'Stripe',
-            orderId: data.metadata?.orderId || 'N/A',
-            date: new Date(data.created * 1000).toLocaleString()
+            id:       order._id,
+            amount:   order.total.toFixed(2),
+            currency: 'USD',
+            method:   'Stripe',
+            orderId:  order._id,
+            date:     new Date(order.createdAt).toLocaleString()
           });
           setStatusMessage('✅ Payment successful via Stripe! 🎉');
         })
@@ -40,39 +43,29 @@ const CheckoutConfirmation = () => {
     }
 
     // 2) PayPal capture via token
-    if (paypalToken) {
-      axios
-        .get(`${import.meta.env.VITE_API_URL}/api/capture-paypal-order?token=${paypalToken}`)
-        .then((res) => {
-          const data = res.data;
-          setDetails({
-            id: data.orderId,
-            amount: data.amount.value,
-            currency: data.amount.currency_code,
-            method: 'PayPal',
-            orderId: data.orderId,
-            payer: `${data.payer.name.given_name} ${data.payer.name.surname}`,
-            email: data.payer.email_address,
-            date: new Date().toLocaleString()
-          });
-          setStatusMessage('✅ Payment successful via PayPal! 🎉');
-        })
-        .catch((err) => {
-          console.error('PayPal capture failed:', err);
-          setErrorMessage('PayPal payment verification failed.');
-          setStatusMessage(null);
-        });
+    if (paypalToken && orderId) {
+      // By the time this runs, our /api/order/paypal-capture route (server-side)
+      // already flipped status to "paid".
+      setDetails({
+        id:       orderId,
+        amount:   'N/A',      // Optionally fetch actual amount via another endpoint
+        currency: 'USD',
+        method:   'PayPal',
+        orderId,
+        date:     new Date().toLocaleString()
+      });
+      setStatusMessage('✅ Payment successful via PayPal! 🎉');
       return;
     }
 
-    // 3) Fallback for redirect-only PayPal confirmation (no token)
+    // 3) Fallback for redirect-only PayPal (no token)
     if (paypalFlag === 'true' && orderId) {
       setDetails({ orderId });
       setStatusMessage('✅ Payment successful via PayPal! 🎉');
       return;
     }
 
-    // 4) If no known params
+    // 4) No known params
     setStatusMessage('Payment complete!');
   }, [searchParams]);
 
@@ -95,21 +88,11 @@ const CheckoutConfirmation = () => {
               <span className="label">Order ID:</span>
               <span className="value">{details.orderId || details.id}</span>
             </div>
-            {details.payer && (
-              <div className="detail-row">
-                <span className="label">Payer:</span>
-                <span className="value">{details.payer}</span>
-              </div>
-            )}
-            {details.email && (
-              <div className="detail-row">
-                <span className="label">Email:</span>
-                <span className="value">{details.email}</span>
-              </div>
-            )}
             <div className="detail-row">
               <span className="label">Amount Paid:</span>
-              <span className="value">{details.currency} ${details.amount}</span>
+              <span className="value">
+                {details.currency} ${details.amount}
+              </span>
             </div>
             <div className="detail-row">
               <span className="label">Payment Method:</span>

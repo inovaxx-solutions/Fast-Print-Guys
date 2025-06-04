@@ -8,6 +8,7 @@ const router = express.Router();
 router.get('/rates', async (req, res) => {
   try {
     console.log("Reached")
+    console.log(req.query);
     // 1) Grab the raw strings out of the query params:
     const {
       length: rawLength,
@@ -43,9 +44,9 @@ router.get('/rates', async (req, res) => {
       },
       destination_address: {
         country_alpha2: destCountry || 'CA', // fallback to CA if missing
-        state: destState || '-',
-        city: destCity || '-',
-        postal_code: destPostalCode || '-',
+        state: destState || 'NY',
+        city: destCity || 'Albany',
+        postal_code: destPostalCode || '12207',
       },
       incoterms: 'DDU',
       insurance: { is_insured: false },

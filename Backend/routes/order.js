@@ -137,7 +137,7 @@ router.get('/paypal-capture', async (req, res) => {
 
       // Redirect user back to front-end confirmation
       return res.redirect(
-        `https://fast-print-guys-frontend.onrender.com/checkout/confirmation?paypal=true&orderId=${orderId}`
+        `http://localhost:5173/checkout/confirmation?paypal=true&orderId=${orderId}`
       );
     } else {
       return res.status(400).json({ error: 'PayPal capture not completed.' });
