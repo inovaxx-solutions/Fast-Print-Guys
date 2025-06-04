@@ -62,7 +62,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         quantity: 1
       }],
       mode: 'payment',
-      success_url: `http://localhost:5173/checkout/confirmation?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `https://fast-print-guys-frontend.onrender.com/checkout/confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}/cart`,
       metadata: {
         orderId: orderId || 'unknown',

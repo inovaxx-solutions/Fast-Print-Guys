@@ -3,7 +3,7 @@ import axios from 'axios';
 import { calculateBookPrice } from './pricing'; // Import the pricing function
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // Adjust this base URL to your backend API endpoint
+  baseURL: 'https://fast-print-guys.onrender.com/api', // Adjust this base URL to your backend API endpoint
   headers: {
     'Content-Type': 'application/json',
   },

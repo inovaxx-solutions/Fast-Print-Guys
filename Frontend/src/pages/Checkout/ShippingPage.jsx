@@ -221,7 +221,7 @@ const ShippingPage = () => {
         return;
       }
 
-      const resp = await axios.get('http://localhost:5000/api/shipping/rates', {
+      const resp = await axios.get('https://fast-print-guys.onrender.com/api/shipping/rates', {
         params: {
           length: boxLength,
           width: boxWidth,
